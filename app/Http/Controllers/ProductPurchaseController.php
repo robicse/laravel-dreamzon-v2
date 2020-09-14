@@ -61,7 +61,10 @@ class ProductPurchaseController extends Controller
         $this->validate($request, [
             'party_id'=> 'required',
             'store_id'=> 'required',
-
+            'product_id'=> 'required',
+            'qty'=> 'required',
+            'price'=> 'required',
+            'mrp_price'=> 'required',
         ]);
 
         $row_count = count($request->product_id);
@@ -93,6 +96,7 @@ class ProductPurchaseController extends Controller
                 $purchase_purchase_detail->product_id = $request->product_id[$i];
                 $purchase_purchase_detail->qty = $request->qty[$i];
                 $purchase_purchase_detail->price = $request->price[$i];
+                $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
                 $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
                 $purchase_purchase_detail->save();
 
@@ -171,7 +175,10 @@ class ProductPurchaseController extends Controller
         $this->validate($request, [
             'party_id'=> 'required',
             'store_id'=> 'required',
-
+            'product_id'=> 'required',
+            'qty'=> 'required',
+            'price'=> 'required',
+            'mrp_price'=> 'required',
         ]);
 
         $row_count = count($request->product_id);
@@ -201,6 +208,7 @@ class ProductPurchaseController extends Controller
             $purchase_purchase_detail->product_id = $request->product_id[$i];
             $purchase_purchase_detail->qty = $request->qty[$i];
             $purchase_purchase_detail->price = $request->price[$i];
+            $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
             $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
             $purchase_purchase_detail->update();
 

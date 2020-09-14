@@ -44,6 +44,7 @@ class ProductController extends Controller
             'product_category_id' => 'required',
             //'product_sub_category_id' => 'required',
             'product_brand_id' => 'required',
+            'barcode' => 'required',
         ]);
 
         $product = new Product;
@@ -52,6 +53,7 @@ class ProductController extends Controller
         $product->product_category_id = $request->product_category_id;
         $product->product_sub_category_id = $request->product_sub_category_id ? $request->product_sub_category_id : Null;
         $product->product_brand_id = $request->product_brand_id;
+        $product->barcode = $request->barcode;
         $product->sku = $request->sku;
         $product->model = $request->model;
         $product->status = $request->status;
@@ -98,6 +100,7 @@ class ProductController extends Controller
             'product_category_id' => 'required',
             //'product_sub_category_id' => 'required',
             'product_brand_id' => 'required',
+            'barcode' => 'required',
         ]);
 
         $product = Product::find($id);
@@ -106,6 +109,7 @@ class ProductController extends Controller
         $product->product_category_id = $request->product_category_id;
         $product->product_sub_category_id = $request->product_sub_category_id ? $request->product_sub_category_id : Null;
         $product->product_brand_id = $request->product_brand_id;
+        $product->barcode = $request->barcode;
         $product->sku = $request->sku;
         $product->model = $request->model;
         $product->status = $request->status;

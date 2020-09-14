@@ -153,7 +153,7 @@
                                     <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
                                 </td>
                                 <td>
-                                    <input type="number" min="1" max="" class="price form-control" name="price[]" value="" required >
+                                    <input type="number" id="price_1" min="1" max="" class="price form-control" name="price[]" value="" readonly required >
                                 </td>
                                 <td>
                                     <input type="text" class="amount form-control" name="sub_total[]">
@@ -311,9 +311,9 @@
                     '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                     '<td><select name="return_type[]" id="return_type_id_'+n+'" class="form-control" ><option value="returnable" selected>returnable</option><option value="not returnable">not returnable</option></select></td>' +
-                    '<td><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]" readonly></td>' +
+                    '<td><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]"></td>' +
                     '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
-                    '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
+                    '<td><input type="text" id="price_'+n+'" min="1" max="" class="price form-control" name="price[]" value="" readonly required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
                     '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
                     '<td><input type="button" class="btn btn-danger delete" value="x"></td></tr>';
@@ -405,6 +405,7 @@
                         $("#product_sub_category_id_"+current_row).html(res.data.subCategoryOptions);
                         $("#product_brand_id_"+current_row).html(res.data.brandOptions);
                         $("#stock_qty_"+current_row).val(res.data.current_stock);
+                        $("#price_"+current_row).val(res.data.mrp_price);
                     },
                     error : function (err){
                         console.log(err)

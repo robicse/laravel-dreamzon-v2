@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->bigInteger('product_category_id')->unsigned();
             $table->bigInteger('product_sub_category_id')->unsigned()->nullable();
             $table->bigInteger('product_brand_id')->unsigned();
+            $table->string('barcode')->unique();
             $table->string('sku')->nullable();
             $table->string('model')->nullable();
             $table->string('image')->default('product.jpg');

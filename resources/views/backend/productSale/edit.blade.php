@@ -143,7 +143,7 @@
                                         <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="{{$productSaleDetail->qty}}" required >
                                     </td>
                                     <td>
-                                        <input type="number" min="1" max="" class="price form-control" name="price[]" value="{{$productSaleDetail->price}}" required >
+                                        <input type="number" id="price_{{$current_row}}" min="1" max="" class="price form-control" name="price[]" value="{{$productSaleDetail->price}}" readonly required >
                                     </td>
                                     <td>
                                         <input type="text" class="amount form-control" name="sub_total[]" value="{{$productSaleDetail->sub_total}}">
@@ -231,7 +231,7 @@
                     '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                     '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
-                    '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
+                    '<td><input type="text" id="price_'+n+'" min="1" max="" class="price form-control" name="price[]" value="" readonly required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
                     '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
                     '<td><input type="button" class="btn btn-danger delete" value="x"></td></tr>';
@@ -318,6 +318,7 @@
                     $("#product_category_id_"+current_row).html(res.data.categoryOptions);
                     $("#product_sub_category_id_"+current_row).html(res.data.subCategoryOptions);
                     $("#product_brand_id_"+current_row).html(res.data.brandOptions);
+                    $("#price_"+current_row).val(res.data.mrp_price);
                 },
                 error : function (err){
                     console.log(err)

@@ -71,7 +71,8 @@
                                 <th>Sub Category</th>
                                 <th>Brand</th>
                                 <th>Qty</th>
-                                <th>Price</th>
+                                <th>Purchase Price</th>
+                                <th>Selling Price</th>
                                 <th>Sub Total</th>
                             </tr>
                             </thead>
@@ -125,6 +126,9 @@
                                     </td>
                                     <td>
                                         <input type="number" min="1" max="" class="price form-control" name="price[]" value="{{$productPurchaseDetail->price}}" required >
+                                    </td>
+                                    <td>
+                                        <input type="number" min="1" max="" class="form-control" name="mrp_price[]" value="{{$productPurchaseDetail->mrp_price}}" required >
                                     </td>
                                     <td>
                                         <input type="text" class="amount form-control" name="sub_total[]" value="{{$productPurchaseDetail->sub_total}}">
