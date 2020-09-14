@@ -288,9 +288,16 @@
         }
         $(function () {
             $('#discount_amount').change(function(){
+                var discount_type = $('#discount_type').val();
                 var total = $('#total_amount').val();
                 var getmoney = $(this).val();
-                var t = total - getmoney;
+                if(discount_type == 'flat'){
+                    var t = total - getmoney;
+                }
+                else{
+                    var per = (total*getmoney)/100;
+                    var t = total-per;
+                }
                 $('#total_amount').val(t);
             });
             $('.getmoney').change(function(){
