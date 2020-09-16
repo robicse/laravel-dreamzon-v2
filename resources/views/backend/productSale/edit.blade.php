@@ -24,6 +24,31 @@
                     <form method="post" action="{{ route('productSales.update',$productSale->id) }}">
                         @method('PUT')
                         @csrf
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Customer Name <small class="requiredCustom">*</small></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="name" value="{{$party->name}}" />
+                                <input type="hidden" class="form-control" name="party_id" value="{{$party->id}}" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Customer Phone <small class="requiredCustom">*</small></label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" name="phone" value="{{$party->phone}}" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Customer Email</label>
+                            <div class="col-md-8">
+                                <input type="email" class="form-control" name="email" value="{{$party->email}}" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Customer Address</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" name="address">{{$party->address}}</textarea>
+                            </div>
+                        </div>
                         <div class="form-group row" @if(Auth::user()->roles[0]->name == 'User') style="display: none" @endif>
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
@@ -35,17 +60,17 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Party  <small class="requiredCustom">*</small></label>
-                            <div class="col-md-8">
-                                <select name="party_id" id="party_id" class="form-control select2">
-                                    <option value="">Select One</option>
-                                    @foreach($parties as $party)
-                                        <option value="{{$party->id}}" {{$party->id == $productSale->party_id ? 'selected' : ''}}>{{$party->name}} </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+{{--                        <div class="form-group row">--}}
+{{--                            <label class="control-label col-md-3 text-right">Party  <small class="requiredCustom">*</small></label>--}}
+{{--                            <div class="col-md-8">--}}
+{{--                                <select name="party_id" id="party_id" class="form-control select2">--}}
+{{--                                    <option value="">Select One</option>--}}
+{{--                                    @foreach($parties as $party)--}}
+{{--                                        <option value="{{$party->id}}" {{$party->id == $productSale->party_id ? 'selected' : ''}}>{{$party->name}} </option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Payment Type  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">

@@ -29,17 +29,41 @@
                     @endif
                     <form method="post" action="{{ route('productSales.store') }}">
                         @csrf
+{{--                        <div class="form-group row">--}}
+{{--                            <label class="control-label col-md-3 text-right">Party  <small class="requiredCustom">*</small></label>--}}
+{{--                            <div class="col-md-5">--}}
+{{--                                <select name="party_id" id="customer" class="form-control select2">--}}
+{{--                                    <option value="">Select One</option>--}}
+{{--                                    @foreach($parties as $party)--}}
+{{--                                        <option value="{{$party->id}}">{{$party->name}} </option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-3"><a type="button" class="test btn btn-primary btn-sm" onclick="modal_customer()" data-toggle="modal"><i class="fa fa-plus"></i></a></div>--}}
+{{--                        </div>--}}
                         <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Party  <small class="requiredCustom">*</small></label>
-                            <div class="col-md-5">
-                                <select name="party_id" id="customer" class="form-control select2">
-                                    <option value="">Select One</option>
-                                    @foreach($parties as $party)
-                                        <option value="{{$party->id}}">{{$party->name}} </option>
-                                    @endforeach
-                                </select>
+                            <label class="control-label col-md-3 text-right">Customer Name <small class="requiredCustom">*</small></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="name" value="" />
                             </div>
-                            <div class="col-md-3"><a type="button" class="test btn btn-primary btn-sm" onclick="modal_customer()" data-toggle="modal"><i class="fa fa-plus"></i></a></div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Customer Phone <small class="requiredCustom">*</small></label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" name="phone" value="" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Customer Email</label>
+                            <div class="col-md-8">
+                                <input type="email" class="form-control" name="email" value="" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Customer Address</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" name="address"></textarea>
+                            </div>
                         </div>
                         <div class="form-group row" @if(Auth::user()->roles[0]->name == 'User') style="display: none" @endif>
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>

@@ -66,8 +66,13 @@ class ProductSaleController extends Controller
     {
         //dd($request->all());
         $this->validate($request, [
-            'party_id'=> 'required',
+            'name'=> 'required',
+            'phone'=> 'required',
+            //'party_id'=> 'required',
             'store_id'=> 'required',
+            'product_id'=> 'required',
+            'qty'=> 'required',
+            'price'=> 'required',
 
         ]);
 
@@ -93,11 +98,23 @@ class ProductSaleController extends Controller
         }
         //dd($invoice_no);
 
+        $party = new Party();
+        $party->type='Customer';
+        $party->name=$request->name;
+        $party->slug=Str::slug($request->name);
+        $party->phone=$request->phone;
+        $party->email=$request->email;
+        $party->address=$request->address;
+        $party->status=1;
+        $party->save();
+        $party_id = $party->id;
+
+
         // product purchase
         $productSale = new ProductSale();
         $productSale->invoice_no = $invoice_no;
         $productSale->user_id = Auth::id();
-        $productSale->party_id = $request->party_id;
+        $productSale->party_id = $party_id;
         $productSale->store_id = $request->store_id;
         $productSale->payment_type = $request->payment_type;
         $productSale->delivery_service = $request->delivery_service;
@@ -153,7 +170,7 @@ class ProductSaleController extends Controller
             $due->ref_id = $insert_id;
             $due->user_id = Auth::id();
             $due->store_id = $request->store_id;
-            $due->party_id = $request->party_id;
+            $due->party_id = $party_id;
             $due->payment_type = $request->payment_type;
             $due->total_amount = $total_amount;
             $due->paid_amount = $request->paid_amount;
@@ -165,7 +182,7 @@ class ProductSaleController extends Controller
             $transaction->invoice_no = $invoice_no;
             $transaction->user_id = Auth::id();
             $transaction->store_id = $request->store_id;
-            $transaction->party_id = $request->party_id;
+            $transaction->party_id = $party_id;
             $transaction->ref_id = $insert_id;
             $transaction->transaction_type = 'sale';
             $transaction->payment_type = $request->payment_type;
@@ -204,7 +221,10 @@ class ProductSaleController extends Controller
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
-        return view('backend.productSale.edit',compact('parties','stores','products','productSale','productSaleDetails','productCategories','productSubCategories','productBrands'));
+
+        $party_id = $productSale->party_id;
+        $party = Party::find($party_id);
+        return view('backend.productSale.edit',compact('parties','stores','products','productSale','productSaleDetails','productCategories','productSubCategories','productBrands','party'));
     }
 
 
@@ -212,8 +232,13 @@ class ProductSaleController extends Controller
     {
         //dd($request->all());
         $this->validate($request, [
-            'party_id'=> 'required',
+            'name'=> 'required',
+            'phone'=> 'required',
+            //'party_id'=> 'required',
             'store_id'=> 'required',
+            'product_id'=> 'required',
+            'qty'=> 'required',
+            'price'=> 'required',
 
         ]);
 
@@ -230,6 +255,16 @@ class ProductSaleController extends Controller
         }else{
             $total_amount = ($total_amount*$request->discount_amount)/100;
         }
+
+        $party_id=$request->party_id;
+        $party = Party::find($party_id);
+        $party->name=$request->name;
+        $party->slug=Str::slug($request->name);
+        $party->phone=$request->phone;
+        $party->email=$request->email;
+        $party->address=$request->address;
+        $party->update();
+
 
         // product purchase
         $productSale = ProductSale::find($id);
