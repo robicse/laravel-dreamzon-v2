@@ -24,8 +24,8 @@ class CreateProductSalesTable extends Migration
             $table->string('delivery_service_charge')->nullable();
             $table->enum('vat_type',['flat','percentage'])->nullable();
             $table->float('vat_amount', 8,2)->nullable();
-            $table->enum('discount_type',['flat','percentage']);
-            $table->float('discount_amount', 8,2);
+            $table->enum('discount_type',['flat','percentage'])->nullable();
+            $table->float('discount_amount', 8,2)->nullable();
             $table->float('total_amount', 8,2);
             $table->float('paid_amount', 8,2);
             $table->float('due_amount', 8,2);
