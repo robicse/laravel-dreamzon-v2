@@ -20,7 +20,8 @@ class CreateDuesTable extends Migration
             $table->integer('user_id');
             $table->bigInteger('store_id')->unsigned();
             $table->bigInteger('party_id')->unsigned();
-            $table->enum('payment_type', ['cash','online']);
+            //$table->enum('payment_type', ['cash','online']);
+            //$table->string('check_number')->nullable;
             $table->float('total_amount', 8,2);
             $table->float('paid_amount', 8,2);
             $table->float('due_amount', 8,2);

@@ -182,6 +182,8 @@ return [
 
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+
     ],
 
     /*
@@ -239,6 +241,8 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
 
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
 
     ],
 

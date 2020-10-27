@@ -75,6 +75,23 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('party/supplier/new-party','ProductPurchaseController@newParty')->name('parties.supplier.store.new');
     Route::post('pay-due','ProductSaleController@payDue')->name('pay.due');
 
+
+
+    Route::get('productPosSales/list','ProductPosSaleController@index')->name('productPosSales.index');
+    Route::get('productPosSales','ProductPosSaleController@create')->name('productPosSales.create');
+    Route::get('sale/{id}/data', 'ProductPosSaleController@listData')->name('sale.data');
+    Route::get('sale/loadform/{discount}/{total}/{paid}', 'ProductPosSaleController@loadForm');
+    Route::get('pos/print/{id}/{status}', 'PointOfSaleController@print')->name('pointOfSale.print');
+    Route::get('pos/print2/{id}/{status}', 'PointOfSaleController@print2')->name('pointOfSale.print2');
+
+
+    Route::get('selectedform/{product_code}','ProductPosSaleController@selectedform');
+    Route::get('add-to-cart','CartController@addToCart');
+    Route::get('delete-cart-product/{rowId}','CartController@deleteCartProduct');
+    Route::get('delete-all-cart-product','CartController@deleteAllCartProduct');
+    Route::post('pos_insert', 'ProductPosSaleController@postInsert');
+
+
     //excel
     Route::get('export', 'UserController@export')->name('export');
     Route::get('importExportView', 'ExportExcelController@importExportView');

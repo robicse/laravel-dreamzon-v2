@@ -24,6 +24,7 @@ class CreateStocksTable extends Migration
             $table->integer('stock_in');
             $table->integer('stock_out');
             $table->integer('current_stock');
+            $table->string('date')->nullable();
             $table->timestamps();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

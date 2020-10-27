@@ -87,6 +87,9 @@ class ProductPurchaseController extends Controller
         {
             for($i=0; $i<$row_count;$i++)
             {
+                $product_id = $request->product_id[$i];
+                $barcode = Product::where('id',$product_id)->pluck('barcode')->first();
+
                 // product purchase detail
                 $purchase_purchase_detail = new ProductPurchaseDetail();
                 $purchase_purchase_detail->product_purchase_id = $insert_id;
@@ -98,9 +101,9 @@ class ProductPurchaseController extends Controller
                 $purchase_purchase_detail->price = $request->price[$i];
                 $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
                 $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
+                $purchase_purchase_detail->barcode = $barcode;
                 $purchase_purchase_detail->save();
 
-                $product_id = $request->product_id[$i];
                 $check_previous_stock = Stock::where('product_id',$product_id)->pluck('current_stock')->first();
                 if(!empty($check_previous_stock)){
                     $previous_stock = $check_previous_stock;
@@ -199,6 +202,9 @@ class ProductPurchaseController extends Controller
 
         for($i=0; $i<$row_count;$i++)
         {
+            $product_id = $request->product_id[$i];
+            $barcode = Product::where('id',$product_id)->pluck('barcode')->first();
+
             // product purchase detail
             $product_purchase_detail_id = $request->product_purchase_detail_id[$i];
             $purchase_purchase_detail = ProductPurchaseDetail::findOrFail($product_purchase_detail_id);;
@@ -210,10 +216,9 @@ class ProductPurchaseController extends Controller
             $purchase_purchase_detail->price = $request->price[$i];
             $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
             $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
+            $purchase_purchase_detail->barcode = $barcode;
             $purchase_purchase_detail->update();
 
-
-            $product_id = $request->product_id[$i];
             $check_previous_stock = Stock::where('product_id',$product_id)->pluck('current_stock')->first();
             if(!empty($check_previous_stock)){
                 $previous_stock = $check_previous_stock;
