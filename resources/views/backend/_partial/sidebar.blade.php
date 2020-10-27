@@ -30,6 +30,7 @@
             <ul class="treeview-menu">
                 <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productPurchases.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Purchase List</span></a></li>
                 <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productPurchases.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Purchase Create</span></a></li>
+{{--                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('product.pos.purchases.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Purchase POS</span></a></li>--}}
 
             </ul>
         </li>

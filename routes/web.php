@@ -57,6 +57,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('productSales','ProductSaleController');
     Route::resource('productSaleReturns','ProductSaleReturnController');
 
+    Route::get('product-pos-purchases','ProductPosPurchaseController@create')->name('product.pos.purchases.create');
+    Route::get('selected-pos-purchase-form','ProductPosPurchaseController@selectedform');
+    Route::get('append-row','ProductPosPurchaseController@appendToRow');
+
 
     Route::get('productPurchases-invoice','ProductPurchaseController@invoice')->name('productPurchases-invoice');
     Route::get('productPurchases-invoice-print','ProductPurchaseController@invoicePrint')->name('productPurchases-invoice-print');

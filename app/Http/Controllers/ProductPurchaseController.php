@@ -362,4 +362,97 @@ class ProductPurchaseController extends Controller
 
         }
     }
+
+    public function createPOS()
+    {
+
+    }
+
+
+    public function storePOS(Request $request)
+    {
+        //dd($request->all());
+        $this->validate($request, [
+            'party_id'=> 'required',
+            'store_id'=> 'required',
+            'product_id'=> 'required',
+            'qty'=> 'required',
+            'price'=> 'required',
+            'mrp_price'=> 'required',
+        ]);
+
+        $row_count = count($request->product_id);
+        $total_amount = 0;
+        for($i=0; $i<$row_count;$i++)
+        {
+            $total_amount += $request->sub_total[$i];
+        }
+
+        // product purchase
+        $productPurchase = new ProductPurchase();
+        $productPurchase ->party_id = $request->party_id;
+        $productPurchase ->store_id = $request->store_id;
+        $productPurchase ->user_id = Auth::id();
+        $productPurchase ->payment_type = $request->payment_type;
+        $productPurchase ->total_amount = $total_amount;
+        $productPurchase->save();
+        $insert_id = $productPurchase->id;
+        if($insert_id)
+        {
+            for($i=0; $i<$row_count;$i++)
+            {
+                $product_id = $request->product_id[$i];
+                $barcode = Product::where('id',$product_id)->pluck('barcode')->first();
+
+                // product purchase detail
+                $purchase_purchase_detail = new ProductPurchaseDetail();
+                $purchase_purchase_detail->product_purchase_id = $insert_id;
+                $purchase_purchase_detail->product_category_id = $request->product_category_id[$i];
+                $purchase_purchase_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
+                $purchase_purchase_detail->product_brand_id = $request->product_brand_id[$i];
+                $purchase_purchase_detail->product_id = $request->product_id[$i];
+                $purchase_purchase_detail->qty = $request->qty[$i];
+                $purchase_purchase_detail->price = $request->price[$i];
+                $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
+                $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
+                $purchase_purchase_detail->barcode = $barcode;
+                $purchase_purchase_detail->save();
+
+                $check_previous_stock = Stock::where('product_id',$product_id)->pluck('current_stock')->first();
+                if(!empty($check_previous_stock)){
+                    $previous_stock = $check_previous_stock;
+                }else{
+                    $previous_stock = 0;
+                }
+                // product stock
+                $stock = new Stock();
+                $stock->user_id = Auth::id();
+                $stock->ref_id = $insert_id;
+                $stock->store_id = $request->store_id;
+                $stock->product_id = $request->product_id[$i];
+                $stock->stock_type = 'purchase';
+                $stock->previous_stock = $previous_stock;
+                $stock->stock_in = $request->qty[$i];
+                $stock->stock_out = 0;
+                $stock->current_stock = $previous_stock + $request->qty[$i];
+                $stock->save();
+            }
+
+            // transaction
+            $transaction = new Transaction();
+            $transaction->invoice_no = Null;
+            $transaction->user_id = Auth::id();
+            $transaction->store_id = $request->store_id;
+            $transaction->party_id = $request->party_id;
+            $transaction->ref_id = $insert_id;
+            $transaction->transaction_type = 'purchase';
+            $transaction->payment_type = $request->payment_type;
+            $transaction->amount = $total_amount;
+            $transaction->save();
+        }
+
+        Toastr::success('Product Purchase Created Successfully', 'Success');
+        return redirect()->route('productPurchases.index');
+
+    }
 }
