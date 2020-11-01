@@ -70,8 +70,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        //$roles = Role::pluck('name','name')->all();
-        $roles = Role::where('name','!=','Admin')->pluck('name','name')->all();
+        $roles = Role::pluck('name','name')->all();
+        //$roles = Role::where('name','!=','Admin')->pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
 
 
