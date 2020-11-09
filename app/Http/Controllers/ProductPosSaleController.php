@@ -278,6 +278,8 @@ class ProductPosSaleController extends Controller
                                 <select class=\"form-control\" id=\"payment_type\" name=\"payment_type\">
                                     <option value=\"cash\">cash</option>
                                     <option value=\"credit\">credit</option>
+                                    <option value=\"card\">card</option>
+                                    <option value=\"bkash\">bkash</option>
                                 </select>
                             </div>
                         </div>

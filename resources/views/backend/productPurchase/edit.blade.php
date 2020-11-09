@@ -57,7 +57,9 @@
                                 <select name="payment_type" id="payment_type" class="form-control" >
                                     <option value="">Select One</option>
                                     <option value="cash" {{'cash' == $productPurchase->payment_type ? 'selected' : ''}}>cash</option>
-                                    <option value="online" {{'online' == $productPurchase->payment_type ? 'selected' : ''}}>online</option>
+                                    <option value="credit" {{'credit' == $productPurchase->payment_type ? 'selected' : ''}}>credit</option>
+                                    <option value="card" {{'card' == $productPurchase->payment_type ? 'selected' : ''}}>card</option>
+                                    <option value="bkash" {{'bkash' == $productPurchase->payment_type ? 'selected' : ''}}>bkash</option>
                                 </select>
                             </div>
                         </div>

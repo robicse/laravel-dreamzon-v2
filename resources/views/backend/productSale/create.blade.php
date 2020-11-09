@@ -82,7 +82,9 @@
                                 <select name="payment_type" id="payment_type" class="form-control" >
                                     <option value="">Select One</option>
                                     <option value="cash">cash</option>
-                                    <option value="online">online</option>
+                                    <option value="credit">credit</option>
+                                    <option value="card">card</option>
+                                    <option value="bkash">bkash</option>
                                 </select>
                             </div>
                         </div>

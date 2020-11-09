@@ -21,7 +21,7 @@ class CreateProductSaleReturnsTable extends Migration
             $table->integer('user_id');
             $table->bigInteger('store_id')->unsigned();
             $table->bigInteger('party_id')->unsigned();
-            $table->enum('payment_type', ['cash','online']);
+            $table->enum('payment_type', ['cash','credit','card','bkash']);
             $table->enum('discount_type',['flat','percentage']);
             $table->float('discount_amount', 8,2);
             $table->float('total_amount', 8,2);
