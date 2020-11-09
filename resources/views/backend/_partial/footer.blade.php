@@ -102,9 +102,18 @@
 
 <!-- select2-->
 <script src="{!! asset('backend/js/plugins/select2.min.js') !!}"></script>
+
+<!--Date-Picker JS-->
+<script src="{{asset('backend/js/bootstrap-datepicker.js')}}"></script>
+
 <script type="text/javascript">
 
     $('.select2').select2();
+
+    $('.datepicker').datepicker({
+        format: 'yyyy-mm-dd',
+        //startDate: '-3d'
+    });
 
 </script>
 </body>

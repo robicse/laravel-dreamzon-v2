@@ -102,6 +102,7 @@ class ProductPurchaseController extends Controller
                 $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
                 $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
                 $purchase_purchase_detail->barcode = $barcode;
+                $purchase_purchase_detail->expired_date = $request->expired_date[$i];
                 $purchase_purchase_detail->save();
 
                 $check_previous_stock = Stock::where('product_id',$product_id)->pluck('current_stock')->first();
@@ -217,6 +218,7 @@ class ProductPurchaseController extends Controller
             $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
             $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
             $purchase_purchase_detail->barcode = $barcode;
+            $purchase_purchase_detail->expired_date = $request->expired_date[$i];
             $purchase_purchase_detail->update();
 
             $check_previous_stock = Stock::where('product_id',$product_id)->pluck('current_stock')->first();

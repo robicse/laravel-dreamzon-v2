@@ -64,6 +64,7 @@
                         <th>Purchase Price</th>
                         <th>M.R.P Price</th>
                         <th>Sub Total</th>
+                        <th>Expired Date</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -82,6 +83,7 @@
                                 <td>{{$productPurchaseDetail->price}}</td>
                                 <td>{{$productPurchaseDetail->mrp_price}}</td>
                                 <td>{{$productPurchaseDetail->sub_total}}</td>
+                                <td>{{ $productPurchaseDetail->expired_date}}</td>
                             </tr>
                         @endforeach
                     </tbody>

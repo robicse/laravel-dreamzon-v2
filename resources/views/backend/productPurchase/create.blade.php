@@ -78,6 +78,7 @@
                                 <th>Purchase Price <small class="requiredCustom">*</small></th>
                                 <th>Selling Price <small class="requiredCustom">*</small></th>
                                 <th>Sub Total</th>
+                                <th>Expired Date</th>
                                 <th>Action</th>
 
                             </tr>
@@ -134,6 +135,9 @@
                                 </td>
                                 <td>
                                     <input type="text" class="amount form-control" name="sub_total[]">
+                                </td>
+                                <td>
+                                    <input type="text" class="datepicker form-control" name="expired_date[]">
                                 </td>
                             </tr>
 
@@ -265,6 +269,7 @@
                     '<td><input type="text" min="1" max="" class="form-control" name="mrp_price[]" value="" required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
                     '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
+                    '<td><input type="text" class="datepicker form-control" name="expired_date[]"></td>' +
                     '<td><input type="button" class="btn btn-danger delete" value="x"></td></tr>';
 
                 $('.neworderbody').append(tr);
@@ -272,6 +277,11 @@
                 //initSelect2();
 
                 $('.select2').select2();
+
+                $('.datepicker').datepicker({
+                    format: 'yyyy-mm-dd',
+                    //startDate: '-3d'
+                });
 
             });
             $('.neworderbody').delegate('.delete', 'click', function () {
