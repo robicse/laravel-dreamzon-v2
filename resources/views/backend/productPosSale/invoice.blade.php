@@ -107,7 +107,7 @@
 <body>
 <div class="ticket">
     <img src="{{asset('uploads/logo.png')}}" alt="Logo">
-    <p class="centered">Sales Invoice
+    <p class="centered">Invoice NO:{{$productSale->invoice_no}}
         <br>Shop: 24, Level 5</p>
     <table>
         <thead>
