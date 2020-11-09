@@ -105,7 +105,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Image <span style="color: red">*</span></label>
+                            <label class="control-label col-md-3 text-right">Image</label>
                             <div class="col-md-8">
                                 <input type="file" id="image" name="image" class="form-control-file">
 {{--                                @if ($errors->has('image'))--}}

@@ -40,7 +40,7 @@
                     </tr>
                     <tr>
                         <th>Delivery Service</th>
-                        <td>{{$productSale->delivery_service}}</td>
+                        <td>{{$productSale->deliveryService->name}}</td>
                     </tr>
                     <tr>
                         <th>Discount Type</th>

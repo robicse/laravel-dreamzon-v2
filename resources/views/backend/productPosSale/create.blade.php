@@ -9,11 +9,17 @@
                     <div class="col-md-12">
                         <div class="form-group row">
                             <label for="totalrp" class="col-md-2 control-label">Barcode</label>
-                            <div class="col-md-10  input-group">
+                            <div class="col-md-6  input-group">
                                 <input id="kode" type="text" class="form-control" name="kode" autofocus required>
-                                <span class="input-group-btn">
-                                <button onclick="showProduct()" type="button" class="btn btn-info">Show Product</button>
-                            </span>
+                                    <span class="input-group-btn">
+                                    <button onclick="showProduct()" type="button" class="btn btn-info">Show Product</button>
+                                </span>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" id="current_stock" class="form-control" placeholder=" current stock" readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" id="current_price" class="form-control" placeholder="current price" readonly>
                             </div>
                         </div>
                     </div>
@@ -199,6 +205,8 @@
                 clearTimeout(timeout);
                 timeout = setTimeout(function () {
                     var barcode = $('#kode').val();
+                    $('#current_price').val('');
+                    $('#current_stock').val('');
                     console.log(barcode);
                     if(barcode)
                     {
@@ -210,14 +218,19 @@
                             },
                             success : function (res){
                                 console.log(res)
+                                //console.log(res.response.price)
                                 $('#kode').val('').focus();
                                 loadData(barcode)
                                 if(res.response.product_check_exists == 'No Product Found!')
                                     toastr.warning('no product found using this code!')
                                 else if(res.response.product_check_exists == 'No Product Stock Found!')
                                     toastr.warning('no product found using this code!')
-                                else
+                                else{
                                     toastr.success('successfully added to cart')
+                                    $('#current_price').val(res.response.price);
+                                    $('#current_stock').val(res.response.stock);
+                                }
+
                             },
                             error : function (err){
                                 console.log(err)
@@ -292,6 +305,8 @@
                     success: function (data) {
                         console.log(data)
                         loadData(barcode)
+                        $('#current_price').val('');
+                        $('#current_stock').val('');
                     },
                     error: function (err) {
                         console.log(err)
@@ -309,6 +324,8 @@
                     success: function (data) {
                         console.log(data)
                         loadData(barcode)
+                        $('#current_price').val('');
+                        $('#current_stock').val('');
                     },
                     error: function (err) {
                         console.log(err)
@@ -351,6 +368,8 @@
                             $('#kode').val('').focus();
                             loadData(barcode)
                             toastr.success('successfully added to cart');
+                            $('#current_price').val(res.response.price);
+                            $('#current_stock').val(res.response.stock);
                         },
                         error : function (err){
                             console.log(err)

@@ -22,7 +22,8 @@
                         <th>User</th>
                         <th>Store</th>
                         <th>Party</th>
-                        <th>Payment Type</th>
+                        <th>Phone</th>
+{{--                        <th>Payment Type</th>--}}
                         <th>Total Amount</th>
                         <th>Paid Amount</th>
                         <th>Due Amount</th>
@@ -36,7 +37,8 @@
                         <td>{{ $productSale->user->name}}</td>
                         <td>{{ $productSale->store->name}}</td>
                         <td>{{ $productSale->party->name}}</td>
-                        <td>{{ $productSale->payment_type}}</td>
+                        <td>{{ $productSale->party->phone}}</td>
+{{--                        <td>{{ $productSale->payment_type}}</td>--}}
                         <td>{{ $productSale->total_amount}}</td>
                         <td>{{ $productSale->paid_amount}}</td>
                         <td>

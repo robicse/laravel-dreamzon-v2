@@ -22,6 +22,7 @@
                         <th>User</th>
                         <th>Store</th>
                         <th>Party</th>
+                        <th>phone</th>
                         <th>Payment Type</th>
                         <th>Total Amount</th>
                         <th>Action</th>
@@ -34,6 +35,7 @@
                         <td>{{ $productSaleReturn->user->name}}</td>
                         <td>{{ $productSaleReturn->store->name}}</td>
                         <td>{{ $productSaleReturn->party->name}}</td>
+                        <td>{{ $productSaleReturn->party->phone}}</td>
                         <td>{{ $productSaleReturn->payment_type}}</td>
                         <td>{{ $productSaleReturn->total_amount}}</td>
                         <td>

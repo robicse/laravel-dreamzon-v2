@@ -20,6 +20,7 @@
                         <th>User</th>
                         <th>Store</th>
                         <th>Party</th>
+                        <th>Phone</th>
                         <th>Payment Type</th>
                         <th>Total Amount</th>
                         <th>Action</th>
@@ -32,6 +33,7 @@
                         <td>{{ $productPurches->user->name}}</td>
                         <td>{{ $productPurches->store->name}}</td>
                         <td>{{ $productPurches->party->name}}</td>
+                        <td>{{ $productPurches->party->phone}}</td>
                         <td>{{ $productPurches->payment_type}}</td>
                         <td>{{ $productPurches->total_amount}}</td>
                         <td>

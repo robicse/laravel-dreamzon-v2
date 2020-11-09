@@ -19,4 +19,9 @@ class ProductSale extends Model
     {
         return $this->belongsTo('App\Party');
     }
+
+    public function deliveryService()
+    {
+        return $this->belongsTo('App\DeliveryService');
+    }
 }

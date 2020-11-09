@@ -32,6 +32,7 @@ class CartController extends Controller
                         $data['qty'] = 1;
                         $data['price'] = $price;
                         $data['options']['barcode'] = $barcode;
+                        $data['stock'] = $product_current_stock_check_exists;
                         Cart::add($data);
                     }
                     $data['countCart'] = Cart::count();

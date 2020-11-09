@@ -35,6 +35,7 @@ class CreateProductSalesTable extends Migration
             $table->timestamps();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->foreign('party_id')->references('id')->on('parties')->onDelete('cascade');
+            $table->foreign('delivery_service_id')->references('id')->on('delivery_services')->onDelete('cascade');
         });
     }
 

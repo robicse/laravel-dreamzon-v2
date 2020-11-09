@@ -106,7 +106,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Image <span style="color: red">*</span></label>
+                            <label class="control-label col-md-3 text-right">Image</label>
                             <div class="col-md-8">
                                 <img src="{{Storage::url('uploads/product/'.$product->image)}}" alt="" width="100px;">
                                 <input class="{{ $errors->has('image') ? ' is-invalid' : '' }}" type="file" placeholder="Image" name="image" value="{{$product->image}}">
