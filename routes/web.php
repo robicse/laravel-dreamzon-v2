@@ -57,6 +57,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('productSales','ProductSaleController');
     Route::resource('productSaleReturns','ProductSaleReturnController');
     Route::resource('deliveryService','DeliveryServiceController');
+    Route::resource('productExpireds','ProductExpiredController');
 
     Route::get('product-pos-purchases','ProductPosPurchaseController@create')->name('product.pos.purchases.create');
     Route::get('selected-pos-purchase-form','ProductPosPurchaseController@selectedform');
@@ -79,6 +80,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('party/new-party','ProductSaleController@newParty')->name('parties.store.new');
     Route::post('party/supplier/new-party','ProductPurchaseController@newParty')->name('parties.supplier.store.new');
     Route::post('pay-due','ProductSaleController@payDue')->name('pay.due');
+    Route::get('expired-product-list','ProductExpiredController@expiredProduct')->name('expired.product');
+    Route::post('expired-product-store','ProductExpiredController@expiredProductStore')->name('expired.product.store');
 
 
 

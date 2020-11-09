@@ -29,6 +29,7 @@
                                 <th width="15%">Stock In</th>
                                 <th width="15%">Stock Out</th>
                                 <th width="15%">Current Stock</th>
+                                <th width="15%">date</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -45,6 +46,7 @@
                                     <td>{{ $stock->stock_in}}</td>
                                     <td>{{ $stock->stock_out}}</td>
                                     <td>{{ $stock->current_stock}}</td>
+                                    <td>{{ $stock->date}}</td>
                                 </tr>
                             @endforeach
                             </tbody>

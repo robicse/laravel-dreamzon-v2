@@ -37,7 +37,6 @@
                 <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productPurchases.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Purchase List</span></a></li>
                 <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productPurchases.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Purchase Create</span></a></li>
 {{--                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('product.pos.purchases.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Purchase POS</span></a></li>--}}
-
             </ul>
         </li>
         <li class="treeview{{Request::is('productPosSales*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">POS Sale </span><i class="treeview-indicator fa fa-angle-right"></i></a>
@@ -64,6 +63,13 @@
                 <li><a class="app-menu__item" href="{{ route('returnable.sale.product') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Returnable Sale Product </span></a></li>
                 <li><a class="app-menu__item" href="{{ route('productSaleReturns.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Sale Return List</span></a></li>
 {{--                <li><a class="app-menu__item" href="{{ route('productSaleReturns.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Sale Create</span></a></li>--}}
+
+            </ul>
+        </li>
+        <li class="treeview{{Request::is('productExpireds*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Product Expired</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                <li><a class="app-menu__item" href="{{ route('expired.product') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Expired Product </span></a></li>
+                <li><a class="app-menu__item" href="{{ route('productExpireds.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Expired List</span></a></li>
 
             </ul>
         </li>
