@@ -20,6 +20,12 @@
                 <li  style="background-color: gray"><a class="app-menu__item" href="{{ route('products.index') }}"><i class="app-menu__icon fas fa-users"></i><span class="app-menu__label">Product</span></a></li>
             </ul>
         </li>
+        <li class="treeview{{Request::is('deliveryService*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Delivery Service </span><i class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('deliveryService.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Delivery Service List</span></a></li>
+                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('deliveryService.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Delivery Service Create</span></a></li>
+            </ul>
+        </li>
         <li class="treeview{{Request::is('party*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Party </span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 <li style="background-color: gray"><a class="app-menu__item" href="{{ route('party.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Party List</span></a></li>

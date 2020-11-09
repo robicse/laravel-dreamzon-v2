@@ -86,10 +86,13 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Delivery Services  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
-                                <select name="delivery_service" id="delivery_service" class="form-control" >
+                                <select name="delivery_service_id" id="delivery_service_id" class="form-control" >
                                     <option value="">Select One</option>
-                                    <option value="Sundorban Kuriar Service" {{'Sundorban Kuriar Service' == $productSale->delivery_service ? 'selected' : ''}}>Sundorban Kuriar Service</option>
-                                    <option value="SA Paribahan" {{'SA Paribahan' == $productSale->delivery_service ? 'selected' : ''}}>SA Paribahan</option>
+                                    @if(!empty($deliveryServices))
+                                        @foreach($deliveryServices as $deliveryService)
+                                            <option value="{{$deliveryService->id}}" {{$deliveryService->id == $productSale->delivery_service_id ? 'selected' : ''}} >{{$deliveryService->name}}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                         </div>

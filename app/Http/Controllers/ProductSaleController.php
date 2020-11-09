@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DeliveryService;
 use App\Due;
 use App\Party;
 use App\Product;
@@ -58,7 +59,8 @@ class ProductSaleController extends Controller
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
         $products = Product::all();
-        return view('backend.productSale.create',compact('parties','stores','products','productCategories','productSubCategories','productBrands'));
+        $deliveryServices = DeliveryService::all();
+        return view('backend.productSale.create',compact('parties','stores','products','productCategories','productSubCategories','productBrands','deliveryServices'));
     }
 
 
@@ -117,7 +119,7 @@ class ProductSaleController extends Controller
         $productSale->party_id = $party_id;
         $productSale->store_id = $request->store_id;
         $productSale->payment_type = $request->payment_type;
-        $productSale->delivery_service = $request->delivery_service;
+        $productSale->delivery_service_id = $request->delivery_service_id;
         $productSale->delivery_service_charge = $request->delivery_service_charge;
         $productSale->discount_type = $request->discount_type;
         $productSale->discount_amount = $request->discount_amount;
@@ -224,7 +226,8 @@ class ProductSaleController extends Controller
 
         $party_id = $productSale->party_id;
         $party = Party::find($party_id);
-        return view('backend.productSale.edit',compact('parties','stores','products','productSale','productSaleDetails','productCategories','productSubCategories','productBrands','party'));
+        $deliveryServices = DeliveryService::all();
+        return view('backend.productSale.edit',compact('parties','stores','products','productSale','productSaleDetails','productCategories','productSubCategories','productBrands','party','deliveryServices'));
     }
 
 
@@ -272,7 +275,7 @@ class ProductSaleController extends Controller
         $productSale->party_id = $request->party_id;
         $productSale->store_id = $request->store_id;
         $productSale->payment_type = $request->payment_type;
-        $productSale->delivery_service = $request->delivery_service;
+        $productSale->delivery_service_id = $request->delivery_service_id;
         $productSale->delivery_service_charge = $request->delivery_service_charge;
         $productSale->discount_type = $request->discount_type;
         $productSale->discount_amount = $request->discount_amount;

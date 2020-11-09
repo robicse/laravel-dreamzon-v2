@@ -20,7 +20,7 @@ class CreateProductSalesTable extends Migration
             $table->bigInteger('store_id')->unsigned();
             $table->bigInteger('party_id')->unsigned();
             $table->enum('payment_type', ['cash','credit','card','bkash']);
-            $table->string('delivery_service')->nullable();
+            $table->integer('delivery_service_id')->nullable();
             $table->string('delivery_service_charge')->nullable();
             $table->enum('vat_type',['flat','percentage'])->nullable();
             $table->float('vat_amount', 8,2)->nullable();

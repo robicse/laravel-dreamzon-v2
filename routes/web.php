@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('productPurchases','ProductPurchaseController');
     Route::resource('productSales','ProductSaleController');
     Route::resource('productSaleReturns','ProductSaleReturnController');
+    Route::resource('deliveryService','DeliveryServiceController');
 
     Route::get('product-pos-purchases','ProductPosPurchaseController@create')->name('product.pos.purchases.create');
     Route::get('selected-pos-purchase-form','ProductPosPurchaseController@selectedform');
