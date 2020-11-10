@@ -24,6 +24,7 @@
                                 @php
                                     $latest_product_stock_infos = \App\Stock::where('product_id',$productPurchase->product_id)->latest()->first();
                                 @endphp
+                                @if($latest_product_stock_infos->current_stock > 0)
                                 <tr>
                                     <td width="5%" class="no">1</td>
                                     <td>{{ $productPurchase->name}}</td>
@@ -49,6 +50,7 @@
                                         </form>
                                     </td>
                                 </tr>
+                            @endif
                             @endforeach
                             </tfoot>
                         </table>

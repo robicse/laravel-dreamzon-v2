@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use App\ProductExpired;
 use App\ProductPurchase;
 use App\ProductPurchaseDetail;
@@ -37,7 +38,9 @@ class ProductExpiredController extends Controller
 
     public function show($id)
     {
-        //
+        $productExpireds = ProductExpired::find($id);
+
+        return view('backend.productExpired.show', compact('productExpireds'));
     }
 
     public function edit($id)
@@ -94,73 +97,79 @@ class ProductExpiredController extends Controller
 
     public function expiredProductStore(Request $request){
         //dd($request->all());
-        //$productPurchase = ProductPurchase::find($request->product_purchase_id);
+        $product_id = $request->product_id;
+        $product_purchase_detail_id = $request->product_purchase_detail_id;
+        $qty = $request->qty;
+
         $productPurchaseDetail = ProductPurchaseDetail::find($request->product_purchase_detail_id);
         //dd($productPurchaseDetail);
 
+        $infos = DB::table('product_purchases')
+            ->join('product_purchase_details','product_purchases.id','=','product_purchase_details.product_purchase_id')
+            ->join('products','product_purchase_details.product_id','=','products.id')
+            ->select('product_purchases.store_id','products.barcode','product_purchases.invoice_no')
+            ->where('product_purchase_id',$productPurchaseDetail->product_purchase_id)
+            ->first();
+
+        $store_id = $infos->store_id;
+        $barcode = $infos->barcode;
+        $invoice_no = $infos->invoice_no;
+
+
         $product_expired = new ProductExpired();
+        $product_expired->invoice_no = 'expired-'.$invoice_no;
         $product_expired->user_id = Auth::id();
-        $product_expired->store_id = 1;
+        $product_expired->store_id = $store_id;
         $product_expired->product_purchase_id = $productPurchaseDetail->product_purchase_id;
-        $product_expired->total_amount = $request->total_amount;
+        $product_expired->product_purchase_detail_id = $product_purchase_detail_id;
+        $product_expired->product_category_id = $productPurchaseDetail->product_category_id;
+        $product_expired->product_sub_category_id = $productPurchaseDetail->product_sub_category_id;
+        $product_expired->product_brand_id = $productPurchaseDetail->product_brand_id;
+        $product_expired->product_id = $request->product_id;
+        $product_expired->qty = $qty;
+        $product_expired->price = $productPurchaseDetail->price;
+        $product_expired->total = $productPurchaseDetail->price * $request->qty;
+        $product_expired->barcode = $barcode;
         $product_expired->save();
 
         $insert_id = $product_expired->id;
-        if($insert_id)
-        {
-            $product_sale_return_detail = new ProductSaleReturnDetail();
-            $product_sale_return_detail->product_expired_id = $insert_id;
-            $product_sale_return_detail->product_purchase_detail_id = $insert_id;
-            $product_sale_return_detail->product_category_id = $productSaleDetail->product_category_id;
-            $product_sale_return_detail->product_sub_category_id = $productSaleDetail->product_sub_category_id;
-            $product_sale_return_detail->product_brand_id = $productSaleDetail->product_brand_id;
-            $product_sale_return_detail->product_id = $productSaleDetail->product_id;
-            $product_sale_return_detail->qty = $request->return_qty;
-            $product_sale_return_detail->price = $request->total_amount;
-            $product_sale_return_detail->sub_total = $request->sub_total;
-            $product_sale_return_detail->barcode = $request->barcode;
-            $product_sale_return_detail->save();
 
-            // transaction
-            $transaction = new Transaction();
-            //$transaction->invoice_no = 'return-'.$productSale->invoice_no;
-            $transaction->user_id = Auth::id();
-            $transaction->store_id = $productSale->store_id;
-            $transaction->party_id = $productSale->party_id;
-            $transaction->ref_id = $insert_id;
-            $transaction->transaction_type = 'sale return';
-            $transaction->payment_type = $request->payment_type;
-            $transaction->amount = $request->total_amount;
-            $transaction->save();
+        // transaction
+        $transaction = new Transaction();
+        $transaction->invoice_no = 'expired-'.$invoice_no;
+        $transaction->user_id = Auth::id();
+        $transaction->store_id = $store_id;
+        $transaction->party_id = NULL;
+        $transaction->ref_id = $insert_id;
+        $transaction->transaction_type = 'expired';
+        //$transaction->payment_type = $request->payment_type;
+        $transaction->amount = $productPurchaseDetail->price * $request->qty;
+        $transaction->save();
 
-            $product_id = $productSaleDetail->product_id;
-
-
-            $check_previous_stock = Stock::where('product_id',$product_id)->pluck('current_stock')->first();
-            if(!empty($check_previous_stock)){
-                $previous_stock = $check_previous_stock;
-            }else{
-                $previous_stock = 0;
-            }
-
-            // product stock
-            $stock = new Stock();
-            $stock->user_id = Auth::id();
-            $stock->ref_id = $insert_id;
-            $stock->store_id = $productSale->store_id;
-            $stock->product_id = $product_id;
-            $stock->stock_type = 'sale return';
-            $stock->previous_stock = $previous_stock;
-            $stock->stock_in = $request->return_qty;;
-            $stock->stock_out = 0;
-            $stock->current_stock = $previous_stock + $request->return_qty;
-            $stock->save();
-
-
+        $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
+        if(!empty($check_previous_stock)){
+            $previous_stock = $check_previous_stock;
+        }else{
+            $previous_stock = 0;
         }
 
-        Toastr::success('Product Sale Return Created Successfully', 'Success');
-        return redirect()->route('productSaleReturns.index');
+        // product stock
+        $stock = new Stock();
+        $stock->user_id = Auth::id();
+        $stock->ref_id = $insert_id;
+        $stock->store_id = $store_id;
+        $stock->product_id = $product_id;
+        $stock->stock_type = 'expired';
+        $stock->previous_stock = $previous_stock;
+        $stock->stock_in = 0;;
+        $stock->stock_out = $qty;
+        $stock->current_stock = $previous_stock - $qty;
+        $stock->save();
+
+
+
+        Toastr::success('Product Expired Created Successfully', 'Success');
+        return redirect()->route('productExpireds.index');
     }
 
 

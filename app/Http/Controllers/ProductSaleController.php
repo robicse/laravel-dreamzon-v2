@@ -163,6 +163,7 @@ class ProductSaleController extends Controller
                 $stock->stock_in = 0;
                 $stock->stock_out = $request->qty[$i];
                 $stock->current_stock = $previous_stock - $request->qty[$i];
+                $stock->date = date('Y-m-d');
                 $stock->save();
             }
 

@@ -117,7 +117,7 @@ class ProductSaleReturnController extends Controller
             $product_id = $productSaleDetail->product_id;
 
 
-            $check_previous_stock = Stock::where('product_id',$product_id)->pluck('current_stock')->first();
+            $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
             if(!empty($check_previous_stock)){
                 $previous_stock = $check_previous_stock;
             }else{

@@ -74,8 +74,18 @@ class ProductPurchaseController extends Controller
             $total_amount += $request->sub_total[$i];
         }
 
+        $get_invoice_no = ProductPurchase::latest()->pluck('invoice_no')->first();
+        //dd($get_invoice_no);
+        if(!empty($get_invoice_no)){
+            $invoice_no = $get_invoice_no+1;
+        }else{
+            $invoice_no = 1000;
+        }
+        //dd($invoice_no);
+
         // product purchase
         $productPurchase = new ProductPurchase();
+        $productPurchase ->invoice_no = 'purchase-'.$invoice_no;
         $productPurchase ->party_id = $request->party_id;
         $productPurchase ->store_id = $request->store_id;
         $productPurchase ->user_id = Auth::id();
@@ -122,6 +132,7 @@ class ProductPurchaseController extends Controller
                 $stock->stock_in = $request->qty[$i];
                 $stock->stock_out = 0;
                 $stock->current_stock = $previous_stock + $request->qty[$i];
+                $stock->date = date('Y-m-d');
                 $stock->save();
             }
 
@@ -135,6 +146,7 @@ class ProductPurchaseController extends Controller
             $transaction->transaction_type = 'purchase';
             $transaction->payment_type = $request->payment_type;
             $transaction->amount = $total_amount;
+            $stock->date = date('Y-m-d');
             $transaction->save();
         }
 
