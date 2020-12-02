@@ -24,24 +24,24 @@
                     <tbody>
                     <tr>
                         <th>User</th>
-                        <td>{{$productSale->user->name}}</td>
+                        <td>{{$productSale->user_name}}</td>
                     </tr>
                     <tr>
                         <th>Store</th>
-                        <td>{{$productSale->store->name}}</td>
+                        <td>{{$productSale->store_name}}</td>
                     </tr>
                     <tr>
                         <th>Party</th>
-                        <td>{{$productSale->party->name}}</td>
+                        <td>{{$productSale->party_name}}</td>
                     </tr>
                     <tr>
                         <th>Payment Type</th>
                         <td>{{$productSale->payment_type}}</td>
                     </tr>
-                    <tr>
-                        <th>Delivery Service</th>
-                        <td>{{$productSale->deliveryService->name}}</td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <th>Delivery Service</th>--}}
+{{--                        <td>{{$productSale->deliveryService->name}}</td>--}}
+{{--                    </tr>--}}
                     <tr>
                         <th>Discount Type</th>
                         <td>{{$productSale->discount_type}}</td>

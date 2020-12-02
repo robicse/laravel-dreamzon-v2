@@ -201,7 +201,15 @@ class ProductSaleController extends Controller
 
     public function show($id)
     {
-        $productSale = ProductSale::find($id);
+        //$productSale = ProductSale::find($id);
+        $productSale = DB::table('product_sales')
+            ->join('users','product_sales.user_id','=','users.id')
+            ->join('stores','product_sales.store_id','=','stores.id')
+            ->join('parties','product_sales.party_id','=','parties.id')
+            ->where('product_sales.id',$id)
+            ->select('product_sales.*','users.name as user_name','stores.name as store_name','parties.name as party_name')
+            ->first();
+        //dd($productSale);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
 
         return view('backend.productSale.show', compact('productSale','productSaleDetails'));

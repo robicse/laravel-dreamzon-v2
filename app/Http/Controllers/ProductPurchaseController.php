@@ -55,6 +55,7 @@ class ProductPurchaseController extends Controller
         }
 
         $parties = Party::all();
+
         return view('backend.productPurchase.index',compact('productPurchases','parties'));
     }
 
@@ -107,7 +108,7 @@ class ProductPurchaseController extends Controller
 
         // product purchase
         $productPurchase = new ProductPurchase();
-        $productPurchase ->invoice_no = 'purchase-'.$invoice_no;
+        $productPurchase ->invoice_no = $invoice_no;
         $productPurchase ->party_id = $request->party_id;
         $productPurchase ->store_id = $request->store_id;
         $productPurchase ->user_id = Auth::id();

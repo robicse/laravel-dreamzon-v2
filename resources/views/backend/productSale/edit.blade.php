@@ -53,7 +53,6 @@
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
                                 <select name="store_id" id="store_id" class="form-control" >
-                                    <option value="">Select One</option>
                                     @foreach($stores as $store)
                                         <option value="{{$store->id}}" {{$store->id == $productSale->store_id ? 'selected' : ''}}>{{$store->name}} </option>
                                     @endforeach
