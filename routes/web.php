@@ -83,6 +83,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('expired-product-list','ProductExpiredController@expiredProduct')->name('expired.product');
     Route::post('expired-product-store','ProductExpiredController@expiredProductStore')->name('expired.product.store');
 
+    Route::post('productPurchase/findPurchaseOrder', 'ProductPurchaseController@index');
+
 
 
     Route::get('productPosSales/list','ProductPosSaleController@index')->name('productPosSales.index');

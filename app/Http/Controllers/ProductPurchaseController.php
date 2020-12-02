@@ -9,6 +9,7 @@ use App\ProductCategory;
 use App\ProductPurchase;
 use App\ProductPurchaseDetail;
 use App\ProductSubCategory;
+use App\PurchaseOrder;
 use App\Stock;
 use App\Transaction;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,7 @@ use App\Store;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Str;
 
 
@@ -32,8 +34,28 @@ class ProductPurchaseController extends Controller
 
     public function index()
     {
-        $productPurchases = ProductPurchase::latest()->get();
-        return view('backend.productPurchase.index',compact('productPurchases'));
+        $invoice_no = Input::get('invoice_no') ? Input::get('invoice_no') : '';
+        $party_id = Input::get('party_id') ? Input::get('party_id') : '';
+        if($invoice_no && $party_id)
+        {
+            $productPurchases = ProductPurchase::where('invoice_no',$invoice_no)->where('party_id',$party_id)->latest()->get();
+        }
+        else if($invoice_no)
+        {
+            //$purchase_orders = PurchaseOrder::where('po_no',$po_no)->orderBy('id','desc')->paginate(6);
+            $productPurchases = ProductPurchase::where('invoice_no',$invoice_no)->latest()->get();
+        }
+        else if($party_id)
+        {
+            //$purchase_orders = PurchaseOrder::where('party_id',$party_id)->where('created_by_id',Auth::User()->id)->orderBy('id','desc')->paginate(6);
+            $productPurchases = ProductPurchase::where('party_id',$party_id)->latest()->get();
+        }else{
+            //$purchase_orders = PurchaseOrder::orderBy('id','desc')->paginate(6);
+            $productPurchases = ProductPurchase::latest()->get();
+        }
+
+        $parties = Party::all();
+        return view('backend.productPurchase.index',compact('productPurchases','parties'));
     }
 
 

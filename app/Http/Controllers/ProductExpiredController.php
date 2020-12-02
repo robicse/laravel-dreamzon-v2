@@ -83,7 +83,7 @@ class ProductExpiredController extends Controller
             ->select('product_purchase_details.product_id','product_purchase_details.id','product_purchase_details.expired_date','products.name')
             ->join('products','product_purchase_details.product_id','=','products.id')
             ->where('expired_date','<',date('Y-m-d'))
-            ->groupBy('product_purchase_details.product_id','product_purchase_details.id','product_purchase_details.expired_date')
+            ->groupBy('product_purchase_details.product_id','product_purchase_details.id','product_purchase_details.expired_date','products.name')
             ->get();
         return view('backend.productExpired.expired_products',compact('productPurchases'));
     }
