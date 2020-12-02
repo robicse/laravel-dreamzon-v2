@@ -19,7 +19,7 @@ class ProductCategoryController extends Controller
 
     public function index()
     {
-        $productCategories = ProductCategory::orderBy('id','desc')->paginate(5);
+        $productCategories = ProductCategory::latest()->get();
         return view('backend.productCategory.index', compact('productCategories'));
     }
 

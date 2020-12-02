@@ -40,7 +40,6 @@
                 </table>
                 <div class="tile-footer">
                 </div>
-                {{ $deliveryServices->links() }}
             </div>
 
         </div>

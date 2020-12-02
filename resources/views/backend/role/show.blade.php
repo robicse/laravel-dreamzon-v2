@@ -23,7 +23,7 @@
                         <div class="tile">
                             <h3 class="tile-title">{{ $role->name }} : Permissions</h3>
                             @if($rolePermissions->count() > 0)
-                            <table class="table table-striped">
+                            <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th width="10%">SL</th>

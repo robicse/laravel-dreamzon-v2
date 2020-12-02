@@ -39,7 +39,7 @@ class ProductSaleController extends Controller
         if($auth_user == "Admin"){
             $productSales = ProductSale::latest()->get();
         }else{
-            $productSales = ProductSale::where('user_id',$auth_user_id)->get();
+            $productSales = ProductSale::where('user_id',$auth_user_id)->latest()->get();
         }
         return view('backend.productSale.index',compact('productSales'));
     }

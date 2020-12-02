@@ -24,7 +24,7 @@ class ProductSaleReturnController extends Controller
 
     public function index()
     {
-        $productSaleReturns = ProductSaleReturn::all();
+        $productSaleReturns = ProductSaleReturn::latest()->get();
         //dd($productSaleReturns);
         return view('backend.productSaleReturn.index',compact('productSaleReturns'));
     }

@@ -1,27 +1,5 @@
 @extends('backend._partial.dashboard')
-@push('css')
-{{--    <style>--}}
-{{--        @media screen {--}}
-{{--            #printSection {--}}
-{{--                display: none;--}}
-{{--            }--}}
-{{--        }--}}
 
-{{--        @media print {--}}
-{{--            body * {--}}
-{{--                visibility:hidden;--}}
-{{--            }--}}
-{{--            #printSection, #printSection * {--}}
-{{--                visibility:visible;--}}
-{{--            }--}}
-{{--            #printSection {--}}
-{{--                position:absolute;--}}
-{{--                left:0;--}}
-{{--                top:0;--}}
-{{--            }--}}
-{{--        }--}}
-{{--    </style>--}}
-@endpush
 @section('content')
     <main class="app-content">
         <div class="app-title">
@@ -36,7 +14,8 @@
             <div class="tile">
 
                 <h3 class="tile-title">Product POS Sales Table</h3>
-                <table id="example1" class="table table-bordered table-striped">
+                <div class="table-responsive">
+                <table id="example1" class="table table-bordered table-striped" style="width:100%;overflow-x:auto;">
 
                     <thead>
                     <tr>
@@ -45,12 +24,10 @@
                         <th>Store</th>
                         <th>Customer</th>
                         <th>Phone</th>
-{{--                        <th>Payment Type</th>--}}
                         <th>Total Amount</th>
-{{--                        <th>Paid Amount</th>--}}
                         <th>Date</th>
                         <th>Due Amount</th>
-                        <th colspan="3">Action</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -61,9 +38,7 @@
                         <td>{{ $productSale->store->name}}</td>
                         <td>{{ $productSale->party->name}}</td>
                         <td>{{ $productSale->party->phone}}</td>
-{{--                        <td>{{ $productSale->payment_type}}</td>--}}
                         <td>{{ $productSale->total_amount}}</td>
-{{--                        <td>{{ $productSale->paid_amount}}</td>--}}
                         <td>{{ $productSale->date}}</td>
                         <td>
                             {{ $productSale->due_amount}}
@@ -71,9 +46,8 @@
                                 <a href="" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#exampleModal-<?= $productSale->id;?>"> Pay Due</a>
                             @endif
                         </td>
-                        <td colspan="3">
+                        <td class="d-inline-flex">
                             <a href="{{url('pos/print2/'.$productSale->id.'/'.'list')}}" target="__blank" class="btn btn-sm btn-warning" type="button">Print</a>
-{{--                            <a href="{{url('pos/print/'.$productSale->id.'/'.'list')}}" class="btn btn-sm btn-warning" type="button">Print</a>--}}
                             <a href="{{ route('productSales.show',$productSale->id) }}" class="btn btn-sm btn-info float-left">Show</a>
                             <a href="{{ route('productSales.edit',$productSale->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
                             <form method="post" action="{{ route('productSales.destroy',$productSale->id) }}" >
@@ -137,90 +111,12 @@
                         @endforeach
                     </tbody>
                 </table>
+                </div>
                 <div class="tile-footer">
                 </div>
-{{--                {{ $parties->links() }}--}}
             </div>
-
         </div>
-
-
-
-
-
-
-
-        <!---------------------->
-{{--        <div class="wrap">--}}
-{{--            <h1>Bootstrap Modal Example</h1>--}}
-{{--            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#MyModal">--}}
-{{--                Large modal--}}
-{{--            </button>--}}
-{{--        </div>--}}
-{{--        <div id="printThis">--}}
-{{--            <div id="MyModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">--}}
-
-{{--                <div class="modal-dialog modal-lg">--}}
-
-{{--                    <!-- Modal Content: begins -->--}}
-{{--                    <div class="modal-content">--}}
-
-{{--                        <!-- Modal Header -->--}}
-{{--                        <div class="modal-header">--}}
-{{--                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-{{--                            <h4 class="modal-title" id="gridSystemModalLabel">Your Headings</h4>--}}
-{{--                        </div>--}}
-
-{{--                        <!-- Modal Body -->--}}
-{{--                        <div class="modal-body">--}}
-{{--                            <div class="body-message">--}}
-{{--                                <h4>Any Heading</h4>--}}
-{{--                                <p>And a paragraph with a full sentence or something else...</p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-
-{{--                        <!-- Modal Footer -->--}}
-{{--                        <div class="modal-footer">--}}
-{{--                            <button id="btnPrint" type="button" class="btn btn-default">Print</button>--}}
-{{--                        </div>--}}
-
-{{--                    </div>--}}
-{{--                    <!-- Modal Content: ends -->--}}
-
-
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-
-
-
-
-
     </main>
 @endsection
-
-@push('js')
-{{--<script>--}}
-{{--    document.getElementById("btnPrint").onclick = function () {--}}
-{{--        printElement(document.getElementById("printThis"));--}}
-{{--    }--}}
-
-{{--    function printElement(elem) {--}}
-{{--        var domClone = elem.cloneNode(true);--}}
-
-{{--        var $printSection = document.getElementById("printSection");--}}
-
-{{--        if (!$printSection) {--}}
-{{--            var $printSection = document.createElement("div");--}}
-{{--            $printSection.id = "printSection";--}}
-{{--            document.body.appendChild($printSection);--}}
-{{--        }--}}
-
-{{--        $printSection.innerHTML = "";--}}
-{{--        $printSection.appendChild(domClone);--}}
-{{--        window.print();--}}
-{{--    }--}}
-{{--</script>--}}
-@endpush
 
 

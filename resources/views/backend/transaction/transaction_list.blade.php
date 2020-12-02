@@ -14,11 +14,11 @@
             <div class="tile">
                 <h3 class="tile-title">Delivery Table</h3>
                 @if(!empty($stores))
-                    @foreach($stores as $store)
+                    @foreach($stores as $key => $store)
                         <div class="col-md-12">
                             <h1 class="text-center">{{$store->name}}</h1>
                         </div>
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="example{{$key + 1}}" class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th width="5%">#Id</th>

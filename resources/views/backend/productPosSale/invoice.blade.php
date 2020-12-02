@@ -108,7 +108,7 @@
 <div class="ticket">
     <img src="{{asset('uploads/logo.png')}}" alt="Logo">
     <p class="centered">Invoice NO:{{$productSale->invoice_no}}
-        <br>Shop: 24, Level 5</p>
+        <br>level 3 block b shop no 55</p>
     <table>
         <thead>
         <tr>

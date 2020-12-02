@@ -20,7 +20,7 @@ class ProductBrandController extends Controller
 
     public function index()
     {
-        $productBrands = ProductBrand::orderBy('id','desc')->paginate(5);
+        $productBrands = ProductBrand::latest()->get();
         return view('backend.productBrand.index', compact('productBrands'));
     }
 

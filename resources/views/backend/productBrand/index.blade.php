@@ -40,7 +40,6 @@
                 </table>
                 <div class="tile-footer">
                 </div>
-                {{ $productBrands->links() }}
             </div>
 
         </div>

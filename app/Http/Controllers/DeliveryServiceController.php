@@ -20,7 +20,7 @@ class DeliveryServiceController extends Controller
 
     public function index()
     {
-        $deliveryServices = DeliveryService::orderBy('id','desc')->paginate(5);
+        $deliveryServices = DeliveryService::latest()->get();
         return view('backend.deliveryService.index', compact('deliveryServices'));
     }
 

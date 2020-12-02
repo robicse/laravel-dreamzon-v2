@@ -18,7 +18,7 @@
 
                     <thead>
                     <tr>
-                        <th width="5%">#Id</th>
+                        <th>#Id</th>
                         <th>User</th>
                         <th>Store</th>
                         <th>Party</th>
@@ -47,7 +47,6 @@
                 </table>
                 <div class="tile-footer">
                 </div>
-{{--                {{ $parties->links() }}--}}
             </div>
 
         </div>

@@ -42,7 +42,6 @@
                 </table>
                 <div class="tile-footer">
                 </div>
-                {{ $productSubCategories->links() }}
             </div>
 
         </div>

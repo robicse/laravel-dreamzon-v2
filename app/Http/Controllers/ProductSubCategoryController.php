@@ -20,8 +20,8 @@ class ProductSubCategoryController extends Controller
 
     public function index()
     {
-        $productCategories = ProductCategory::all();
-        $productSubCategories = ProductSubCategory::orderBy('id','desc')->paginate(5);
+        $productCategories = ProductCategory::latest()->get();
+        $productSubCategories = ProductSubCategory::latest()->get();
         return view('backend.productSubCategory.index', compact('productSubCategories','productCategories'));
     }
 

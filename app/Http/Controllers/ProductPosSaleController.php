@@ -34,7 +34,7 @@ class ProductPosSaleController extends Controller
         if($auth_user == "Admin"){
             $productPosSales = ProductSale::where('sale_type','pos')->latest()->get();
         }else{
-            $productPosSales = ProductSale::where('sale_type','pos')->where('user_id',$auth_user_id)->get();
+            $productPosSales = ProductSale::where('sale_type','pos')->where('user_id',$auth_user_id)->latest()->get();
         }
         return view('backend.productPosSale.index',compact('productPosSales'));
     }
