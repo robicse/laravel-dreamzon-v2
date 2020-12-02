@@ -386,7 +386,7 @@ class ProductPosSaleController extends Controller
         $productSale->party_id = $customer_id;
         $productSale->store_id = 1;
         $productSale->date = date('Y-m-d');
-        $productSale->delivery_service = NULL;
+        $productSale->delivery_service_id = NULL;
         $productSale->delivery_service_charge = 0;
         $productSale->vat_type = 'percentage';
         $productSale->vat_amount = $vat_amount;
