@@ -36,27 +36,46 @@ class ProductPurchaseController extends Controller
     {
         $invoice_no = Input::get('invoice_no') ? Input::get('invoice_no') : '';
         $party_id = Input::get('party_id') ? Input::get('party_id') : '';
-        if($invoice_no && $party_id)
+        $product_id = Input::get('product_id') ? Input::get('product_id') : '';
+        if($invoice_no && $party_id && $product_id)
+        {
+            $product_purchase_id = ProductPurchaseDetail::where('product_id',$product_id)->latest()->pluck('product_purchase_id')->first();
+            $productPurchases = ProductPurchase::where('id',$product_purchase_id)->where('invoice_no',$invoice_no)->where('party_id',$party_id)->latest()->get();
+        }
+        else if($invoice_no && $party_id)
         {
             $productPurchases = ProductPurchase::where('invoice_no',$invoice_no)->where('party_id',$party_id)->latest()->get();
         }
+        else if($invoice_no && $product_id)
+        {
+            $product_purchase_id = ProductPurchaseDetail::where('product_id',$product_id)->latest()->pluck('product_purchase_id')->first();
+            $productPurchases = ProductPurchase::where('id',$product_purchase_id)->where('invoice_no',$invoice_no)->latest()->get();
+        }
+        else if($party_id && $product_id)
+        {
+            $product_purchase_id = ProductPurchaseDetail::where('product_id',$product_id)->latest()->pluck('product_purchase_id')->first();
+            $productPurchases = ProductPurchase::where('id',$product_purchase_id)->where('party_id',$party_id)->latest()->get();
+        }
         else if($invoice_no)
         {
-            //$purchase_orders = PurchaseOrder::where('po_no',$po_no)->orderBy('id','desc')->paginate(6);
             $productPurchases = ProductPurchase::where('invoice_no',$invoice_no)->latest()->get();
         }
         else if($party_id)
         {
-            //$purchase_orders = PurchaseOrder::where('party_id',$party_id)->where('created_by_id',Auth::User()->id)->orderBy('id','desc')->paginate(6);
             $productPurchases = ProductPurchase::where('party_id',$party_id)->latest()->get();
+        }
+        else if($product_id)
+        {
+            $product_purchase_id = ProductPurchaseDetail::where('product_id',$product_id)->latest()->pluck('product_purchase_id')->first();
+            $productPurchases = ProductPurchase::where('id',$product_purchase_id)->latest()->get();
         }else{
-            //$purchase_orders = PurchaseOrder::orderBy('id','desc')->paginate(6);
             $productPurchases = ProductPurchase::latest()->get();
         }
 
         $parties = Party::all();
+        $products = Product::all();
 
-        return view('backend.productPurchase.index',compact('productPurchases','parties'));
+        return view('backend.productPurchase.index',compact('productPurchases','parties','products','invoice_no','party_id','product_id'));
     }
 
 
@@ -100,7 +119,9 @@ class ProductPurchaseController extends Controller
         $get_invoice_no = ProductPurchase::latest()->pluck('invoice_no')->first();
         //dd($get_invoice_no);
         if(!empty($get_invoice_no)){
-            $invoice_no = $get_invoice_no+1;
+            $get_invoice = str_replace("purchase-","",$get_invoice_no);
+            //$invoice_no = $get_invoice_no+1;
+            $invoice_no = $get_invoice+1;
         }else{
             $invoice_no = 1000;
         }
@@ -108,7 +129,7 @@ class ProductPurchaseController extends Controller
 
         // product purchase
         $productPurchase = new ProductPurchase();
-        $productPurchase ->invoice_no = $invoice_no;
+        $productPurchase ->invoice_no = 'purchase-'.$invoice_no;
         $productPurchase ->party_id = $request->party_id;
         $productPurchase ->store_id = $request->store_id;
         $productPurchase ->user_id = Auth::id();

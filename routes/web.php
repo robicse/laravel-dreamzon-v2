@@ -69,6 +69,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('productSales-invoice/{id}','ProductSaleController@invoice')->name('productSales-invoice');
     Route::get('productSales-invoice-print/{id}','ProductSaleController@invoicePrint')->name('productSales-invoice-print');
     Route::get('sub-category-list','ProductController@subCategoryList');
+    Route::get('check-barcode','ProductController@checkBarcode');
     Route::get('product-relation-data','ProductPurchaseController@productRelationData');
     Route::get('product-sale-relation-data','ProductSaleController@productSaleRelationData');
     Route::get('stock-list','StockController@stockList')->name('stock.index');

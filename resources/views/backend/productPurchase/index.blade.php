@@ -17,13 +17,21 @@
                 <form method="get" action="" class="form-inline">
                     {{--@csrf--}}
                     <div class="form-group">
-                        <input type="text" class="bg-light text-dark form-control"  placeholder="PO NO" name="po_no"  aria-label="Username" >
+                        <input type="text" class="bg-light text-dark form-control"  placeholder="PO NO" value="{{$invoice_no}}" name="invoice_no"  aria-label="Username" >
                     </div>
                     <div class="form-group">
                         <select class="form-control select2" name="party_id">
                             <option value="">Select Party</option>
                             @foreach($parties as $party_data)
-                                <option value="{{$party_data->id}}">{{$party_data->name}}</option>
+                                <option value="{{$party_data->id}}" {{$party_id == $party_data->id ? 'selected' : ''}}>{{$party_data->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control select2" name="product_id">
+                            <option value="">Select Product</option>
+                            @foreach($products as $product)
+                                <option value="{{$product->id}}" {{$product_id == $product->id ? 'selected' : ''}}>{{$product->name}}</option>
                             @endforeach
                         </select>
                     </div>

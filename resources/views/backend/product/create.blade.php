@@ -127,7 +127,7 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Barcode <span style="color: red">*</span></label>
                             <div class="col-md-8">
-                                <input class="form-control{{ $errors->has('barcode') ? ' is-invalid' : '' }}" type="text" placeholder="barcode" name="barcode">
+                                <input class="form-control{{ $errors->has('barcode') ? ' is-invalid' : '' }}" type="text" placeholder="barcode" name="barcode" id="barcode">
                                 @if ($errors->has('barcode'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('barcode') }}</strong>
@@ -164,6 +164,29 @@
                 success : function (res){
                     console.log(res)
                     $('#product_sub_category_id').html(res.data)
+                },
+                error : function (err){
+                    console.log(err)
+                }
+            })
+        })
+
+        $('#barcode').keyup(function(){
+            var barcode = $(this).val();
+
+            $.ajax({
+                url : "{{URL('check-barcode')}}",
+                method : "get",
+                data : {
+                    barcode : barcode
+                },
+                success : function (res){
+                    console.log(res)
+                    if(res.data == 'Found'){
+                        $('#barcode').val('')
+                        alert('Barcode already exists, please add another!')
+                        return false
+                    }
                 },
                 error : function (err){
                     console.log(err)

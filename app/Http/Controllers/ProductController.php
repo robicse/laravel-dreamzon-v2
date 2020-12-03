@@ -160,4 +160,16 @@ class ProductController extends Controller
 
         return response()->json(['success'=>true,'data'=>$options]);
     }
+
+    public function checkBarcode(Request $request){
+        $barcode = $request->barcode;
+        $exists_barcode = Product::where('barcode',$barcode)->get();
+        if(count($exists_barcode) > 0){
+            $barcode_check = 'Found';
+        }else{
+            $barcode_check = 'Not Found';
+        }
+
+        return response()->json(['success'=>true,'data'=>$barcode_check]);
+    }
 }

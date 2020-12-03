@@ -94,7 +94,9 @@ class ProductSaleController extends Controller
         $get_invoice_no = ProductSale::latest()->pluck('invoice_no')->first();
         //dd($get_invoice_no);
         if(!empty($get_invoice_no)){
-            $invoice_no = $get_invoice_no+1;
+            $get_invoice = str_replace("sale-","",$get_invoice_no);
+            //$invoice_no = $get_invoice_no+1;
+            $invoice_no = $get_invoice+1;
         }else{
             $invoice_no = 1000;
         }
@@ -114,7 +116,7 @@ class ProductSaleController extends Controller
 
         // product purchase
         $productSale = new ProductSale();
-        $productSale->invoice_no = $invoice_no;
+        $productSale->invoice_no = 'sale-'.$invoice_no;
         $productSale->user_id = Auth::id();
         $productSale->party_id = $party_id;
         $productSale->store_id = $request->store_id;
