@@ -75,10 +75,11 @@
                     <thead>
                     <tr>
                         <th>Category</th>
-                        <th>Sub Category</th>
+{{--                        <th>Sub Category</th>--}}
                         <th>Brand</th>
                         <th>Return Condition</th>
                         <th>Product Image</th>
+                        <th>Barcode</th>
                         <th>Product</th>
                         <th>Qty</th>
                         <th>Price</th>
@@ -89,14 +90,15 @@
                     @foreach($productSaleDetails as $productSaleDetail)
                         <tr>
                             <td>{{$productSaleDetail->product->product_category->name}}</td>
-                            <td>
-                                {{$productSaleDetail->product->product_sub_category ? $productSaleDetail->product->product_sub_category->name : ''}}
-                            </td>
+{{--                            <td>--}}
+{{--                                {{$productSaleDetail->product->product_sub_category ? $productSaleDetail->product->product_sub_category->name : ''}}--}}
+{{--                            </td>--}}
                             <td>{{$productSaleDetail->product->product_brand->name}}</td>
                             <td>{{$productSaleDetail->return_type}}</td>
                             <td>
                                 <img src="{{asset('uploads/product/'.$productSaleDetail->product->image)}}" width="50" height="50" />
                             </td>
+                            <td>{{$productSaleDetail->product->barcode}}</td>
                             <td>{{$productSaleDetail->product->name}}</td>
                             <td>{{$productSaleDetail->qty}}</td>
                             <td>{{$productSaleDetail->price}}</td>

@@ -45,11 +45,9 @@
                     <br>
                     {{--                                        <b>Order ID:</b> 4F3S8J<br>--}}
                     {{--                                        <b>Payment Type:</b> {{$productSale->payment_type}}<br>--}}
-                    @if($productSale->deliveryService)
-                    <b>Delivery Service:</b> {{$productSale->deliveryService->name}}<br>
-                    @endif
-                    @if($productSale->delivery_service_charge)
-                    <b>Delivery Service Charge:</b> {{$productSale->delivery_service_charge}}
+                    @if($productSale->delivery_service_id != null)
+                        <b>Delivery Service:</b> {{$productSale->deliveryService->name}}<br>
+                        <b>Delivery Service Charge:</b> {{$productSale->delivery_service_charge}}
                     @endif
                 </div>
                 <!-- /.col -->
