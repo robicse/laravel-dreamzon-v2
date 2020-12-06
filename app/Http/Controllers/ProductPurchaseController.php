@@ -159,7 +159,7 @@ class ProductPurchaseController extends Controller
                 $purchase_purchase_detail->expired_date = $request->expired_date[$i];
                 $purchase_purchase_detail->save();
 
-                $check_previous_stock = Stock::where('product_id',$product_id)->pluck('current_stock')->first();
+                $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
                 if(!empty($check_previous_stock)){
                     $previous_stock = $check_previous_stock;
                 }else{
