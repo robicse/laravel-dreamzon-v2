@@ -13,11 +13,13 @@ class CartController extends Controller
 {
     public function addToCart(Request $request){
         $barcode = $request->barcode;
+        $store_id = $request->store_id;
         $data = array();
         if($barcode){
             $product_check_exists = Product::where('barcode',$barcode)->pluck('id')->first();
             if($product_check_exists){
-                $product_current_stock_check_exists = Stock::where('product_id',$product_check_exists)->latest()->pluck('current_stock')->first();
+                //$product_current_stock_check_exists = Stock::where('product_id',$product_check_exists)->latest()->pluck('current_stock')->first();
+                $product_current_stock_check_exists = Stock::where('product_id',$product_check_exists)->where('store_id',$store_id)->latest()->pluck('current_stock')->first();
                 if($product_current_stock_check_exists > 0){
                     $data['product_check_exists'] = 'Product Found!';
                     $product = DB::table('products')

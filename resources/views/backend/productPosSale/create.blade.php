@@ -8,10 +8,19 @@
                 <div class="form-group row">
                     <div class="col-md-12">
                         <div class="form-group row">
-                            <label for="totalrp" class="col-md-2 control-label">Barcode</label>
+                            <div class="col-md-2">
+                                <select name="store_id" id="store_id" class="form-control">
+                                    <option value="">Select Store</option>
+                                    @if(!empty($stores))
+                                        @foreach($stores as $store)
+                                            <option value="{{$store->id}}"{{$store->id == 2 ? 'selected' : ''}}>{{$store->name}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
                             <div class="col-md-6  input-group">
-                                <input id="kode" type="text" class="form-control" name="kode" autofocus required>
-                                    <span class="input-group-btn">
+                                <input id="kode" type="text" class="form-control" placeholder="Type Or Scan Barcode" name="kode" autofocus required>
+                                <span class="input-group-btn">
                                     <button onclick="showProduct()" type="button" class="btn btn-info">Show Product</button>
                                 </span>
                             </div>
@@ -143,8 +152,10 @@
     <script>
 
         function loadData(id){
+            var store_id = $('#store_id').val();
+            console.log(store_id);
             $.ajax({
-                url : "{{ URL('/selectedform') }}/" + id,
+                url : "{{ URL('/selectedform') }}/" + id + "/" + store_id,
                 type: "GET",
                 dataType: "json",
                 success: function(data)
@@ -205,6 +216,7 @@
                 clearTimeout(timeout);
                 timeout = setTimeout(function () {
                     var barcode = $('#kode').val();
+                    var store_id = $('#store_id').val();
                     $('#current_price').val('');
                     $('#current_stock').val('');
                     console.log(barcode);
@@ -214,7 +226,8 @@
                             url : "{{URL('add-to-cart')}}",
                             method : "get",
                             data : {
-                                barcode : barcode
+                                barcode : barcode,
+                                store_id : store_id
                             },
                             success : function (res){
                                 console.log(res)
@@ -224,7 +237,7 @@
                                 if(res.response.product_check_exists == 'No Product Found!')
                                     toastr.warning('no product found using this code!')
                                 else if(res.response.product_check_exists == 'No Product Stock Found!')
-                                    toastr.warning('no product found using this code!')
+                                    toastr.warning('no product found using this code OR Store!')
                                 else{
                                     toastr.success('successfully added to cart')
                                     $('#current_price').val(res.response.price);
@@ -354,22 +367,31 @@
             /*additional*/
             //setTimeout(function () {
                 var barcode = $('#kode').val();
-                console.log(barcode);
+                var store_id = $('#store_id').val();
+                console.log(store_id);
                 if(barcode)
                 {
                     $.ajax({
                         url : "{{URL('add-to-cart')}}",
                         method : "get",
                         data : {
-                            barcode : barcode
+                            barcode : barcode,
+                            store_id : store_id
                         },
                         success : function (res){
                             console.log(res)
                             $('#kode').val('').focus();
                             loadData(barcode)
-                            toastr.success('successfully added to cart');
-                            $('#current_price').val(res.response.price);
-                            $('#current_stock').val(res.response.stock);
+
+                            if(res.response.product_check_exists == 'No Product Found!')
+                                toastr.warning('no product found using this code!')
+                            else if(res.response.product_check_exists == 'No Product Stock Found!')
+                                toastr.warning('no product found using this code OR Store!')
+                            else {
+                                toastr.success('successfully added to cart')
+                                $('#current_price').val(res.response.price);
+                                $('#current_stock').val(res.response.stock);
+                            }
                         },
                         error : function (err){
                             console.log(err)

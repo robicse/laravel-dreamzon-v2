@@ -17,7 +17,7 @@
                 <form method="get" action="" class="form-inline">
                     {{--@csrf--}}
                     <div class="form-group">
-                        <input type="text" class="bg-light text-dark form-control"  placeholder="PO NO" value="{{$invoice_no}}" name="invoice_no"  aria-label="Username" >
+                        <input type="text" class="bg-light text-dark form-control"  placeholder="Invoice NO" value="{{$invoice_no}}" name="invoice_no"  aria-label="Username" >
                     </div>
                     <div class="form-group">
                         <select class="form-control select2" name="party_id">
