@@ -24,6 +24,7 @@
                                 <th width="5%">#Id</th>
                                 <th width="10%">Store</th>
                                 <th width="15%">Stock Type</th>
+                                <th width="15%">Barcode</th>
                                 <th width="15%">Product</th>
                                 <th width="15%">Previous Stock</th>
                                 <th width="15%">Stock In</th>
@@ -41,6 +42,7 @@
                                     <td>{{ $key+1 }}</td>
                                     <td>{{ $stock->store->name}}</td>
                                     <td>{{ $stock->stock_type}}</td>
+                                    <td>{{ $stock->product->barcode}}</td>
                                     <td>{{ $stock->product->name}}</td>
                                     <td>{{ $stock->previous_stock}}</td>
                                     <td>{{ $stock->stock_in}}</td>
