@@ -122,7 +122,15 @@
                         <div class="col-md-3">
                             <div class="widget-small info coloured-icon"><i class="icon fab fa-paypal " ></i><div class="info">
                                     <h4>Loss/Profit</h4>
-                                    <p><b>{{$sum_loss_or_profit}}</b></p>
+                                    <p>
+                                        <b>
+                                            @if(abs($sum_loss_or_profit) > 0)
+                                                Profit: {{$sum_loss_or_profit}}
+                                            @else
+                                                Loss: {{$sum_loss_or_profit}}
+                                            @endif
+                                        </b>
+                                    </p>
                                 </div>
                             </div>
                         </div>

@@ -182,7 +182,7 @@ class ProductPurchaseController extends Controller
 
             // transaction
             $transaction = new Transaction();
-            $transaction->invoice_no = Null;
+            $transaction->invoice_no = 'purchase-'.$invoice_no;
             $transaction->user_id = Auth::id();
             $transaction->store_id = $request->store_id;
             $transaction->party_id = $request->party_id;
@@ -190,7 +190,7 @@ class ProductPurchaseController extends Controller
             $transaction->transaction_type = 'purchase';
             $transaction->payment_type = $request->payment_type;
             $transaction->amount = $total_amount;
-            $stock->date = date('Y-m-d');
+            $transaction->date = date('Y-m-d');
             $transaction->save();
         }
 
@@ -255,55 +255,76 @@ class ProductPurchaseController extends Controller
         $productPurchase ->user_id = Auth::id();
         $productPurchase ->payment_type = $request->payment_type;
         $productPurchase ->total_amount = $total_amount;
-        $productPurchase->update();
+        $affectedRows = $productPurchase->update();
 
-        for($i=0; $i<$row_count;$i++)
-        {
-            $product_id = $request->product_id[$i];
-            $barcode = Product::where('id',$product_id)->pluck('barcode')->first();
+        if($affectedRows){
+            for($i=0; $i<$row_count;$i++)
+            {
+                $product_id = $request->product_id[$i];
+                $barcode = Product::where('id',$product_id)->pluck('barcode')->first();
 
-            // product purchase detail
-            $product_purchase_detail_id = $request->product_purchase_detail_id[$i];
-            $purchase_purchase_detail = ProductPurchaseDetail::findOrFail($product_purchase_detail_id);;
-            $purchase_purchase_detail->product_category_id = $request->product_category_id[$i];
-            $purchase_purchase_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
-            $purchase_purchase_detail->product_brand_id = $request->product_brand_id[$i];
-            $purchase_purchase_detail->product_id = $request->product_id[$i];
-            $purchase_purchase_detail->qty = $request->qty[$i];
-            $purchase_purchase_detail->price = $request->price[$i];
-            $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
-            $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
-            $purchase_purchase_detail->barcode = $barcode;
-            $purchase_purchase_detail->expired_date = $request->expired_date[$i];
-            $purchase_purchase_detail->update();
+                // product purchase detail
+                $product_purchase_detail_id = $request->product_purchase_detail_id[$i];
+                $purchase_purchase_detail = ProductPurchaseDetail::findOrFail($product_purchase_detail_id);;
+                $purchase_purchase_detail->product_category_id = $request->product_category_id[$i];
+                $purchase_purchase_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
+                $purchase_purchase_detail->product_brand_id = $request->product_brand_id[$i];
+                $purchase_purchase_detail->product_id = $request->product_id[$i];
+                $purchase_purchase_detail->qty = $request->qty[$i];
+                $purchase_purchase_detail->price = $request->price[$i];
+                $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
+                $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
+                $purchase_purchase_detail->barcode = $barcode;
+                $purchase_purchase_detail->expired_date = $request->expired_date[$i];
+                $purchase_purchase_detail->update();
 
-            $check_previous_stock = Stock::where('product_id',$product_id)->pluck('current_stock')->first();
-            if(!empty($check_previous_stock)){
-                $previous_stock = $check_previous_stock;
-            }else{
-                $previous_stock = 0;
+
+                // product stock
+                $stock_row = Stock::where('ref_id',$id)->where('stock_type','purchase')->where('product_id',$product_id)->first();
+//                echo '<pre>';
+//                echo print_r($stock_row);
+//                echo '</pre>';
+//                die();
+
+                if($stock_row->stock_in != $request->qty[$i]){
+
+                    //$stock = Stock::where('ref_id',$id)->where('stock_type','purchase')->where('product_id',$product_id)->latest()->first();
+                    //echo 'okk';
+                    //dd($stock);
+
+                    if($request->qty[$i] > $stock_row->stock_in){
+                        $add_or_minus_stock_in = $request->qty[$i] - $stock_row->stock_in;
+                        $update_stock_in = $stock_row->stock_in + $add_or_minus_stock_in;
+                        $update_current_stock = $stock_row->current_stock + $add_or_minus_stock_in;
+                    }else{
+                        $add_or_minus_stock_in =  $stock_row->stock_in - $request->qty[$i];
+                        $update_stock_in = $stock_row->stock_in - $add_or_minus_stock_in;
+                        $update_current_stock = $stock_row->current_stock - $add_or_minus_stock_in;
+                    }
+
+
+                    //$stock_in = $stock->stock_in;
+                    $stock_row->user_id = Auth::user()->id;
+                    //$stock->store_id = $request->store_id;
+                    //$stock->product_id = $request->product_id[$i];
+                    //$stock->previous_stock = $previous_stock;
+                    $stock_row->stock_in = $update_stock_in;
+                    //$stock->stock_out = 0;
+                    $stock_row->current_stock = $update_current_stock;
+                    $stock_row->update();
+                }
             }
-            // product stock
-            $stock = Stock::where('ref_id',$id)->where('stock_type','purchase')->first();
-            $stock->user_id = Auth::id();
-            $stock->store_id = $request->store_id;
-            $stock->product_id = $request->product_id[$i];
-            $stock->previous_stock = $previous_stock;
-            $stock->stock_in = $request->qty[$i];
-            $stock->stock_out = 0;
-            $stock->current_stock = $previous_stock + $request->qty[$i];
-            $stock->update();
-        }
 
-        // transaction
-        $transaction = Transaction::where('ref_id',$id)->where('transaction_type','purchase')->first();
-        $transaction->invoice_no = Null;
-        $transaction->user_id = Auth::id();
-        $transaction->store_id = $request->store_id;
-        $transaction->party_id = $request->party_id;
-        $transaction->payment_type = $request->payment_type;
-        $transaction->amount = $total_amount;
-        $transaction->update();
+            // transaction
+            $transaction = Transaction::where('ref_id',$id)->where('transaction_type','purchase')->first();
+            //$transaction->invoice_no = Null;
+            $transaction->user_id = Auth::id();
+            $transaction->store_id = $request->store_id;
+            $transaction->party_id = $request->party_id;
+            $transaction->payment_type = $request->payment_type;
+            $transaction->amount = $total_amount;
+            $transaction->update();
+        }
 
         Toastr::success('Product Purchases Updated Successfully', 'Success');
         return redirect()->route('productPurchases.index');

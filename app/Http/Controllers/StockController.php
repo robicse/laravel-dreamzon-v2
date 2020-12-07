@@ -24,4 +24,9 @@ class StockController extends Controller
         //return Excel::download(new UsersExport, 'users.xlsx');
         return Excel::download(new StockExport, 'stock.xlsx');
     }
+
+    public function stockSummaryList(){
+        $stores = Store::latest()->get();
+        return view('backend.stock.stock_summary', compact('stores'));
+    }
 }
