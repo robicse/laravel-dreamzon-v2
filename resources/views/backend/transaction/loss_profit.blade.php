@@ -17,7 +17,8 @@
                     @foreach($stores as $store)
                         <div class="col-md-12">
                             <h1 class="text-center">{{$store->name}}</h1>
-                            <table id="example1" class="table table-bordered table-striped">
+                            <div class="table-responsive">
+                                <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
 {{--                                    <th width="10%">Category</th>--}}
@@ -158,6 +159,7 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                            </div>
 
                             <table>
                                 <thead>

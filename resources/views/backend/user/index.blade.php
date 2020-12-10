@@ -32,7 +32,8 @@
                         {{ session('error') }}
                     </div>
                 @endif
-                 <table id="example1" class="table table-bordered table-striped">
+                <div class="table-responsive">
+                    <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th width="10%">SL</th>
@@ -78,8 +79,9 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div class="tile-footer">
-              {{$users->links()}}
+                    <div class="tile-footer">
+                  {{$users->links()}}
+                    </div>
                 </div>
             </div>
         </div>

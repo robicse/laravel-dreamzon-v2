@@ -70,7 +70,8 @@
                         </div>
 
                         {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
-                        <table class="table table-striped">
+                        <div class="table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>Product</th>
@@ -168,10 +169,11 @@
                             </tr>
                             </tfoot>
                         </table>
-                        <div class="form-group row">
-                            <label class="control-label col-md-3"></label>
-                            <div class="col-md-8">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update Product Sales</button>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3"></label>
+                                <div class="col-md-8">
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update Product Sales</button>
+                                </div>
                             </div>
                         </div>
 

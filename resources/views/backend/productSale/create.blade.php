@@ -108,8 +108,10 @@
                             </div>
                         </div>
 
-                        <input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">
-                        <table class="table table-striped">
+
+                        <div class="table-responsive">
+                            <input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">
+                            <table id="example1" class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th >ID</th>
@@ -177,7 +179,7 @@
                                     <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="" readonly >
                                 </td>
                                 <td>
-                                    <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
+                                    <input type="text" min="1" max="" class="qty form-control" name="qty[]" value="" required >
                                 </td>
                                 <td>
                                     <input type="number" id="price_1" min="1" max="" class="price form-control" name="price[]" value="" readonly required >
@@ -193,7 +195,6 @@
                             <tr>
                                 <th>&nbsp;</th>
                                 <th colspan="2">
-                                    Discount Type:
                                     <select name="discount_type" id="discount_type" class="form-control" >
                                         <option value="flat" selected>flat</option>
                                         <option value="percentage">percentage</option>
@@ -201,15 +202,16 @@
                                 </th>
                                 <th colspan="2">
                                     Discount Amount:
-                                    <input type="text" id="discount_amount" class="form-control" name="discount_amount">
+                                    <input type="text" id="discount_amount" class="form-control" name="discount_amount" onkeyup="discountAmount('')" value="0">
                                 </th>
                                 <th colspan="2">
                                     Total:
+                                    <input type="hidden" id="store_total_amount" class="form-control">
                                     <input type="text" id="total_amount" class="form-control" name="total_amount">
                                 </th>
                                 <th colspan="2">
                                     Paid Amount:
-                                    <input type="text" id="paid_amount" class="getmoney form-control" name="paid_amount">
+                                    <input type="text" id="paid_amount" class="getmoney form-control" onkeyup="paidAmount('')" name="paid_amount" value="0">
                                 </th>
                                 <th colspan="2">
                                     Due Amount:
@@ -218,10 +220,11 @@
                             </tr>
                             </tfoot>
                         </table>
-                        <div class="form-group row">
-                            <label class="control-label col-md-3"></label>
-                            <div class="col-md-8">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Product Sale</button>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3"></label>
+                                <div class="col-md-8">
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Product Sale</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -302,37 +305,101 @@
 
 @push('js')
     <script>
-
         function totalAmount(){
             var t = 0;
             $('.amount').each(function(i,e){
                 var amt = $(this).val()-0;
                 t += amt;
             });
+            $('#store_total_amount').val(t);
             $('#total_amount').val(t);
-            //$('#paid_amount').val(0);
-            //$('#due_amount').val(0);
         }
+
+
+        // onkeyup
+        function discountAmount(){
+            var discount_type = $('#discount_type').val();
+
+            //var total = $('#total_amount').val();
+            //console.log('total= ' + total);
+            //console.log('total= ' + typeof total);
+            //total = parseInt(total);
+            //console.log('total= ' + typeof total);
+
+            var store_total_amount = $('#store_total_amount').val();
+            console.log('store_total_amount= ' + store_total_amount);
+            console.log('store_total_amount= ' + typeof store_total_amount);
+            store_total_amount = parseInt(store_total_amount);
+            console.log('total= ' + typeof store_total_amount);
+
+            var discount_amount = $('#discount_amount').val();
+            console.log('discount_amount= ' + discount_amount);
+            console.log('discount_amount= ' + typeof discount_amount);
+            discount_amount = parseInt(discount_amount);
+            console.log('discount_amount= ' + typeof discount_amount);
+
+            if(discount_type == 'flat'){
+                var final_amount = store_total_amount - discount_amount;
+            }
+            else{
+                var per = (total*discount_amount)/100;
+                var final_amount = store_total_amount-per;
+            }
+            console.log('final_amount= ' + final_amount);
+            console.log('final_amount= ' + typeof final_amount);
+
+            $('#total_amount').val(final_amount);
+            $('#due_amount').val(final_amount);
+        }
+
+        // onkeyup
+        function paidAmount(){
+            console.log('okk');
+            var total = $('#total_amount').val();
+            console.log('total= ' + total);
+            console.log('total= ' + typeof total);
+
+            var paid_amount = $('#paid_amount').val();
+            console.log('paid_amount= ' + paid_amount);
+            console.log('paid_amount= ' + typeof paid_amount);
+
+            var due = total - paid_amount;
+            console.log('due= ' + due);
+            console.log('due= ' + typeof due);
+
+            $('.backmoney').val(due);
+        }
+
+        // function totalAmount(){
+        //     var t = 0;
+        //     $('.amount').each(function(i,e){
+        //         var amt = $(this).val()-0;
+        //         t += amt;
+        //     });
+        //     $('#total_amount').val(t);
+        //     //$('#paid_amount').val(0);
+        //     //$('#due_amount').val(0);
+        // }
         $(function () {
-            $('#discount_amount').change(function(){
-                var discount_type = $('#discount_type').val();
-                var total = $('#total_amount').val();
-                var getmoney = $(this).val();
-                if(discount_type == 'flat'){
-                    var t = total - getmoney;
-                }
-                else{
-                    var per = (total*getmoney)/100;
-                    var t = total-per;
-                }
-                $('#total_amount').val(t);
-            });
-            $('.getmoney').change(function(){
-                var total = $('#total_amount').val();
-                var getmoney = $(this).val();
-                var t = total - getmoney;
-                $('.backmoney').val(t);
-            });
+            // $('#discount_amount').change(function(){
+            //     var discount_type = $('#discount_type').val();
+            //     var total = $('#total_amount').val();
+            //     var getmoney = $(this).val();
+            //     if(discount_type == 'flat'){
+            //         var t = total - getmoney;
+            //     }
+            //     else{
+            //         var per = (total*getmoney)/100;
+            //         var t = total-per;
+            //     }
+            //     $('#total_amount').val(t);
+            // });
+            // $('.getmoney').change(function(){
+            //     var total = $('#total_amount').val();
+            //     var getmoney = $(this).val();
+            //     var t = total - getmoney;
+            //     $('.backmoney').val(t);
+            // });
             $('.add').click(function () {
                 var productCategory = $('.product_category_id').html();
                 var productSubCategory = $('.product_sub_category_id').html();

@@ -23,7 +23,8 @@
                         <div class="tile">
                             <h3 class="tile-title">{{ $role->name }} : Permissions</h3>
                             @if($rolePermissions->count() > 0)
-                            <table id="example1" class="table table-bordered table-striped">
+                                <div class="table-responsive">
+                                    <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th width="10%">SL</th>
@@ -43,9 +44,10 @@
                                 @endif
                                 </tbody>
                             </table>
-                            <div class="tile-footer">
+                                    <div class="tile-footer">
 
-                            </div>
+                                    </div>
+                                </div>
                             @else
                                 <h3>No permission found for {{ $role->name }}!</h3>
                             @endif

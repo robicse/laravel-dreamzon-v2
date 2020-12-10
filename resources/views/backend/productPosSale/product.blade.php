@@ -7,7 +7,8 @@
             </div>
 
             <div class="modal-body">
-                <table class="table table-striped tabel-produk">
+                <div class="table-responsive">
+                    <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>Barcode</th>
@@ -42,6 +43,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
     </div>

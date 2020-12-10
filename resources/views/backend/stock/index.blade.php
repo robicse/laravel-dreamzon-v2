@@ -18,7 +18,8 @@
                         <div class="col-md-12">
                             <h1 class="text-center">{{$store->name}}</h1>
                         </div>
-                        <table id="example{{$key + 1}}" class="table table-bordered table-striped">
+                        <div class="table-responsive">
+                            <table id="example{{$key + 1}}" class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th width="5%">#Id</th>
@@ -53,7 +54,8 @@
                             @endforeach
                             </tbody>
                         </table>
-                        <div class="tile-footer">
+                            <div class="tile-footer">
+                            </div>
                         </div>
                     @endforeach
                 @endif

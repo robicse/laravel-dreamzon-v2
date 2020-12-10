@@ -16,7 +16,8 @@
             <div class="tile">
                 <h3 class="tile-title">Returnable Sales Product</h3>
                 <div class="tile-body tile-footer">
-                    <table id="example1" class="table table-bordered table-striped">
+                    <div class="table-responsive">
+                        <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th >ID</th>
@@ -97,8 +98,8 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            </tfoot>
                         </table>
+                    </div>
 
                 </div>
                 <div class="tile-footer">

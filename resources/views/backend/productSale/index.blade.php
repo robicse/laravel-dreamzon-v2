@@ -16,7 +16,6 @@
                 <h3 class="tile-title">Product Sales Table</h3>
                 <div class="table-responsive">
                 <table id="example1" class="table table-bordered table-striped" style="width:100%;overflow-x:auto;">
-
                     <thead>
                     <tr>
                         <th width="5%">#Id</th>
