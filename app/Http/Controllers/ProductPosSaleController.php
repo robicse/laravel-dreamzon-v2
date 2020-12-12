@@ -40,75 +40,45 @@ class ProductPosSaleController extends Controller
 
     public function create()
     {
-        /* check cart with raw data */
-//        Cart::add([
-//            'id' => '293ad',
-//            'name' => 'Product 1',
-//            'qty' => 1,
-//            'price' => 9.99,
-//            'options' => [
-//                'size' => 'large'
-//            ]
-//        ]);
-
-//        Cart::add([
-//            [
-//                'id' => '293ad',
-//                'name' => 'Product 1',
-//                'qty' => 1,
-//                'price' => 10.00
-//            ],
-//            [
-//                'id' => '4832k',
-//                'name' => 'Product 2',
-//                'qty' => 1,
-//                'price' => 10.00,
-//                'options' => [
-//                    'size' => 'large'
-//                ]
-//            ]
-//        ]);
-
-
-//        Cart::add([$product1, $product2]);
-//        Cart::content();
-//        Cart::total();
-//        Cart::count();
-        Cart::destroy();
-//        dd(Cart::count());
-//        echo Cart::count();
-        /* check cart with raw data */
-
-
-
         $auth_user_id = Auth::user()->id;
         $auth_user = Auth::user()->roles[0]->name;
         $parties = Party::where('type','customer')->get() ;
+        $store_id = 2;
         if($auth_user == "Admin"){
             $stores = Store::all();
+            $products = DB::table('product_purchase_details')
+                ->select('product_purchase_details.product_id','product_purchase_details.barcode')
+                ->leftJoin('products','products.id','=','product_purchase_details.product_id')
+                ->groupBy('product_purchase_details.product_id')
+                ->groupBy('product_purchase_details.barcode')
+                ->get();
         }else{
             $stores = Store::where('user_id',$auth_user_id)->get();
+            $store_id = $stores[0]->id;
+
+            //$stores = Store::where('user_id',$auth_user_id)->first();
+            //$store_id = $stores->id;
+
+            //dd($store_id);
+
+
+            $products = DB::table('product_purchase_details')
+                ->select('product_purchase_details.product_id','product_purchase_details.barcode')
+                ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+                ->leftJoin('products','products.id','=','product_purchase_details.product_id')
+                ->where('product_purchases.store_id',$store_id)
+                ->groupBy('product_purchase_details.product_id')
+                ->groupBy('product_purchase_details.barcode')
+                ->get();
         }
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
-        $products = DB::table('product_purchase_details')
-            ->select('product_purchase_details.product_id','product_purchase_details.barcode')
-            ->leftJoin('products','products.id','=','product_purchase_details.product_id')
-            ->groupBy('product_purchase_details.product_id')
-            ->groupBy('product_purchase_details.barcode')
-            ->get();
 
-        return view('backend.productPosSale.create',compact('parties','stores','products','productCategories','productSubCategories','productBrands'));
+       // dd($stores);
+
+        return view('backend.productPosSale.create',compact('parties','stores','products','productCategories','productSubCategories','productBrands','store_id'));
     }
-
-
-
-
-
-
-
-
 
     public function selectedform($barcode, $store_id){
 

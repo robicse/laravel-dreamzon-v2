@@ -13,7 +13,7 @@
                                     <option value="">Select Store</option>
                                     @if(!empty($stores))
                                         @foreach($stores as $store)
-                                            <option value="{{$store->id}}"{{$store->id == 2 ? 'selected' : ''}}>{{$store->name}}</option>
+                                            <option value="{{$store->id}}"{{$store->id == $store_id ? 'selected' : ''}}>{{$store->name}}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -48,99 +48,6 @@
                 <div class="form-group row">
                     <div class="col-md-12" id="loadForm"></div>
                 </div>
-
-
-
-
-
-
-
-{{--                <form class="form-keranjang">--}}
-{{--                    {{ csrf_field() }} {{ method_field('PATCH') }}--}}
-{{--                    <table class="table table-striped tabel-penjualan">--}}
-{{--                        <thead>--}}
-{{--                        <tr>--}}
-{{--                            <th width="30">No</th>--}}
-{{--                            <th>Barcode</th>--}}
-{{--                            <th>Product Name</th>--}}
-{{--                            <th align="right">Price</th>--}}
-{{--                            <th>Quantity</th>--}}
-{{--                            <th>Discount</th>--}}
-{{--                            <th align="right">Sub Total</th>--}}
-{{--                            <th width="100">Action</th>--}}
-{{--                        </tr>--}}
-{{--                        </thead>--}}
-{{--                        <tbody></tbody>--}}
-{{--                    </table>--}}
-{{--                </form>--}}
-{{--                <div class="row">--}}
-{{--                    <div class="col-md-8">--}}
-{{--                        <div id="tampil-bayar" style="background: #dd4b39; color: #fff; font-size: 80px; text-align: center; height: 120px"></div>--}}
-{{--                        <div id="tampil-terbilang" style="background: #3c8dbc; color: #fff; font-size: 25px; padding: 10px"></div>--}}
-{{--                    </div>--}}
-
-{{--                    <div class="col-md-4">--}}
-{{--                        <form class="form form-horizontal form-penjualan" method="post" action="transaksi/simpan">--}}
-{{--                            {{ csrf_field() }}--}}
-{{--                            <input type="hidden" name="idpenjualan" value="">--}}
-{{--                            <input type="hidden" name="total" id="total">--}}
-{{--                            <input type="hidden" name="totalitem" id="totalitem">--}}
-{{--                            <input type="hidden" name="bayar" id="bayar">--}}
-
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="totalrp" class="col-md-4 control-label">Total</label>--}}
-{{--                                <div class="col-md-8">--}}
-{{--                                    <input type="text" class="form-control" id="totalrp" readonly>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="member" class="col-md-4 control-label">Customer</label>--}}
-{{--                                <div class="col-md-8">--}}
-{{--                                    <div class="input-group">--}}
-{{--                                        <input id="member" type="text" class="form-control" name="member" value="0">--}}
-{{--                                        <span class="input-group-btn">--}}
-{{--                                          <button onclick="showMember()" type="button" class="btn btn-info">...</button>--}}
-{{--                                        </span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="diskon" class="col-md-4 control-label">Discount</label>--}}
-{{--                                <div class="col-md-8">--}}
-{{--                                    <input type="text" class="form-control" name="diskon" id="diskon" value="0" readonly>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="bayarrp" class="col-md-4 control-label">Total</label>--}}
-{{--                                <div class="col-md-8">--}}
-{{--                                    <input type="text" class="form-control" id="bayarrp" readonly>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="diterima" class="col-md-4 control-label">Paid</label>--}}
-{{--                                <div class="col-md-8">--}}
-{{--                                    <input type="number" class="form-control" value="0" name="diterima" id="diterima">--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="kembali" class="col-md-4 control-label">Due</label>--}}
-{{--                                <div class="col-md-8">--}}
-{{--                                    <input type="text" class="form-control" id="kembali" value="0" readonly>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                            <div class="box-footer">--}}
-{{--                                <button type="submit" class="btn btn-primary pull-right simpan"><i class="fa fa-floppy-o"></i> Save</button>--}}
-{{--                            </div>--}}
-
-{{--                        </form>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
             </div>
         </div>
     </main>
@@ -172,40 +79,6 @@
                 }
             });
         }
-
-        /*One way on blur*/
-        {{--$(function(){--}}
-        {{--    $('.tabel-produk').DataTable();--}}
-        {{--    loadData(barcode=null)--}}
-
-        {{--    $('#kode').change(function(){--}}
-        {{--        var barcode = $('#kode').val();--}}
-        {{--        if(barcode){--}}
-        {{--            $.ajax({--}}
-        {{--                url : "{{URL('add-to-cart')}}",--}}
-        {{--                method : "get",--}}
-        {{--                data : {--}}
-        {{--                    barcode : barcode--}}
-        {{--                },--}}
-        {{--                success : function (res){--}}
-        {{--                    console.log(res)--}}
-        {{--                    $('#kode').val('').focus();--}}
-        {{--                    loadData(barcode)--}}
-        {{--                },--}}
-        {{--                error : function (err){--}}
-        {{--                    console.log(err)--}}
-        {{--                }--}}
-        {{--            })--}}
-        {{--        }else{--}}
-        {{--            alert('No Barcode Found!');--}}
-        {{--            location.reload();--}}
-        {{--        }--}}
-        {{--    });--}}
-        {{--});--}}
-        /*One way on blur*/
-
-
-
         (function () {
             $('.tabel-produk').DataTable();
             loadData(barcode=null)
@@ -219,37 +92,7 @@
                     var store_id = $('#store_id').val();
                     $('#current_price').val('');
                     $('#current_stock').val('');
-                    console.log(barcode);
-                    if(barcode)
-                    {
-                        $.ajax({
-                            url : "{{URL('add-to-cart')}}",
-                            method : "get",
-                            data : {
-                                barcode : barcode,
-                                store_id : store_id
-                            },
-                            success : function (res){
-                                console.log(res)
-                                //console.log(res.response.price)
-                                $('#kode').val('').focus();
-                                loadData(barcode)
-                                if(res.response.product_check_exists == 'No Product Found!')
-                                    toastr.warning('no product found using this code!')
-                                else if(res.response.product_check_exists == 'No Product Stock Found!')
-                                    toastr.warning('no product found using this code OR Store!')
-                                else{
-                                    toastr.success('successfully added to cart')
-                                    $('#current_price').val(res.response.price);
-                                    $('#current_stock').val(res.response.stock);
-                                }
-
-                            },
-                            error : function (err){
-                                console.log(err)
-                            }
-                        })
-                    }
+                    console.log(store_id);
                 }, 2000);
             };
 
