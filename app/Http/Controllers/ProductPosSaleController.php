@@ -28,19 +28,19 @@ class ProductPosSaleController extends Controller
         //Session::put('product_sale_id',14);
         Session::forget('product_sale_id');
 
-        $auth_user_id = Auth::user()->id;
+        $auth = Auth::user();
         $auth_user = Auth::user()->roles[0]->name;
         if($auth_user == "Admin"){
             $productPosSales = ProductSale::where('sale_type','pos')->latest()->get();
         }else{
-            $productPosSales = ProductSale::where('sale_type','pos')->where('user_id',$auth_user_id)->latest()->get();
+            $productPosSales = ProductSale::where('sale_type','pos')->where('user_id',$auth->store_id)->latest()->get();
         }
         return view('backend.productPosSale.index',compact('productPosSales'));
     }
 
     public function create()
     {
-        $auth_user_id = Auth::user()->id;
+        $auth = Auth::user();
         $auth_user = Auth::user()->roles[0]->name;
         $parties = Party::where('type','customer')->get() ;
         $store_id = 2;
@@ -53,7 +53,7 @@ class ProductPosSaleController extends Controller
                 ->groupBy('product_purchase_details.barcode')
                 ->get();
         }else{
-            $stores = Store::where('user_id',$auth_user_id)->get();
+            $stores = Store::where('id',$auth->store_id)->get();
             $store_id = $stores[0]->id;
 
             //$stores = Store::where('user_id',$auth_user_id)->first();

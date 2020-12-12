@@ -30,17 +30,12 @@ class StoreController extends Controller
 
     public function create()
     {
-        $users = User::where('id','!=',1)->get();
-        //$users=User::all();
-        //$general_users = $users->getRoleNames();
-        //dd($general_users);
-        return view('backend.store.create', compact('users'));
+        return view('backend.store.create');
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'user_id' => 'required',
             'name' => 'required|unique:stores,name',
             'phone' => 'required',
             'address' => 'required',
@@ -48,7 +43,6 @@ class StoreController extends Controller
         ]);
 
         $store = new Store;
-        $store->user_id = $request->user_id;
         $store->name = $request->name;
         $store->slug = Str::slug($request->name);
         $store->phone = $request->phone;
@@ -81,15 +75,13 @@ class StoreController extends Controller
 
     public function edit($id)
     {
-        $users = User::where('id','!=',1)->get();
         $store = Store::find($id);
-        return view('backend.store.edit', compact('store','users'));
+        return view('backend.store.edit', compact('store'));
     }
 
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'user_id' => 'required',
             'name' => [
                 'required',
                 Rule::unique('stores')->ignore($id),
@@ -99,7 +91,6 @@ class StoreController extends Controller
         ]);
 
         $store = Store::find($id);
-        $store->user_id = $request->user_id;
         $store->name = $request->name;
         $store->slug = Str::slug($request->name);
         $store->phone = $request->phone;

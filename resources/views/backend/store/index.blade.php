@@ -18,7 +18,6 @@
                     <thead>
                     <tr>
                         <th width="5%">#Id</th>
-                        <th width="10%">Store User</th>
                         <th width="10%">Store Name</th>
                         <th width="10%">Store Phone</th>
                         <th width="10%">Store Address</th>
@@ -30,7 +29,6 @@
                     @foreach($stores as $key => $store)
                     <tr>
                         <td>{{ $key+1 }}</td>
-                        <td>{{ $store->user->name }}</td>
                         <td>{{ $store->name}}</td>
                         <td>{{ $store->phone }}</td>
                         <td>{{ $store->address }}</td>
