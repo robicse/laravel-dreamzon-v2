@@ -34,7 +34,7 @@ class UserController extends Controller
     public function create()
     {
         //$roles = Role::pluck('name','name')->all();
-        $roles = Role::where('name','!=','Admin')->pluck('name')->all();
+        $roles = Role::where('name','!=','Admin')->pluck('name','name')->all();
         $stores = Store::all();
         return view('backend.user.create',compact('roles','stores'));
     }
