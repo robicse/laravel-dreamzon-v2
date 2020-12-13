@@ -110,47 +110,109 @@
 
         }());
 
+        // onblur
+        // function vatAmount(){
+        //     var sub_total = $('#sub_total').val();
+        //     var vat_amount = parseFloat($('#vat_amount').val()).toFixed(2);
+        //     var vat_subtraction = (sub_total*vat_amount)/100;
+        //     var grand_total = sub_total - vat_subtraction;
+        //     var vat_subtraction = parseFloat(vat_subtraction).toFixed(2);
+        //     var grand_total = parseFloat(grand_total).toFixed(2);
+        //     $('#vat_amount').val(vat_subtraction);
+        //     //$('#discount_amount').val(discount_amount);
+        //     $('#grand_total').val(grand_total);
+        //     $('#due_amount').val(grand_total);
+        // }
 
+        // onblur
+        // function discountAmount(){
+        //     var sub_total = $('#sub_total').val();
+        //     var grand_total = $('#grand_total').val();
+        //     var discount_amount = parseFloat($('#discount_amount').val()).toFixed(2);
+        //     if(grand_total > 0){
+        //         var grand_total = grand_total - discount_amount;
+        //     }else{
+        //         var grand_total = sub_total - discount_amount;
+        //     }
+        //     var grand_total = parseFloat(grand_total).toFixed(2);
+        //     $('#discount_amount').val(discount_amount);
+        //     $('#grand_total').val(grand_total);
+        //     $('#due_amount').val(grand_total);
+        // }
+        //
+        // onblur
+        // function paidAmount(){
+        //     console.log('okk');
+        //     var grand_total = $('#grand_total').val();
+        //     var paid_amount = parseFloat($('#paid_amount').val()).toFixed(2);
+        //     var due_amount = grand_total - paid_amount;
+        //     var due_amount = parseFloat(due_amount).toFixed(2);
+        //     $('#paid_amount').val(paid_amount);
+        //     $('#due_amount').val(due_amount);
+        // }
+        //
+
+        // onkeyup
         function vatAmount(){
             var sub_total = $('#sub_total').val();
-            var vat_amount = parseFloat($('#vat_amount').val()).toFixed(2);
+            console.log('sub_total= ' + sub_total);
+            console.log('sub_total= ' + typeof sub_total);
+            sub_total = parseInt(sub_total);
+
+            var vat_amount = $('#vat_amount').val();
+            console.log('vat_amount= ' + vat_amount);
+            console.log('vat_amount= ' + typeof vat_amount);
+            vat_amount = parseInt(vat_amount);
+
             var vat_subtraction = (sub_total*vat_amount)/100;
-            var grand_total = sub_total - vat_subtraction;
-            var vat_subtraction = parseFloat(vat_subtraction).toFixed(2);
-            var grand_total = parseFloat(grand_total).toFixed(2);
-            $('#vat_amount').val(vat_subtraction);
-            //$('#discount_amount').val(discount_amount);
+            console.log('vat_subtraction= ' + vat_subtraction);
+            console.log('vat_subtraction= ' + typeof vat_subtraction);
+
+            var grand_total = sub_total + vat_subtraction;
+            console.log('grand_total= ' + grand_total);
+            console.log('grand_total= ' + typeof grand_total);
+            grand_total = parseInt(grand_total);
+
+            $('#show_vat_amount').val(vat_subtraction);
+            $('#store_grand_total').val(grand_total);
             $('#grand_total').val(grand_total);
             $('#due_amount').val(grand_total);
         }
 
-
+        // onkeyup
         function discountAmount(){
-            var sub_total = $('#sub_total').val();
-            var grand_total = $('#grand_total').val();
-            var discount_amount = parseFloat($('#discount_amount').val()).toFixed(2);
-            if(grand_total > 0){
-                var grand_total = grand_total - discount_amount;
-            }else{
-                var grand_total = sub_total - discount_amount;
-            }
-            var grand_total = parseFloat(grand_total).toFixed(2);
-            $('#discount_amount').val(discount_amount);
+            //var sub_total = $('#sub_total').val();
+            //console.log('sub_total= ' + sub_total);
+            //console.log('sub_total= ' + typeof sub_total);
+
+            var store_grand_total = $('#store_grand_total').val();
+            console.log('store_grand_total= ' + store_grand_total);
+            console.log('store_grand_total= ' + typeof store_grand_total);
+
+            var discount_amount = $('#discount_amount').val();
+            console.log('discount_amount= ' + discount_amount);
+            console.log('discount_amount= ' + typeof discount_amount);
+
+            var grand_total = store_grand_total - discount_amount;
+            console.log('grand_total=' + grand_total);
+            console.log('grand_total=' + typeof grand_total);
+
+            $('#discount_amount').val(discount_amount)
             $('#grand_total').val(grand_total);
             $('#due_amount').val(grand_total);
         }
 
+
+        // onkeyup
         function paidAmount(){
             console.log('okk');
             var grand_total = $('#grand_total').val();
-            var paid_amount = parseFloat($('#paid_amount').val()).toFixed(2);
+            var paid_amount = $('#paid_amount').val();
             var due_amount = grand_total - paid_amount;
-            var due_amount = parseFloat(due_amount).toFixed(2);
+            var due_amount = due_amount;
             $('#paid_amount').val(paid_amount);
             $('#due_amount').val(due_amount);
         }
-
-
 
         function deleteCart(rowId) {
             if (confirm("Are you sure, delete this item!")) {
