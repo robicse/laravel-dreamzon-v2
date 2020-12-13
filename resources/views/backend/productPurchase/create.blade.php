@@ -72,7 +72,7 @@
                                 <th >ID</th>
                                 <th>Product <small class="requiredCustom">*</small></th>
                                 <th>Category</th>
-                                <th>Sub Category</th>
+                                <th style="display: none">Sub Category</th>
                                 <th>Brand</th>
                                 <th>Qty <small class="requiredCustom">*</small></th>
                                 <th>Purchase Price <small class="requiredCustom">*</small></th>
@@ -104,7 +104,7 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td>
+                                <td style="display: none">
                                     <div id="product_sub_category_id_1">
                                         <select class="form-control product_sub_category_id select2" name="product_sub_category_id[]">
                                             <option value="">Select  Sub Category</option>
@@ -193,24 +193,24 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Email <small class="requiredCustom">*</small></label>
+                                                <label class="control-label col-md-3 text-right">Email</label>
                                                 <div class="col-md-8">
                                                     <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" type="email" placeholder="Supplier Email" name="email">
                                                     @if ($errors->has('email'))
                                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
+                                                            <strong>{{ $errors->first('email') }}</strong>
+                                                        </span>
                                                     @endif
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Address <small class="requiredCustom">*</small></label>
+                                                <label class="control-label col-md-3 text-right">Address</label>
                                                 <div class="col-md-8">
                                                     <textarea rows="5" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" type="text" placeholder="Supplier Address" name="address"></textarea>
                                                     @if ($errors->has('address'))
                                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('address') }}</strong>
-                                        </span>
+                                                            <strong>{{ $errors->first('address') }}</strong>
+                                                        </span>
                                                     @endif
                                                 </div>
                                             </div>
@@ -263,7 +263,7 @@
                 var tr = '<tr><td class="no">' + n + '</td>' +
                     '<td><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
                     '<td><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
-                    '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
+                    '<td style="display: none"><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                     '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +

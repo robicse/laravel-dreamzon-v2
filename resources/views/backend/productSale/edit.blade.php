@@ -110,7 +110,7 @@
                             <tr>
                                 <th>Product</th>
                                 <th>Category</th>
-                                <th>Sub Category</th>
+                                <th style="display: none">Sub Category</th>
                                 <th>Brand</th>
                                 <th>Returnable</th>
                                 <th>Qty</th>
@@ -143,7 +143,7 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style="display: none">
                                         <div id="product_sub_category_id_{{$current_row}}">
                                             <select class="form-control product_sub_category_id" name="product_sub_category_id[]" readonly>
                                                 <option value="">Select  Sub Category</option>
@@ -183,7 +183,7 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th colspan="2">
+                                <th>
                                     Discount Type:
                                     <select name="discount_type" id="discount_type" class="form-control" >
                                         <option value="flat" {{'flat' == $productSale->return_type ? 'selected' : ''}}>flat</option>

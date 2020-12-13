@@ -117,7 +117,7 @@
                                 <th >ID</th>
                                 <th>Product <small class="requiredCustom">*</small></th>
                                 <th>Category</th>
-                                <th>Sub Category</th>
+                                <th style="display: none">Sub Category</th>
                                 <th>Brand</th>
                                 <th>Return</th>
                                 <th>Stock Qty</th>
@@ -149,7 +149,7 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td>
+                                <td style="display: none">
                                     <div id="product_sub_category_id_1">
                                         <select class="form-control product_sub_category_id select2" name="product_sub_category_id[]">
                                             <option value="">Select  Sub Category</option>
@@ -194,7 +194,7 @@
                             <tfoot>
                             <tr>
                                 <th>&nbsp;</th>
-                                <th colspan="2">
+                                <th>
                                     <select name="discount_type" id="discount_type" class="form-control" >
                                         <option value="flat" selected>flat</option>
                                         <option value="percentage">percentage</option>
@@ -409,7 +409,7 @@
                 var tr = '<tr><td class="no">' + n + '</td>' +
                     '<td><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
                     '<td><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
-                    '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
+                    '<td style="display: none"><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                     '<td><select name="return_type[]" id="return_type_id_'+n+'" class="form-control" ><option value="returnable" selected>returnable</option><option value="not returnable">not returnable</option></select></td>' +
                     '<td><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]"></td>' +
