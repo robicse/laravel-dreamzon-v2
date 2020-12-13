@@ -29,6 +29,22 @@
                         {!! Form::open(array('route' => 'users.store','method'=>'POST')) !!}
                             @csrf
                             <div class="form-group row">
+                                <label class="control-label col-md-3 text-right">Store User <span style="color: red">*</span></label>
+                                <div class="col-md-8">
+                                    <select name="store_id" id="store_id" class="form-control">
+                                        <option value="">Select One</option>
+                                        @foreach($stores as $store)
+                                            <option value="{{$store->id}}">{{$store->name}}</option>
+                                        @endforeach()
+                                    </select>
+                                    @if ($errors->has('store_id'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('store_id') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }} <span style="color: red">*</span></label>
 
                                 <div class="col-md-6">

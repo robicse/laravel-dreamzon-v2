@@ -37,6 +37,7 @@
                     <thead>
                     <tr>
                         <th width="10%">SL</th>
+                        <th width="10%">Store Name</th>
                         <th width="10%">Name</th>
                         <th width="10%">Email</th>
                         <th width="10%">Role</th>
@@ -47,6 +48,12 @@
                     @foreach($users as $key => $user)
                     <tr style="{{$user->user_role == 2 ? 'opacity:.5' : ''}};">
                         <td>{!! $key+1 !!}</td>
+                        <td>
+                            @php
+                                echo $store_name = \Illuminate\Support\Facades\DB::table('stores')
+                            ->where('id',$user->store_id)->pluck('name')->first();
+                            @endphp
+                        </td>
                         <td>{!! $user->name !!}</td>
                         <td>{!! $user->email !!}</td>
                         <td>
