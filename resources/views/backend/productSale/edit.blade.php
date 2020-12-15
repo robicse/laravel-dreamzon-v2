@@ -265,7 +265,7 @@
                 var final_amount = store_total_amount - discount_amount;
             }
             else{
-                var per = (total*discount_amount)/100;
+                var per = (store_total_amount*discount_amount)/100;
                 var final_amount = store_total_amount-per;
             }
             console.log('final_amount= ' + final_amount);
