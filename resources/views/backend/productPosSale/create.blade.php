@@ -36,13 +36,13 @@
 
                 @if(Session::get('product_sale_id'))
 
-                <div class="form-group row">
-                    <div class="col-md-12 text-center">
+                    <div class="form-group row">
+                        <div class="col-md-12 text-center">
                             <a href="{{url('pos/print2/'.Session::get('product_sale_id').'/'.'now')}}" target="_blank" class="btn btn-sm btn-primary printNow" type="button">Print Now</a>
-{{--                            <a href="{{url('pos/print/'.Session::get('product_sale_id').'/'.'now')}}" class="btn btn-sm btn-primary" type="button">Print Now</a>--}}
+                            {{--                            <a href="{{url('pos/print/'.Session::get('product_sale_id').'/'.'now')}}" class="btn btn-sm btn-primary" type="button">Print Now</a>--}}
                             <a href="{{url('pos/print/'.Session::get('product_sale_id').'/'.'latter')}}" class="btn btn-sm btn-warning printLatter" type="button">Print Latter</a>
+                        </div>
                     </div>
-                </div>
                 @endif
 
                 <div class="form-group row">
@@ -90,10 +90,37 @@
                 timeout = setTimeout(function () {
                     var barcode = $('#kode').val();
                     var store_id = $('#store_id').val();
-                    $('#current_price').val('');
-                    $('#current_stock').val('');
-                    console.log(store_id);
-                }, 2000);
+                    console.log(barcode);
+                    if(barcode)
+                    {
+                        $.ajax({
+                            url : "{{URL('add-to-cart')}}",
+                            method : "get",
+                            data : {
+                                barcode : barcode,
+                                store_id : store_id
+                            },
+                            success : function (res){
+                                console.log(res)
+                                $('#kode').val('').focus();
+                                loadData(barcode)
+
+                                if(res.response.product_check_exists == 'No Product Found!')
+                                    toastr.warning('no product found using this code!')
+                                else if(res.response.product_check_exists == 'No Product Stock Found!')
+                                    toastr.warning('no product found using this code OR Store!')
+                                else {
+                                    toastr.success('successfully added to cart')
+                                    $('#current_price').val(res.response.price);
+                                    $('#current_stock').val(res.response.stock);
+                                }
+                            },
+                            error : function (err){
+                                console.log(err)
+                            }
+                        })
+                    }
+                }, 1000);
             };
 
             $('input#kode').keyup(update);
@@ -271,38 +298,39 @@
 
             /*additional*/
             //setTimeout(function () {
-                var barcode = $('#kode').val();
-                var store_id = $('#store_id').val();
-                console.log(store_id);
-                if(barcode)
-                {
-                    $.ajax({
-                        url : "{{URL('add-to-cart')}}",
-                        method : "get",
-                        data : {
-                            barcode : barcode,
-                            store_id : store_id
-                        },
-                        success : function (res){
-                            console.log(res)
-                            $('#kode').val('').focus();
-                            loadData(barcode)
+            var barcode = $('#kode').val();
+            var store_id = $('#store_id').val();
+            console.log(store_id);
+            console.log(barcode);
+            if(barcode)
+            {
+                $.ajax({
+                    url : "{{URL('add-to-cart')}}",
+                    method : "get",
+                    data : {
+                        barcode : barcode,
+                        store_id : store_id
+                    },
+                    success : function (res){
+                        console.log(res)
+                        //$('#kode').val('').focus();
+                        loadData(barcode)
 
-                            if(res.response.product_check_exists == 'No Product Found!')
-                                toastr.warning('no product found using this code!')
-                            else if(res.response.product_check_exists == 'No Product Stock Found!')
-                                toastr.warning('no product found using this code OR Store!')
-                            else {
-                                toastr.success('successfully added to cart')
-                                $('#current_price').val(res.response.price);
-                                $('#current_stock').val(res.response.stock);
-                            }
-                        },
-                        error : function (err){
-                            console.log(err)
+                        if(res.response.product_check_exists == 'No Product Found!')
+                            toastr.warning('no product found using this code!')
+                        else if(res.response.product_check_exists == 'No Product Stock Found!')
+                            toastr.warning('no product found using this code OR Store!')
+                        else {
+                            toastr.success('successfully added to cart')
+                            $('#current_price').val(res.response.price);
+                            $('#current_stock').val(res.response.stock);
                         }
-                    })
-                }
+                    },
+                    error : function (err){
+                        console.log(err)
+                    }
+                })
+            }
             //}, 1000);
             /*additional*/
         }

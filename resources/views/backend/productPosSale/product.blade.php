@@ -38,7 +38,7 @@
                                         echo $product_current_stock = \App\Stock::where('product_id',$data->product_id)->latest()->pluck('current_stock')->first();
                                     @endphp
                                 </th>
-                            <th><a onclick="selectItem({{ $data->barcode }})" class="btn btn-primary"><i class="fa fa-check-circle"></i> Select</a></th>
+                            <th><a onclick="selectItem('{{ $data->barcode }}')" class="btn btn-primary"><i class="fa fa-check-circle"></i> Select</a></th>
                             </tr>
                         @endforeach
                     </tbody>
