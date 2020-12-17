@@ -141,7 +141,20 @@
 {{--                                        </p>--}}
                                         <p class="lead">Payment Type:</p>
                                         <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                                            {{$productSale->payment_type}}
+                                        @if(!empty($transactions))
+                                            <ul>
+                                                @foreach($transactions as $transaction)
+                                                    <li>
+                                                        {{$transaction->payment_type}}
+                                                        @if($transaction->payment_type == 'check')
+                                                            ( Check Number: {{$transaction->check_number}} )
+                                                        @endif
+                                                        :
+                                                        {{$transaction->amount}}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                            @endif
                                         </p>
                                     </div>
                                     <!-- /.col -->

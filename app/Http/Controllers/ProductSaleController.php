@@ -442,25 +442,25 @@ class ProductSaleController extends Controller
     {
         $productSale = ProductSale::find($id);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
-        $transaction = Transaction::where('ref_id',$id)->get();
+        $transactions = Transaction::where('ref_id',$id)->get();
         $store_id = $productSale->store_id;
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
         $party = Party::find($party_id);
 
-        return view('backend.productSale.invoice', compact('productSale','productSaleDetails','transaction','store','party'));
+        return view('backend.productSale.invoice', compact('productSale','productSaleDetails','transactions','store','party'));
     }
     public function invoicePrint($id)
     {
         $productSale = ProductSale::find($id);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
-        $transaction = Transaction::where('ref_id',$id)->get();
+        $transactions = Transaction::where('ref_id',$id)->get();
         $store_id = $productSale->store_id;
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
         $party = Party::find($party_id);
 
-        return view('backend.productSale.invoice-print', compact('productSale','productSaleDetails','transaction','store','party'));return view('backend.productSale.invoice-print');
+        return view('backend.productSale.invoice-print', compact('productSale','productSaleDetails','transactions','store','party'));
     }
 
     public function newParty(Request $request){

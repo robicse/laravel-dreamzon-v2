@@ -181,9 +181,24 @@
             <td class="right_text">{{$due_amount_value}}</td>
         </tr>
         <tr>
-            <td class="empty_space"></td>
-            <td class="left_text">Payment Type</td>
-            <td class="right_text">Cash</td>
+{{--            <td class="empty_space"></td>--}}
+{{--            <td class="left_text">Payment Type</td>--}}
+            <td>Payment Type</td>
+{{--            <td class="right_text">--}}
+            <td>
+                @if(!empty($transactions))
+                    <ul>
+                        @foreach($transactions as $transaction)
+                            <li>
+                                {{$transaction->payment_type}}
+                                @if($transaction->payment_type == 'check')
+                                    ( Check Number: {{$transaction->check_number}} )
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+            </td>
         </tr>
         </tbody>
     </table>

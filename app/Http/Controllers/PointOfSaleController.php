@@ -176,8 +176,10 @@ class PointOfSaleController extends Controller
                 ->join('products','product_sale_details.product_id','=','products.id')
                 ->where('product_sale_details.product_sale_id',$id)
                 ->get();
+
+            $transactions = DB::table('transactions')->where('invoice_no',$productSale->invoice_no)->get();
             Toastr::success('Successfully Printed!', 'Success');
-            return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails'));
+            return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails','transactions'));
         }else if($status == 'now'){
 
             //print status update
@@ -194,8 +196,9 @@ class PointOfSaleController extends Controller
                 ->join('products','product_sale_details.product_id','=','products.id')
                 ->where('product_sale_details.product_sale_id',$id)
                 ->get();
+            $transactions = DB::table('transactions')->where('invoice_no',$productSale->invoice_no)->get();
             Toastr::success('Successfully Printed!', 'Success');
-            return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails'));
+            return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails','transactions'));
         }else{
             //print status update
             $productSale = ProductSale::find($id);
