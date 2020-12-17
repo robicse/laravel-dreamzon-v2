@@ -234,7 +234,7 @@ class ProductPosSaleController extends Controller
                         <div class=\"form-group row\">
                             <label for=\"paid_amount\" class=\"col-md-4 control-label\">Paid</label>
                             <div class=\"col-md-8\">
-                                <input type=\"number\" class=\"form-control\" value=\"0.00\" name=\"paid_amount\" onkeyup=\"paidAmount('')\" id=\"paid_amount\">
+                                <input type=\"number\" class=\"form-control\" value=\"0\" name=\"paid_amount\" onkeyup=\"paidAmount('')\" id=\"paid_amount\">
                             </div>
                         </div>
                         <div class=\"form-group row\">
