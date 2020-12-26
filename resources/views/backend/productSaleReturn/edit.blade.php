@@ -51,10 +51,8 @@
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" >
                                     <option value="">Select One</option>
-                                    <option value="cash" {{'cash' == $productSale->payment_type ? 'selected' : ''}}>cash</option>
-                                    <option value="credit" {{'credit' == $productSale->payment_type ? 'selected' : ''}}>credit</option>
-                                    <option value="card" {{'card' == $productSale->payment_type ? 'selected' : ''}}>card</option>
-                                    <option value="bkash" {{'bkash' == $productSale->payment_type ? 'selected' : ''}}>bkash</option>
+                                    <option value="cash" {{'cash' == $productSale->payment_type ? 'selected' : ''}}>Cash</option>
+                                    <option value="online" {{'online' == $productSale->payment_type ? 'selected' : ''}}>Online</option>
                                 </select>
                             </div>
                         </div>
@@ -69,106 +67,106 @@
                             </div>
                         </div>
 
-                        {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
                         <div class="table-responsive">
+                            {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
                             <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Category</th>
-                                <th>Sub Category</th>
-                                <th>Brand</th>
-                                <th>Returnable</th>
-                                <th>Qty</th>
-                                <th>Price</th>
-                                <th>Sub Total</th>
-                            </tr>
-                            </thead>
-                            <tbody class="neworderbody">
-                            @foreach($productSaleDetails as $key => $productSaleDetail)
+                                <thead>
                                 <tr>
-                                    @php
-                                        $current_row = $key+1;
-                                    @endphp
-                                    <td>
-                                        <select class="form-control product_id select2" name="product_id[]" onchange="getval({{$current_row}},this);" required>
-                                            <option value="">Select  Product</option>
-                                            @foreach($products as $product)
-                                                <option value="{{$product->id}}" {{$product->id == $productSaleDetail->product_id ? 'selected' : ''}}>{{$product->name}}</option>
-                                            @endforeach
-                                        </select>
-                                        <input type="hidden" class="form-control" name="product_Sale_detail_id[]" value="{{$productSaleDetail->id}}" >
-                                    </td>
-                                    <td>
-                                        <div id="product_category_id_{{$current_row}}">
-                                            <select class="form-control product_category_id" name="product_category_id[]" readonly required>
-                                                <option value="">Select  Category</option>
-                                                @foreach($productCategories as $productCategory)
-                                                    <option value="{{$productCategory->id}}" {{$productCategory->id == $productSaleDetail->product_category_id ? 'selected' : ''}}>{{$productCategory->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div id="product_sub_category_id_{{$current_row}}">
-                                            <select class="form-control product_sub_category_id" name="product_sub_category_id[]" readonly>
-                                                <option value="">Select  Sub Category</option>
-                                                @foreach($productSubCategories as $productSubCategory)
-                                                    <option value="{{$productSubCategory->id}}" {{$productSubCategory->id == $productSaleDetail->product_sub_category_id ? 'selected' : ''}}>{{$productSubCategory->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div id="product_brand_id_{{$current_row}}">
-                                            <select class="form-control product_brand_id" name="product_brand_id[]" readonly required>
-                                                <option value="">Select  Brand</option>
-                                                @foreach($productBrands as $productBrand)
-                                                    <option value="{{$productBrand->id}}" {{$productBrand->id == $productSaleDetail->product_brand_id ? 'selected' : ''}}>{{$productBrand->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <select name="return_type[]" id="return_type_id_{{$current_row}}" class="form-control" >
-                                            <option value="returnable"  {{'returnable' == $productSaleDetail->return_type ? 'selected' : ''}}>returnable</option>
-                                            <option value="not returnable" {{'not returnable' == $productSaleDetail->return_type ? 'selected' : ''}}>not returnable</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="{{$productSaleDetail->qty}}" required >
-                                    </td>
-                                    <td>
-                                        <input type="number" min="1" max="" class="price form-control" name="price[]" value="{{$productSaleDetail->price}}" required >
-                                    </td>
-                                    <td>
-                                        <input type="text" class="amount form-control" name="sub_total[]" value="{{$productSaleDetail->sub_total}}">
-                                    </td>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Sub Category</th>
+                                    <th>Brand</th>
+                                    <th>Returnable</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Sub Total</th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <th colspan="3"></th>
-                                <th colspan="2">
-                                    Discount Type:
-                                    <select name="discount_type" id="discount_type" class="form-control" >
-                                        <option value="flat" {{'flat' == $productSale->return_type ? 'selected' : ''}}>flat</option>
-                                        <option value="percentage" {{'percentage' == $productSale->return_type ? 'selected' : ''}}>percentage</option>
-                                    </select>
-                                </th>
-                                <th colspan="2">
-                                    Discount Amount:
-                                    <input type="text" class="discount_amount form-control" name="discount_amount" value="{{$productSale->discount_amount}}">
-                                </th>
-                                <th colspan="2">
-                                    Total:
-                                    <input type="text" class="amount form-control" name="total_amount" value="{{$productSale->total_amount}}">
-                                </th>
-                                <th>&nbsp;</th>
-                            </tr>
-                            </tfoot>
-                        </table>
+                                </thead>
+                                <tbody class="neworderbody">
+                                @foreach($productSaleDetails as $key => $productSaleDetail)
+                                    <tr>
+                                        @php
+                                            $current_row = $key+1;
+                                        @endphp
+                                        <td>
+                                            <select class="form-control product_id select2" name="product_id[]" onchange="getval({{$current_row}},this);" required>
+                                                <option value="">Select  Product</option>
+                                                @foreach($products as $product)
+                                                    <option value="{{$product->id}}" {{$product->id == $productSaleDetail->product_id ? 'selected' : ''}}>{{$product->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            <input type="hidden" class="form-control" name="product_Sale_detail_id[]" value="{{$productSaleDetail->id}}" >
+                                        </td>
+                                        <td>
+                                            <div id="product_category_id_{{$current_row}}">
+                                                <select class="form-control product_category_id" name="product_category_id[]" readonly required>
+                                                    <option value="">Select  Category</option>
+                                                    @foreach($productCategories as $productCategory)
+                                                        <option value="{{$productCategory->id}}" {{$productCategory->id == $productSaleDetail->product_category_id ? 'selected' : ''}}>{{$productCategory->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div id="product_sub_category_id_{{$current_row}}">
+                                                <select class="form-control product_sub_category_id" name="product_sub_category_id[]" readonly>
+                                                    <option value="">Select  Sub Category</option>
+                                                    @foreach($productSubCategories as $productSubCategory)
+                                                        <option value="{{$productSubCategory->id}}" {{$productSubCategory->id == $productSaleDetail->product_sub_category_id ? 'selected' : ''}}>{{$productSubCategory->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div id="product_brand_id_{{$current_row}}">
+                                                <select class="form-control product_brand_id" name="product_brand_id[]" readonly required>
+                                                    <option value="">Select  Brand</option>
+                                                    @foreach($productBrands as $productBrand)
+                                                        <option value="{{$productBrand->id}}" {{$productBrand->id == $productSaleDetail->product_brand_id ? 'selected' : ''}}>{{$productBrand->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <select name="return_type[]" id="return_type_id_{{$current_row}}" class="form-control" >
+                                                <option value="returnable"  {{'returnable' == $productSaleDetail->return_type ? 'selected' : ''}}>returnable</option>
+                                                <option value="not returnable" {{'not returnable' == $productSaleDetail->return_type ? 'selected' : ''}}>not returnable</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="{{$productSaleDetail->qty}}" required >
+                                        </td>
+                                        <td>
+                                            <input type="number" min="1" max="" class="price form-control" name="price[]" value="{{$productSaleDetail->price}}" required >
+                                        </td>
+                                        <td>
+                                            <input type="text" class="amount form-control" name="sub_total[]" value="{{$productSaleDetail->sub_total}}">
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th colspan="3"></th>
+                                    <th colspan="2">
+                                        Discount Type:
+                                        <select name="discount_type" id="discount_type" class="form-control" >
+                                            <option value="flat" {{'flat' == $productSale->return_type ? 'selected' : ''}}>flat</option>
+                                            <option value="percentage" {{'percentage' == $productSale->return_type ? 'selected' : ''}}>percentage</option>
+                                        </select>
+                                    </th>
+                                    <th colspan="2">
+                                        Discount Amount:
+                                        <input type="text" class="discount_amount form-control" name="discount_amount" value="{{$productSale->discount_amount}}">
+                                    </th>
+                                    <th colspan="2">
+                                        Total:
+                                        <input type="text" class="amount form-control" name="total_amount" value="{{$productSale->total_amount}}">
+                                    </th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                                </tfoot>
+                            </table>
                             <div class="form-group row">
                                 <label class="control-label col-md-3"></label>
                                 <div class="col-md-8">
@@ -176,7 +174,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </form>
                 </div>
                 <div class="tile-footer">

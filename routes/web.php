@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('stock-summary-list','StockController@stockSummaryList')->name('stock.summary.list');
     Route::get('returnable-sale-product-list','ProductSaleReturnController@returnableSaleProduct')->name('returnable.sale.product');
     Route::post('sale-product-return','ProductSaleReturnController@saleProductReturn')->name('sale.product.return');
+    Route::get('get-returnable-product/{sale_id}','ProductSaleReturnController@getReturnableProduct');
     Route::get('transaction-list','TransactionController@transactionList')->name('transaction.index');
     Route::get('transaction-loss-profit','TransactionController@lossProfit')->name('transaction.lossProfit');
     Route::get('delivery-list','TransactionController@deliveryList')->name('delivery.index');

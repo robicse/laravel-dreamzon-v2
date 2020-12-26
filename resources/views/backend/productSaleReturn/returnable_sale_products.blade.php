@@ -16,206 +16,213 @@
             <div class="tile">
                 <h3 class="tile-title">Returnable Sales Product</h3>
                 <div class="tile-body tile-footer">
-                    <div class="table-responsive">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th >ID</th>
-                                    <th>Party</th>
-                                    <th>Product</th>
-                                    <th>Category</th>
-                                    <th>Sub Category</th>
-                                    <th>Brand</th>
-                                    <th>Return Condition</th>
-                                    <th>Received Qty</th>
-                                    <th>Price</th>
-                                    <th>Returned</th>
-                                </tr>
-                            </thead>
-                            <tbody class="neworderbody">
-                            @foreach($returnable_sale_products as $returnable_sale_product)
-                                <tr>
-                                    <td width="5%" class="no">1</td>
-                                    <td>
-                                        @php
-                                            $party_name = DB::table('product_sales')
-                                                ->join('product_sale_details', 'product_sales.id', '=', 'product_sale_details.product_sale_id')
-                                                ->join('parties', 'parties.id', '=', 'product_sales.party_id')
-                                                ->where('product_sale_details.id',$returnable_sale_product->id)
-                                                ->select('parties.name')
-                                                ->first();
-                                            //dd($party_name);
-                                        @endphp
-                                        {{$party_name->name}}
-                                    </td>
-                                    <td>{{$returnable_sale_product->product->name}}</td>
-                                    <td>{{$returnable_sale_product->product->product_category->name}}</td>
-                                    <td>{{$returnable_sale_product->product->product_sub_category ? $returnable_sale_product->product->product_sub_category->name : ''}}</td>
-                                    <td>{{$returnable_sale_product->product->product_brand->name}}</td>
-                                    <td>{{$returnable_sale_product->return_type}}</td>
-                                    <td>{{$returnable_sale_product->qty}}</td>
-                                    <td>{{$returnable_sale_product->price}}</td>
-                                    <td>
-                                        <form method="post" action="{{route('sale.product.return')}}">
-                                            @csrf
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Qty  <small class="text-danger">*</small></label>
-                                                <div class="col-md-8">
-                                                    <input type="hidden" name="product_sale_id" class="form-control" value="{{$returnable_sale_product->product_sale_id}}">
-                                                    <input type="hidden" name="product_sale_detail_id" class="form-control" value="{{$returnable_sale_product->id}}">
-                                                    <input type="number" min="1" name="return_qty" class="form-control" required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Amount  <small class="text-danger">*</small></label>
-                                                <div class="col-md-8">
-                                                    <input type="number" min="1" name="total_amount" class="form-control" required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Payment Type  <small class="text-danger">*</small></label>
-                                                <div class="col-md-8">
-                                                    <select name="payment_type" id="payment_type" class="form-control" >
-                                                        <option value="">Select One</option>
-                                                        <option value="cash">cash</option>
-                                                        <option value="online">online</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Reason</label>
-                                                <div class="col-md-8">
-                                                    <textarea class="form-control" name="reason"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="col-md-8">
-                                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </table>
-                    </div>
+                    @if(session('response'))
+                        <div class="alert alert-success">
+                            {{ session('response') }}
+                        </div>
+                    @endif
+                    <form method="post" action="{{route('sale.product.return')}}">
+                        @csrf
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Invoice  <small class="requiredCustom">*</small></label>
+                            <div class="col-md-5">
+                                <select name="product_sale_id" class="form-control select2" id="sale_invoice_no" required>
+                                    <option value="">Select One</option>
+                                    @foreach($productSales as $productSale)
+                                        <option value="{{$productSale->id}}">{{$productSale->invoice_no}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
+                        <div id="loadForm"></div>
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">
+
+                            </label>
+                            <div class="col-md-8">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="tile-footer">
                 </div>
             </div>
         </div>
+{{--        <div class="col-md-12">--}}
+{{--            <div class="tile">--}}
+{{--                <h3 class="tile-title">Returnable Sales Product</h3>--}}
+{{--                <div class="tile-body tile-footer">--}}
+{{--                    <div class="table-responsive">--}}
+{{--                        <table id="example1" class="table table-bordered table-striped">--}}
+{{--                            <thead>--}}
+{{--                                <tr>--}}
+{{--                                    <th >ID</th>--}}
+{{--                                    <th>Party</th>--}}
+{{--                                    <th>Product</th>--}}
+{{--                                    <th>Category</th>--}}
+{{--                                    <th>Sub Category</th>--}}
+{{--                                    <th>Brand</th>--}}
+{{--                                    <th>Return Condition</th>--}}
+{{--                                    <th>Received Qty</th>--}}
+{{--                                    <th>Price</th>--}}
+{{--                                    <th style="text-align:center">Returned</th>--}}
+{{--                                </tr>--}}
+{{--                            </thead>--}}
+{{--                            <tbody class="neworderbody">--}}
+{{--                            @foreach($returnable_sale_products as $key => $returnable_sale_product)--}}
+{{--                                @php--}}
+{{--                                    $key += 1;--}}
+{{--                                @endphp--}}
+{{--                                <tr>--}}
+{{--                                    <td width="5%" class="no">1</td>--}}
+{{--                                    <td>--}}
+{{--                                        @php--}}
+{{--                                            $party_name = DB::table('product_sales')--}}
+{{--                                                ->join('product_sale_details', 'product_sales.id', '=', 'product_sale_details.product_sale_id')--}}
+{{--                                                ->join('parties', 'parties.id', '=', 'product_sales.party_id')--}}
+{{--                                                ->where('product_sale_details.id',$returnable_sale_product->id)--}}
+{{--                                                ->select('parties.name')--}}
+{{--                                                ->first();--}}
+{{--                                            //dd($party_name);--}}
+{{--                                        @endphp--}}
+{{--                                        {{$party_name->name}}--}}
+{{--                                    </td>--}}
+{{--                                    <td>{{$returnable_sale_product->product->name}}</td>--}}
+{{--                                    <td>{{$returnable_sale_product->product->product_category->name}}</td>--}}
+{{--                                    <td>{{$returnable_sale_product->product->product_sub_category ? $returnable_sale_product->product->product_sub_category->name : ''}}</td>--}}
+{{--                                    <td>{{$returnable_sale_product->product->product_brand->name}}</td>--}}
+{{--                                    <td>{{$returnable_sale_product->return_type}}</td>--}}
+{{--                                    <td>{{$returnable_sale_product->qty}}</td>--}}
+{{--                                    <td>{{$returnable_sale_product->price}}</td>--}}
+{{--                                    <td>--}}
+{{--                                        <form method="post" action="{{route('sale.product.return')}}" class="row">--}}
+{{--                                            @csrf--}}
+{{--                                            <div class="form-group col-md-6">--}}
+{{--                                                <label class="control-label">Qty  <small class="text-danger">*</small></label>--}}
+{{--                                                <input class="form-control" type="hidden" name="product_sale_id" value="{{$returnable_sale_product->product_sale_id}}">--}}
+{{--                                                <input class="form-control" type="hidden" name="product_sale_detail_id" value="{{$returnable_sale_product->id}}">--}}
+{{--                                                <input class="form-control" type="hidden" name="qty" id="qty_{{$key}}" value="{{$returnable_sale_product->qty}}">--}}
+{{--                                                <input class="form-control" type="text" name="return_qty" id="return_qty_{{$key}}" onkeyup="return_qty1({{$key}},this);" placeholder="Enter return qty">--}}
+{{--                                            </div>--}}
+{{--                                            <div class="form-group col-md-6">--}}
+{{--                                                <label class="control-label">Amount  <small class="text-danger">*</small></label>--}}
+{{--                                                <input type="number" min="1" name="total_amount" class="form-control" required>--}}
+{{--                                            </div>--}}
+{{--                                            <div class="form-group col-md-6">--}}
+{{--                                                <label class="control-label">Payment Type  <small class="text-danger">*</small></label>--}}
+{{--                                                    <select name="payment_type" id="payment_type_{{$key}}" class="form-control" onchange="productType({{$key}},this)">--}}
+{{--                                                        <option value="cash" selected>Cash</option>--}}
+{{--                                                        <option value="check">Check</option>--}}
+{{--                                                    </select>--}}
+{{--                                                    <span>&nbsp;</span>--}}
+{{--                                                    <input type="text" name="check_number" id="check_number_{{$key}}" class="form-control" placeholder="Check Number" readonly="readonly">--}}
+{{--                                            </div>--}}
+{{--                                            <div class="form-group col-md-6">--}}
+{{--                                                <label class="control-label">Reason</label>--}}
+{{--                                                    <textarea class="form-control" name="reason"></textarea>--}}
+{{--                                            </div>--}}
+{{--                                            <div class="form-group col-md-3">--}}
+{{--                                                <label class="control-label"></label>--}}
+{{--                                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>--}}
+{{--                                            </div>--}}
+{{--                                        </form>--}}
+{{--                                    </td>--}}
+{{--                                </tr>--}}
+{{--                            @endforeach--}}
+{{--                            </tfoot>--}}
+{{--                        </table>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="tile-footer">--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
     </main>
 
 @endsection
 
 @push('js')
     <script>
-
-        function totalAmount(){
-            var t = 0;
-            $('.amount').each(function(i,e){
-                var amt = $(this).val()-0;
-                t += amt;
-            });
-            $('.total').html(t);
-        }
-        $(function () {
-            $('.getmoney').change(function(){
-                var total = $('.total').html();
-                var getmoney = $(this).val();
-                //var t = getmoney - total;
-                var t = total - getmoney;
-                var t_final_val = t.toFixed(2);
-                $('.backmoney').val(t_final_val);
-                $('.total').val(total);
-            });
-            $('.add').click(function () {
-                var productCategory = $('.product_category_id').html();
-                var productSubCategory = $('.product_sub_category_id').html();
-                var productBrand = $('.product_brand_id').html();
-                var product = $('.product_id').html();
-                var n = ($('.neworderbody tr').length - 0) + 1;
-                var tr = '<tr><td class="no">' + n + '</td>' +
-                    '<td><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
-                    '<td><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
-                    '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
-                    '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
-                    '<td><select name="return_type[]" id="return_type_id_'+n+'" class="form-control" ><option value="returnable" selected>returnable</option><option value="not returnable">not returnable</option></select></td>' +
-                    '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
-                    '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
-                    //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
-                    '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
-                    '<td><input type="button" class="btn btn-danger delete" value="x"></td></tr>';
-
-                $('.neworderbody').append(tr);
-
-                //initSelect2();
-
-                $('.select2').select2();
-
-            });
-            $('.neworderbody').delegate('.delete', 'click', function () {
-                $(this).parent().parent().remove();
-                totalAmount();
-            });
-
-            $('.neworderbody').delegate('.qty, .price', 'keyup', function () {
-                var tr = $(this).parent().parent();
-                var qty = tr.find('.qty').val() - 0;
-                //var dis = tr.find('.dis').val() - 0;
-                var price = tr.find('.price').val() - 0;
-
-                //var total = (qty * price) - ((qty * price)/100);
-                //var total = (qty * price) - ((qty * price * dis)/100);
-                //var total = price - ((price * dis)/100);
-                //var total = price - dis;
-                var total = (qty * price);
-
-                tr.find('.amount').val(total);
-                totalAmount();
-            });
-
-            $('#hideshow').on('click', function(event) {
-                $('#content').removeClass('hidden');
-                $('#content').addClass('show');
-                $('#content').toggle('show');
-            });
-
-
-
-        });
-
-
-        // ajax
-        function getval(row,sel)
-        {
-            //alert(row);
-            //alert(sel.value);
-            var current_row = row;
-            var current_product_id = sel.value;
+        $('#sale_invoice_no').change(function(){
+            $('#loadForm').html('');
+            var sale_id = $(this).val();
+            console.log(sale_id);
 
             $.ajax({
-                url : "{{URL('product-relation-data')}}",
-                method : "get",
-                data : {
-                    current_product_id : current_product_id
+                url : "{{ URL('/get-returnable-product') }}/" + sale_id,
+                type: "GET",
+                dataType: "json",
+                success: function(data)
+                {
+                    console.log(data);
+                    $('#loadForm').html(data);
                 },
-                success : function (res){
-                    //console.log(res)
-                    console.log(res.data)
-                    //console.log(res.data.categoryOptions)
-                    $("#product_category_id_"+current_row).html(res.data.categoryOptions);
-                    $("#product_sub_category_id_"+current_row).html(res.data.subCategoryOptions);
-                    $("#product_brand_id_"+current_row).html(res.data.brandOptions);
-                },
-                error : function (err){
-                    console.log(err)
+                /*error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error get data from ajax');
+                }*/
+                error: function (data) {
+                    console.log(data);
                 }
             })
+        })
+        function productType(){
+            var arr = $('#payment_type').val();
+            console.log(arr);
+            if(arr == "check"){ $("#check_number").removeAttr("readonly"); }
+            if(arr == "cash"){ $("#check_number").attr("readonly", "readonly"); }
+        }
+        // ajax
+        function return_qty(row,sel) {
+
+            var current_row = row;
+            var current_return_qty = sel.value;
+            //console.log('current_row = ' + current_row);
+            //console.log('current_return_qty = ' + current_return_qty);
+            //console.log('current_return_qty= ' + typeof current_return_qty);
+            //var current_product_id = $('#product_id_'+current_row).val();
+            var current_sale_qty = $('#qty_'+current_row).val();
+            //console.log('current_sale_qty = ' + current_sale_qty);
+            //console.log('current_sale_qty= ' + typeof current_sale_qty);
+            current_return_qty = parseInt(current_return_qty);
+            //console.log('current_return_qty= ' + typeof current_return_qty);
+            current_sale_qty = parseInt(current_sale_qty);
+            //console.log('current_sale_qty= ' + typeof current_sale_qty);
+            if(current_return_qty > current_sale_qty){
+                alert('You have limit cross of stock qty!');
+                $('#return_qty_'+current_row).val(0);
+            }
         }
     </script>
+{{--    <script>--}}
+
+{{--        // ajax--}}
+{{--        function return_qty1(row,sel) {--}}
+{{--            console.log('ooo');--}}
+{{--            var current_row = row;--}}
+{{--            var current_return_qty = sel.value;--}}
+{{--            console.log(current_row);--}}
+{{--            console.log(current_return_qty);--}}
+{{--            //var current_product_id = $('#product_id_'+current_row).val();--}}
+
+{{--            var current_sale_qty = $('#qty_'+current_row).val();--}}
+{{--            if(current_return_qty > current_sale_qty){--}}
+{{--                alert('You have limit cross of stock qty!');--}}
+{{--                $('#return_qty_'+current_row).val(0);--}}
+{{--            }--}}
+{{--        }--}}
+
+{{--        function productType(row,sel){--}}
+{{--            var current_row = row;--}}
+{{--            var arr = $('#payment_type_'+current_row).val();--}}
+{{--            if(arr == "check"){ $("#check_number_"+current_row).removeAttr("readonly"); }--}}
+{{--            if(arr == "cash"){ $("#check_number_"+current_row).attr("readonly", "readonly"); }--}}
+{{--        }--}}
+
+{{--    </script>--}}
 @endpush
 
 

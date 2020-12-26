@@ -15,46 +15,41 @@
                 <h3 class="tile-title">Product Sales Returns</h3>
                 <div class="table-responsive">
                     <table id="example1" class="table table-bordered table-striped">
-                        <thead>
-                        <tr>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th>User</th>
-                            <td>{{$productSaleReturn->user->name}}</td>
-                        </tr>
-                        <tr>
-                            <th>Store</th>
-                            <td>{{$productSaleReturn->store->name}}</td>
-                        </tr>
-                        <tr>
-                            <th>Party</th>
-                            <td>{{$productSaleReturn->party->name}}</td>
-                        </tr>
-                        <tr>
-                            <th>Payment Type</th>
-                            <td>
-                                @php
-                                    echo $payment_type = \Illuminate\Support\Facades\DB::table('transactions')
-                                  ->where('ref_id',$productSaleReturn->id)->pluck('payment_type')->first();
-                                @endphp
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Discount Type</th>
-                            <td>{{$productSaleReturn->discount_type}}</td>
-                        </tr>
-                        <tr>
-                            <th>Discount Amount</th>
-                            <td>{{$productSaleReturn->discount_amount}}</td>
-                        </tr>
-                        <tr>
-                            <th>Amount</th>
-                            <td>{{$productSaleReturn->total_amount}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <thead>
+                    <tr>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>User</th>
+                        <td>{{$productSaleReturn->user->name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Store</th>
+                        <td>{{$productSaleReturn->store->name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Party</th>
+                        <td>{{$productSaleReturn->party->name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Payment Type</th>
+                        <td>{{$productSaleReturn->payment_type}}</td>
+                    </tr>
+                    <tr>
+                        <th>Discount Type</th>
+                        <td>{{$productSaleReturn->discount_type}}</td>
+                    </tr>
+                    <tr>
+                        <th>Discount Amount</th>
+                        <td>{{$productSaleReturn->discount_amount}}</td>
+                    </tr>
+                    <tr>
+                        <th>Amount</th>
+                        <td>{{$productSaleReturn->total_amount}}</td>
+                    </tr>
+                    </tbody>
+                </table>
                     <div class="tile-footer">
                     </div>
                 </div>
@@ -67,7 +62,7 @@
                     <thead>
                     <tr>
                         <th>Category</th>
-{{--                        <th>Sub Category</th>--}}
+                        <th>Sub Category</th>
                         <th>Brand</th>
                         <th>Return Condition</th>
                         <th>Product Image</th>
@@ -80,9 +75,9 @@
                     @foreach($productSaleReturnDetails as $productSaleReturnDetail)
                         <tr>
                             <td>{{$productSaleReturnDetail->product->product_category->name}}</td>
-{{--                            <td>--}}
-{{--                                {{$productSaleReturnDetail->product->product_sub_category ? $productSaleReturnDetail->product->product_sub_category->name : ''}}--}}
-{{--                            </td>--}}
+                            <td>
+                                {{$productSaleReturnDetail->product->product_sub_category ? $productSaleReturnDetail->product->product_sub_category->name : ''}}
+                            </td>
                             <td>{{$productSaleReturnDetail->product->product_brand->name}}</td>
                             <td>{{$productSaleReturnDetail->return_type}}</td>
                             <td>
