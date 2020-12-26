@@ -20,10 +20,13 @@ class TransactionController extends Controller
         $this->middleware('permission:product-list', ['only' => ['transactionList','lossProfit']]);
     }
 
-    public function transactionList(){
+    public function transactionList(Request $request){
+        $start_date = $request->start_date ? $request->start_date : '' ;
+        $end_date = $request->end_date ? $request->end_date : '' ;
+        $transaction_type = $request->transaction_type ? $request->transaction_type : '' ;
         $stores = Store::all();
 
-        return view('backend.transaction.index', compact('stores'));
+        return view('backend.transaction.index', compact('stores','start_date', 'end_date','transaction_type'));
     }
 
     public function lossProfit(){
