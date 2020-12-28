@@ -76,7 +76,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('product-relation-data','ProductPurchaseController@productRelationData');
     Route::get('product-sale-relation-data','ProductSaleController@productSaleRelationData');
     Route::get('stock-list','StockController@stockList')->name('stock.index');
+    Route::get('stock-details/{store_id}','StockController@stockDetails');
     Route::get('stock-summary-list','StockController@stockSummaryList')->name('stock.summary.list');
+    Route::get('stock-summary/{store_id}','StockController@stockSummary');
     Route::get('returnable-sale-product-list','ProductSaleReturnController@returnableSaleProduct')->name('returnable.sale.product');
     Route::post('sale-product-return','ProductSaleReturnController@saleProductReturn')->name('sale.product.return');
     Route::get('get-returnable-product/{sale_id}','ProductSaleReturnController@getReturnableProduct');

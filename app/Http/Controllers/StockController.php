@@ -19,6 +19,12 @@ class StockController extends Controller
         $stores = Store::all();
         return view('backend.stock.index', compact('stores'));
     }
+
+    public function stockDetails($store_id){
+        $stocks = Stock::where('store_id',$store_id)->latest()->get();
+
+        return view('backend.stock.details', compact('stocks'));
+    }
     public function export()
     {
         //return Excel::download(new UsersExport, 'users.xlsx');
@@ -26,7 +32,16 @@ class StockController extends Controller
     }
 
     public function stockSummaryList(){
-        $stores = Store::latest()->get();
+        $stores = Store::all();
         return view('backend.stock.stock_summary', compact('stores'));
+    }
+
+    public function stockSummary($store_id){
+        $stocks = Stock::where('store_id',$store_id)
+            ->whereIn('id', function($query) {
+                $query->from('stocks')->groupBy('product_id')->selectRaw('MAX(id)');
+            })->latest('id')->get();
+
+        return view('backend.stock.details', compact('stocks'));
     }
 }

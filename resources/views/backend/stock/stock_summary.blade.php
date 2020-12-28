@@ -4,59 +4,28 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class=""></i> Stock Summary</h1>
+                <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb">
-{{--                <li class="breadcrumb-item"><a class="btn btn-warning" href="{{ route('stock.export') }}">Export Data</a></li>--}}
+                <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+                <li class="breadcrumb-item"><a href="">Dashboard</a></li>
             </ul>
         </div>
-        <div class="col-md-12">
-            <div class="tile">
-                <h3 class="tile-title">Stock Summary</h3>
-                @if(!empty($stores))
-                    @foreach($stores as $store)
-                        <div class="col-md-12">
-                            <h1 class="text-center">{{$store->name}}</h1>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th width="5%">#Id</th>
-                                <th width="10%">Store</th>
-                                <th width="12%">Brand</th>
-                                <th width="12%">Product</th>
-                                <th width="12%">Current Stock</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @php
-                                //$stocks = \App\Stock::where('store_id',$store->id)->latest()->groupBy('product_id')->get();
+        <div class="row">
+            @if(!empty($stores))
+                @foreach($stores as $key => $store)
 
-                                $stocks = \App\Stock::where('store_id',$store->id)
-                                ->whereIn('id', function($query) {
-                                       $query->from('stocks')->groupBy('product_id')->selectRaw('MAX(id)');
-                                    })->latest('id')->get();
-
-                            @endphp
-                            @foreach($stocks as $key => $stock)
-                                <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td>{{ $stock->store->name}}</td>
-                                    <td>{{ $stock->product->product_brand->name}}</td>
-                                    <td>{{ $stock->product->name}}</td>
-                                    <td>{{ $stock->current_stock}}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                            <div class="tile-footer">
+                    <div class="col-md-4">
+                        <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+                            <div class="info">
+                                <h4><a href="{{ url('stock-summary/'.$store->id) }}">{{$store->name}}</a></h4>
+                                <p><b>Show Stock Summary</b></p>
                             </div>
                         </div>
-                    @endforeach
-                @endif
-            </div>
+                    </div>
 
+                @endforeach
+            @endif
         </div>
     </main>
 @endsection
