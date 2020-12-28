@@ -6,9 +6,9 @@
             <div>
                 <h1><i class=""></i> All Role</h1>
             </div>
-            {{--<ul class="app-breadcrumb breadcrumb">
+            <ul class="app-breadcrumb breadcrumb">
                 <li class="breadcrumb-item"> <a href="{{ route('roles.create') }}" class="btn btn-sm btn-primary" type="button">Add Role Permission</a></li>
-            </ul>--}}
+            </ul>
         </div>
         <div class="col-md-12">
             <div class="tile">
