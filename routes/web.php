@@ -109,6 +109,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('delete-all-cart-product','CartController@deleteAllCartProduct');
     Route::post('pos_insert', 'ProductPosSaleController@postInsert');
 
+    // stock sync
+    Route::get('stock_sync','StockController@stock_sync')->name('stock_sync');
+
 
     //excel
     Route::get('export', 'UserController@export')->name('export');

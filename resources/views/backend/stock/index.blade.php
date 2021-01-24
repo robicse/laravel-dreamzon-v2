@@ -11,6 +11,11 @@
                 <li class="breadcrumb-item"><a href="">Dashboard</a></li>
             </ul>
         </div>
+{{--        <div class="col-md-12 text-center">--}}
+{{--            <a href="{{ route('stock_sync') }}" class="btn btn-sm btn-success" role="button">Stock Synchronize</a>--}}
+{{--        </div>--}}
+{{--        <div class="col-md-12">&nbsp;</div>--}}
+
         <div class="row">
             @if(!empty($stores))
                 @foreach($stores as $key => $store)
