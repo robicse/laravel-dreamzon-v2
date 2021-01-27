@@ -91,15 +91,17 @@
                                             $sale_average_price = 0;
 
                                             $productSaleDetails = DB::table('product_sale_details')
-                                                ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
-                                                ->where('product_id',$productPurchaseDetail->product_id)
-                                                ->where('product_category_id',$productPurchaseDetail->product_category_id)
-                                                ->where('product_sub_category_id',$productPurchaseDetail->product_sub_category_id)
-                                                ->where('product_brand_id',$productPurchaseDetail->product_brand_id)
-                                                ->groupBy('product_id')
-                                                ->groupBy('product_category_id')
-                                                ->groupBy('product_sub_category_id')
-                                                ->groupBy('product_brand_id')
+                                                ->join('product_sales','product_sale_details.product_sale_id','=','product_sales.id')
+                                                ->select('product_sale_details.product_id','product_sale_details.product_category_id','product_sale_details.product_sub_category_id','product_sale_details.product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
+                                                ->where('product_sale_details.product_id',$productPurchaseDetail->product_id)
+                                                ->where('product_sale_details.product_category_id',$productPurchaseDetail->product_category_id)
+                                                ->where('product_sale_details.product_sub_category_id',$productPurchaseDetail->product_sub_category_id)
+                                                ->where('product_sale_details.product_brand_id',$productPurchaseDetail->product_brand_id)
+                                                ->where('product_sales.store_id',$store->id)
+                                                ->groupBy('product_sale_details.product_id')
+                                                ->groupBy('product_sale_details.product_category_id')
+                                                ->groupBy('product_sale_details.product_sub_category_id')
+                                                ->groupBy('product_sale_details.product_brand_id')
                                                 ->first();
 
                                             if(!empty($productSaleDetails))

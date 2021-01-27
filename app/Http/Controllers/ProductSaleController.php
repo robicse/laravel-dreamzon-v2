@@ -149,7 +149,7 @@ class ProductSaleController extends Controller
                 $purchase_sale_detail->save();
 
                 $product_id = $request->product_id[$i];
-                $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
+                $check_previous_stock = Stock::where('store_id',$request->store_id)->where('product_id',$product_id)->latest()->pluck('current_stock')->first();
                 if(!empty($check_previous_stock)){
                     $previous_stock = $check_previous_stock;
                 }else{
@@ -315,7 +315,7 @@ class ProductSaleController extends Controller
 
 
             $product_id = $request->product_id[$i];
-            $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
+            $check_previous_stock = Stock::where('store_id',$request->store_id)->where('product_id',$product_id)->latest()->pluck('current_stock')->first();
             if(!empty($check_previous_stock)){
                 $previous_stock = $check_previous_stock;
             }else{

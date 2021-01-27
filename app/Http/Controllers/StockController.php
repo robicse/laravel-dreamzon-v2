@@ -44,6 +44,18 @@ class StockController extends Controller
 //                    echo 'store_previous_row_current_stock '.$store_previous_row_current_stock.'<br/>';
 //                    echo 'this_row_current_stock =>'.$current_stock.'<br/>';
 //                    echo '<br/>';
+
+
+                    $stock = Stock::find($id);
+                    $stock->previous_stock = 0;
+                    $stock->current_stock = $stock_in;
+                    $affectedRow = $stock->update();
+                    if($affectedRow){
+                        echo 'this_row_current_stock => updated => '.$stock_in.'<br/>';
+                        echo '<br/>';
+                        $current_stock = $stock->current_stock;
+                    }
+
                 }else{
 //                    echo 'row_id =>'.$id.'<br/>';
 //                    echo 'product_id =>'.$product_id.'<br/>';
