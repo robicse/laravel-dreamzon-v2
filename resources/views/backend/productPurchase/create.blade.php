@@ -31,7 +31,7 @@
                         @csrf
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Party  <small class="requiredCustom">*</small></label>
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <select name="party_id" id="supplier" class="form-control select2">
                                     <option value="">Select One</option>
                                     @foreach($parties as $party)
@@ -39,7 +39,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3"><a type="button" class="test btn btn-primary btn-sm" onclick="modal_supplier()" data-toggle="modal"><i class="fa fa-plus"></i></a></div>
+                            <div class="col-md-1"><a type="button" class="test btn btn-primary btn-sm" onclick="modal_supplier()" data-toggle="modal"><i class="fa fa-plus"></i></a></div>
                         </div>
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
@@ -168,7 +168,7 @@
         <div id="supplier_modal" class="modal fade" role="dialog">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
-                    <div class="modal-header" style="background-color:green; color: white">
+                    <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">

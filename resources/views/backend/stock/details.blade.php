@@ -42,7 +42,7 @@
                             <td>{{ $stock->stock_in}}</td>
                             <td>{{ $stock->stock_out}}</td>
                             <td>{{ $stock->current_stock}}</td>
-                            <td>{{ $stock->date}}</td>
+                            <td>{{ $stock->created_at}}</td>
                         </tr>
                     @endforeach
                     </tbody>

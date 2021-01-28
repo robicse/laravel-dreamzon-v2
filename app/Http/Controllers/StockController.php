@@ -51,8 +51,8 @@ class StockController extends Controller
                     $stock->current_stock = $stock_in;
                     $affectedRow = $stock->update();
                     if($affectedRow){
-                        echo 'this_row_current_stock => updated => '.$stock_in.'<br/>';
-                        echo '<br/>';
+//                        echo 'this_row_current_stock => updated => '.$stock_in.'<br/>';
+//                        echo '<br/>';
                         $current_stock = $stock->current_stock;
                     }
 
@@ -73,8 +73,8 @@ class StockController extends Controller
                             $stock->current_stock = $store_previous_row_current_stock + $stock_in;
                             $affectedRow = $stock->update();
                             if($affectedRow){
-                                echo 'this_row_current_stock => updated => '.$stock_in.'<br/>';
-                                echo '<br/>';
+//                                echo 'this_row_current_stock => updated => '.$stock_in.'<br/>';
+//                                echo '<br/>';
                                 $current_stock = $stock->current_stock;
                             }
                         }else if($previous_stock != $store_previous_row_current_stock){
@@ -85,8 +85,8 @@ class StockController extends Controller
                             $stock->current_stock = $store_previous_row_current_stock + $stock_in;
                             $affectedRow = $stock->update();
                             if($affectedRow){
-                                echo 'this_row_current_stock => updated => '.$stock_in.'<br/>';
-                                echo '<br/>';
+//                                echo 'this_row_current_stock => updated => '.$stock_in.'<br/>';
+//                                echo '<br/>';
                                 $current_stock = $stock->current_stock;
                             }
                         }else{
@@ -100,8 +100,8 @@ class StockController extends Controller
                             $stock->current_stock = $store_previous_row_current_stock - $stock_out;
                             $affectedRow = $stock->update();
                             if ($affectedRow) {
-                                echo 'This Row('.$id.') Current Stock => updated => ' . $stock_out . '<br/>';
-                                echo '<br/>';
+//                                echo 'This Row('.$id.') Current Stock => updated => ' . $stock_out . '<br/>';
+//                                echo '<br/>';
                                 $current_stock = $stock->current_stock;
                             }
                         }else if($previous_stock != $store_previous_row_current_stock) {
@@ -112,8 +112,8 @@ class StockController extends Controller
                             $stock->current_stock = $store_previous_row_current_stock - $stock_out;
                             $affectedRow = $stock->update();
                             if ($affectedRow) {
-                                echo 'This Row('.$id.') Current Stock => updated =>' . $stock_out . '<br/>';
-                                echo '<br/>';
+//                                echo 'This Row('.$id.') Current Stock => updated =>' . $stock_out . '<br/>';
+//                                echo '<br/>';
                                 $current_stock = $stock->current_stock;
                             }
                         }else{
@@ -124,12 +124,12 @@ class StockController extends Controller
 //                        echo 'this_row_current_stock => nothing<br/>';
 //                        echo '<br/>';
                     }
-                    echo '<br/>';
+//                    echo '<br/>';
                 }
                 $store_previous_row_current_stock = $current_stock;
             }
         }else{
-            echo 'no found!'.'<br/>';
+//            echo 'no found!'.'<br/>';
         }
     }
 
