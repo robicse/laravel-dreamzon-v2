@@ -81,6 +81,12 @@
 
             </ul>
         </li>
+        <li class="treeview{{Request::is('stockTransfers*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Stock Transfer </span><i class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('stockTransfers.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Stock Transfer List</span></a></li>
+                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('stockTransfers.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Stock Transfer Create</span></a></li>
+            </ul>
+        </li>
         <li class="treeview{{Request::is('stock*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Stock </span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('stock.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Stock List</span></a></li>
