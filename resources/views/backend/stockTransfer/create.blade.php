@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Delivery Services  <small class="requiredCustom">*</small></label>
+                            <label class="control-label col-md-3 text-right">Delivery Services</label>
                             <div class="col-md-8">
                                 <select name="delivery_service_id" id="delivery_service_id" class="form-control" >
                                     <option value="">Select One</option>
@@ -68,7 +68,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Delivery Services Charge <small class="requiredCustom">*</small></label>
+                            <label class="control-label col-md-3 text-right">Delivery Services Charge</label>
                             <div class="col-md-8">
                                 <input type="number" class="form-control" name="delivery_service_charge" value="" />
                             </div>
@@ -189,7 +189,7 @@
                             <div class="form-group row">
                                 <label class="control-label col-md-3"></label>
                                 <div class="col-md-8">
-                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Product Sale</button>
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Stock Transfer</button>
                                 </div>
                             </div>
                         </div>
@@ -406,7 +406,7 @@
                         $("#product_sub_category_id_"+current_row).html(res.data.subCategoryOptions);
                         $("#product_brand_id_"+current_row).html(res.data.brandOptions);
                         $("#stock_qty_"+current_row).val(res.data.current_stock);
-                        $("#price_"+current_row).val(res.data.mrp_price);
+                        $("#price_"+current_row).val(res.data.price);
                     },
                     error : function (err){
                         console.log(err)

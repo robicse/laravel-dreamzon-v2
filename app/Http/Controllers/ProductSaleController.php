@@ -375,16 +375,25 @@ class ProductSaleController extends Controller
         $store_id = $request->store_id;
         $product_id = $request->current_product_id;
         $current_stock = Stock::where('store_id',$store_id)->where('product_id',$product_id)->latest()->pluck('current_stock')->first();
-        $mrp_price = ProductPurchaseDetail::join('product_purchases', 'product_purchase_details.product_purchase_id', '=', 'product_purchases.id')
+//        $mrp_price = ProductPurchaseDetail::join('product_purchases', 'product_purchase_details.product_purchase_id', '=', 'product_purchases.id')
+//            ->where('store_id',$store_id)->where('product_id',$product_id)
+//            ->latest('product_purchase_details.id')
+//            ->pluck('product_purchase_details.mrp_price')
+//            ->first();
+
+        $productPurchaseDetail = ProductPurchaseDetail::join('product_purchases', 'product_purchase_details.product_purchase_id', '=', 'product_purchases.id')
             ->where('store_id',$store_id)->where('product_id',$product_id)
             ->latest('product_purchase_details.id')
-            ->pluck('product_purchase_details.mrp_price')
             ->first();
+
+        $price = $productPurchaseDetail->price;
+        $mrp_price = $productPurchaseDetail->mrp_price;
 
         $product_category_id = Product::where('id',$product_id)->pluck('product_category_id')->first();
         $product_sub_category_id = Product::where('id',$product_id)->pluck('product_sub_category_id')->first();
         $product_brand_id = Product::where('id',$product_id)->pluck('product_brand_id')->first();
         $options = [
+            'price' => $price,
             'mrp_price' => $mrp_price,
             'current_stock' => $current_stock,
             'categoryOptions' => '',

@@ -25,7 +25,15 @@ class StockTransferController extends Controller
 {
     public function index()
     {
-        //
+        $auth_user_id = Auth::user()->id;
+        $auth_user = Auth::user()->roles[0]->name;
+        if($auth_user == "Admin"){
+            $stockTransfers = StockTransfer::latest()->get();
+        }else{
+            $stockTransfers = StockTransfer::where('user_id',$auth_user_id)->latest()->get();
+        }
+        //dd($stockTransfers);
+        return view('backend.stockTransfer.index',compact('stockTransfers'));
     }
 
 
@@ -172,13 +180,18 @@ class StockTransferController extends Controller
         }
 
         Toastr::success('Product Sale Created Successfully', 'Success');
-        return redirect()->route('productSales.index');
+        return redirect()->route('stockTransfers.index');
     }
 
 
     public function show($id)
     {
-        //
+        $stockTransfer = StockTransfer::where('id',$id)->first();
+
+        $stockTransferDetails = StockTransferDetail::where('stock_transfer_id',$id)->get();
+        //dd($stockTransferDetail);
+
+        return view('backend.stockTransfer.show',compact('stockTransfer','stockTransferDetails'));
     }
 
 
