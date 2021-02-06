@@ -71,9 +71,9 @@
                                         @endforeach
                                     </div>
                                 </div>
-{{--                                <div class="col-md-2">--}}
-{{--                                    <a href="" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#exampleModal">Create Permission List</a>--}}
-{{--                                </div>--}}
+                                <div class="col-md-2">
+                                    <a href="" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#exampleModal">Create Permission List</a>
+                                </div>
                             </div>
 
                             <div class="form-group row mb-0">

@@ -23,6 +23,14 @@ use Illuminate\Support\Str;
 
 class StockTransferController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:stock-transfer-list|stock-transfer-create|stock-transfer-edit|stock-transfer-delete', ['only' => ['index','show']]);
+        $this->middleware('permission:stock-transfer-create', ['only' => ['create','store']]);
+        $this->middleware('permission:stock-transfer-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:stock-transfer-delete', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         $auth_user_id = Auth::user()->id;
