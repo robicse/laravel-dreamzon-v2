@@ -168,9 +168,9 @@
                                     <p>
                                         <b>
                                             @if(abs($sum_loss_or_profit) > 0)
-                                                Profit: {{$sum_loss_or_profit}}
+                                                Profit: {{number_format($sum_loss_or_profit, 2, '.', '')}}
                                             @else
-                                                Loss: {{$sum_loss_or_profit}}
+                                                Loss: {{number_format($sum_loss_or_profit, 2, '.', '')}}
                                             @endif
                                         </b>
                                     </p>
