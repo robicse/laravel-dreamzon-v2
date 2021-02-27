@@ -21,6 +21,14 @@
                         </div>
 
                         @php
+                            // total purchase
+                            $sum_amount = 0;
+                            $sum_last_thirty_day_amount = 0;
+                            $sum_today_amount = 0;
+
+
+
+
                             $sum_purchase_price = 0;
                             $sum_sale_price = 0;
                             $sum_sale_return_price = 0;
@@ -40,6 +48,41 @@
                             $sum_last_thirty_day_sale_price = 0;
                             $sum_last_thirty_day_sale_return_price = 0;
                             $sum_last_thirty_day_loss_or_profit = 0;
+
+
+
+
+
+
+                            $transactions = \App\Transaction::where('store_id',$store->id)->where('transaction_type','purchase')->get();
+
+                            foreach($transactions as $key => $transaction){
+                                $sum_amount += $transaction->amount;
+                            }
+
+                            // last 30 day purchase
+                            $sum_last_thirty_day_amount = 0;
+                            $transaction_last_thirty_days = \App\Transaction::where('store_id',$store->id)
+                                        ->where('created_at','>=',date('Y-m-d',strtotime('-30 days')).' 00:00:00')
+                                        ->where('created_at','<=',date('Y-m-d').' 23:59:59')
+                                        ->where('transaction_type','purchase')
+                                        ->get();
+
+                            foreach($transaction_last_thirty_days as $key => $transaction_last_thirty_day){
+                                $sum_last_thirty_day_amount += $transaction_last_thirty_day->amount;
+                            }
+
+                            // Today purchase
+                            $sum_today_amount = 0;
+                            $transaction_todays = \App\Transaction::where('store_id',$store->id)
+                                        ->where('created_at','>=',date('Y-m-d').' 00:00:00')
+                                        ->where('created_at','<=',date('Y-m-d').' 23:59:59')
+                                        ->where('transaction_type','purchase')
+                                        ->get();
+
+                            foreach($transaction_todays as $key => $transaction_today){
+                                $sum_today_amount += $transaction_today->amount;
+                            }
 
 
 
@@ -296,7 +339,7 @@
                             <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                                 <div class="info">
                                     <h4>Total Purchase</h4>
-                                    <p><b>{{$sum_purchase_price}}</b></p>
+                                    <p><b>{{$sum_amount}}</b></p>
                                 </div>
                             </div>
                         </div>
@@ -304,7 +347,7 @@
                             <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                                 <div class="info">
                                     <h4>Last 30 Day Purchase</h4>
-                                    <p><b>{{$sum_last_thirty_day_purchase_price}}</b></p>
+                                    <p><b>{{$sum_last_thirty_day_amount}}</b></p>
                                 </div>
                             </div>
                         </div>
@@ -312,7 +355,7 @@
                             <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                                 <div class="info">
                                     <h4>Today Purchase</h4>
-                                    <p><b>{{$sum_today_purchase_price}}</b></p>
+                                    <p><b>{{$sum_today_amount}}</b></p>
                                 </div>
                             </div>
                         </div>
