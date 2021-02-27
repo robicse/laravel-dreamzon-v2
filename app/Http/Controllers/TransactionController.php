@@ -20,13 +20,18 @@ class TransactionController extends Controller
         $this->middleware('permission:product-list', ['only' => ['transactionList','lossProfit']]);
     }
 
-    public function transactionList(Request $request){
+    public function transactionList(){
+        $stores = Store::all();
+
+        return view('backend.transaction.index', compact('stores'));
+    }
+
+    public function transactionDetails(Request $request){
+        $store_id = $request->store_id ? $request->store_id : '' ;
         $start_date = $request->start_date ? $request->start_date : '' ;
         $end_date = $request->end_date ? $request->end_date : '' ;
         $transaction_type = $request->transaction_type ? $request->transaction_type : '' ;
-        $stores = Store::all();
-
-        return view('backend.transaction.index', compact('stores','start_date', 'end_date','transaction_type'));
+        return view('backend.transaction.details', compact('store_id','start_date', 'end_date','transaction_type'));
     }
 
     public function lossProfit(){
@@ -47,6 +52,13 @@ class TransactionController extends Controller
         //dd($productPurchaseDetails);
         $stores = Store::all();
         return view('backend.transaction.loss_profit', compact('stores'));
+    }
+
+    public function transactionLossProfitDetails(Request $request){
+        $store_id = $request->store_id ? $request->store_id : '' ;
+        $start_date = $request->start_date ? $request->start_date : '' ;
+        $end_date = $request->end_date ? $request->end_date : '' ;
+        return view('backend.transaction.loss_profit_details', compact('store_id','start_date', 'end_date'));
     }
 
     public function deliveryList(){
