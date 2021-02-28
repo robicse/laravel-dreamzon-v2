@@ -322,6 +322,7 @@
 
                             if($fromStockTransferDetails){
                                  $from_stock_transfer_sum_sub_total = $fromStockTransferDetails->from_stock_transfer_sum_sub_total;
+                                 $sum_amount -= $from_stock_transfer_sum_sub_total;
                             }
 
                             $toStockTransferDetails = DB::table('stock_transfer_details')
@@ -332,142 +333,144 @@
 
                             if($toStockTransferDetails){
                                  $to_stock_transfer_sum_sub_total = $toStockTransferDetails->to_stock_transfer_sum_sub_total;
+                                 $sum_amount += $to_stock_transfer_sum_sub_total;
                             }
                         @endphp
 
-                        <div class="col-md-3 ">
+                        <div class="col-md-4 ">
                             <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                                 <div class="info">
                                     <h4>Total Purchase</h4>
-                                    <p><b>{{$sum_amount}}</b></p>
+                                    <p><b>{{number_format($sum_amount, 2, '.', ',')}}</b></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 ">
+                        <div class="col-md-4 ">
                             <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                                 <div class="info">
                                     <h4>Last 30 Day Purchase</h4>
-                                    <p><b>{{$sum_last_thirty_day_amount}}</b></p>
+                                    <p><b>{{number_format($sum_last_thirty_day_amount, 2, '.', ',')}}</b></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 ">
+                        <div class="col-md-4 ">
                             <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                                 <div class="info">
                                     <h4>Today Purchase</h4>
-                                    <p><b>{{$sum_today_amount}}</b></p>
+                                    <p><b>{{number_format($sum_today_amount, 2, '.', ',')}}</b></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
                                 <div class="info">
                                     <h4>Total Sell</h4>
-                                    <p><b>{{$sum_sale_price}}</b></p>
+                                    <p><b>{{number_format($sum_sale_price, 2, '.', ',')}}</b></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
                                 <div class="info">
                                     <h4>Last 30 Day Sell</h4>
-                                    <p><b>{{$sum_last_thirty_day_sale_price}}</b></p>
+                                    <p><b>{{number_format($sum_last_thirty_day_sale_price, 2, '.', ',')}}</b></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
                                 <div class="info">
                                     <h4>Today Sell</h4>
-                                    <p><b>{{$sum_today_sale_price}}</b></p>
+                                    <p><b>{{number_format($sum_today_sale_price, 2, '.', ',')}}</b></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
                                 <div class="info">
                                     <h4>Total Sell Return</h4>
-                                    <p><b>{{$sum_sale_return_price}}</b></p>
+                                    <p><b>{{number_format($sum_sale_return_price, 2, '.', ',')}}</b></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
                                 <div class="info">
                                     <h4>Last 30 Day Sell Return</h4>
-                                    <p><b>{{$sum_last_thirty_day_sale_return_price}}</b></p>
+                                    <p><b>{{number_format($sum_last_thirty_day_sale_return_price, 2, '.', ',')}}</b></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
                                 <div class="info">
                                     <h4>Today Sell Return</h4>
-                                    <p><b>{{$sum_today_sale_return_price}}</b></p>
+                                    <p><b>{{number_format($sum_today_sale_return_price, 2, '.', ',')}}</b></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 ">
-                            <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
-                                <div class="info">
-                                    <h4>Stock Transfer OUt</h4>
-                                    <p><b>{{$from_stock_transfer_sum_sub_total ? $from_stock_transfer_sum_sub_total : 0}}</b></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 ">
-                            <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
-                                <div class="info">
-                                    <h4>Stock Transfer In</h4>
-                                    <p><b>{{$to_stock_transfer_sum_sub_total ? $to_stock_transfer_sum_sub_total : 0}}</b></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="widget-small info coloured-icon"><i class="icon fab fa-paypal " ></i><div class="info">
                                     <h4> Total Loss/Profit</h4>
                                     <p>
                                         <b>
                                             @if(abs($sum_loss_or_profit) > 0)
-                                                Profit: {{number_format($sum_loss_or_profit, 2, '.', '')}}
+                                                Profit: {{number_format($sum_loss_or_profit, 2, '.', ',')}}
                                             @else
-                                                Loss: {{number_format($sum_loss_or_profit, 2, '.', '')}}
+                                                Loss: {{number_format($sum_loss_or_profit, 2, '.', ',')}}
                                             @endif
                                         </b>
                                     </p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="widget-small info coloured-icon"><i class="icon fab fa-paypal " ></i><div class="info">
                                     <h4> Last 30 Day Loss/Profit</h4>
                                     <p>
                                         <b>
                                             @if(abs($sum_last_thirty_day_loss_or_profit) > 0)
-                                                Profit: {{number_format($sum_last_thirty_day_loss_or_profit, 2, '.', '')}}
+                                                Profit: {{number_format($sum_last_thirty_day_loss_or_profit, 2, '.', ',')}}
                                             @else
-                                                Loss: {{number_format($sum_last_thirty_day_loss_or_profit, 2, '.', '')}}
+                                                Loss: {{number_format($sum_last_thirty_day_loss_or_profit, 2, '.', ',')}}
                                             @endif
                                         </b>
                                     </p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="widget-small info coloured-icon"><i class="icon fab fa-paypal " ></i><div class="info">
                                     <h4> Today Loss/Profit</h4>
                                     <p>
                                         <b>
                                             @if(abs($sum_today_loss_or_profit) > 0)
-                                                Profit: {{number_format($sum_today_loss_or_profit, 2, '.', '')}}
+                                                Profit: {{number_format($sum_today_loss_or_profit, 2, '.', ',')}}
                                             @else
-                                                Loss: {{number_format($sum_today_loss_or_profit, 2, '.', '')}}
+                                                Loss: {{number_format($sum_today_loss_or_profit, 2, '.', ',')}}
                                             @endif
                                         </b>
                                     </p>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+                                <div class="info">
+                                    <h4>Stock Transfer OUt</h4>
+                                    <p><b>{{$from_stock_transfer_sum_sub_total ? number_format($from_stock_transfer_sum_sub_total, 2, '.', ',') : number_format(0, 2, '.', ',')}}</b></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+                                <div class="info">
+                                    <h4>Stock Transfer In</h4>
+                                    <p><b>{{$to_stock_transfer_sum_sub_total ? number_format($to_stock_transfer_sum_sub_total, 2, '.', ',') : number_format(0, 2, '.', ',')}}</b></p>
+                                </div>
+                            </div>
+                        </div>
+
                         {{--<div class="col-md-3">
                             <div class="widget-small warning coloured-icon"><i class="icon fas fa-file-invoice-dollar"></i>
                                 <div class="info">
