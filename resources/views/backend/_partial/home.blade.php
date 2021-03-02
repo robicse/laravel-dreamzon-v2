@@ -60,6 +60,30 @@
                                 $sum_amount += $transaction->amount;
                             }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             // last 30 day purchase
                             $sum_last_thirty_day_amount = 0;
                             $transaction_last_thirty_days = \App\Transaction::where('store_id',$store->id)
@@ -96,6 +120,12 @@
                                 ->groupBy('product_brand_id')
                                 ->get();
 
+
+
+
+
+                            $sum_stock_purchase_price = $sum_amount;
+
                             if(!empty($productPurchaseDetails)){
                                 foreach($productPurchaseDetails as $key => $productPurchaseDetail){
                                     $purchase_average_price = $productPurchaseDetail->sub_total/$productPurchaseDetail->qty;
@@ -125,6 +155,10 @@
                                         if($sale_total_qty > 0){
                                             $loss_or_profit = ($sale_average_price*$sale_total_qty) - ($purchase_average_price*$sale_total_qty);
                                             $sum_loss_or_profit += $loss_or_profit;
+
+
+                                            $sale_total_qty = $productSaleDetails->qty;
+                                            $sum_stock_purchase_price -= $purchase_average_price*$sale_total_qty;
                                         }
                                     }
 
@@ -467,6 +501,69 @@
                                 <div class="info">
                                     <h4>Stock Transfer In</h4>
                                     <p><b>{{$to_stock_transfer_sum_sub_total ? number_format($to_stock_transfer_sum_sub_total, 2, '.', ',') : number_format(0, 2, '.', ',')}}</b></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+                                <div class="info">
+                                    <h4>Stock Available Amount</h4>
+                                    <?php
+                                    $productPurchasesSummations = DB::table('product_purchase_details')
+                                        ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+                                        ->select(
+                                            'product_purchase_details.product_id',
+                                            'product_purchase_details.product_category_id',
+                                            'product_purchase_details.product_sub_category_id',
+                                            'product_purchase_details.product_brand_id',
+                                            DB::raw('SUM(product_purchase_details.qty) as qty'),
+                                            DB::raw('SUM(product_purchase_details.price) as price'),
+                                            DB::raw('SUM(product_purchase_details.sub_total) as sub_total')
+                                        )
+                                        ->where('product_purchases.store_id',$store->id)
+                                        ->groupBy('product_purchase_details.product_id')
+                                        ->groupBy('product_purchase_details.product_category_id')
+                                        ->groupBy('product_purchase_details.product_sub_category_id')
+                                        ->groupBy('product_purchase_details.product_brand_id')
+                                        ->get();
+
+
+
+                                    $sum_stock_purchase_price = $sum_amount;
+                                    if(!empty($productPurchasesSummations)){
+                                        foreach($productPurchasesSummations as $key => $productPurchasesSummation){
+                                            $purchase_average_price = $productPurchasesSummation->sub_total/$productPurchasesSummation->qty;
+                                            //$purchase_total_qty = $productPurchasesSummation->qty;
+
+
+                                            // sale total
+                                            $productSaleDetails = DB::table('product_sale_details')
+                                                ->join('product_sales','product_sale_details.product_sale_id','=','product_sales.id')
+                                                ->select('product_sale_details.product_id','product_sale_details.product_category_id','product_sale_details.product_sub_category_id','product_sale_details.product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
+                                                ->where('product_sale_details.product_id',$productPurchasesSummation->product_id)
+                                                ->where('product_sale_details.product_category_id',$productPurchasesSummation->product_category_id)
+                                                ->where('product_sale_details.product_sub_category_id',$productPurchasesSummation->product_sub_category_id)
+                                                ->where('product_sale_details.product_brand_id',$productPurchasesSummation->product_brand_id)
+                                                ->where('product_sales.store_id',$store->id)
+                                                ->groupBy('product_sale_details.product_id')
+                                                ->groupBy('product_sale_details.product_category_id')
+                                                ->groupBy('product_sale_details.product_sub_category_id')
+                                                ->groupBy('product_sale_details.product_brand_id')
+                                                ->first();
+
+                                            if(!empty($productSaleDetails))
+                                            {
+                                                $sale_total_qty = $productSaleDetails->qty;
+
+                                                //$last_qty = $purchase_total_qty - $sale_total_qty;
+
+                                                $sum_stock_purchase_price -= $purchase_average_price*$sale_total_qty;
+
+                                            }
+                                        }
+                                    }
+                                    ?>
+                                    <p><b>{{$sum_stock_purchase_price ? number_format($sum_stock_purchase_price, 2, '.', ',') : number_format(0, 2, '.', ',')}}</b></p>
                                 </div>
                             </div>
                         </div>
