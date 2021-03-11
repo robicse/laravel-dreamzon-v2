@@ -203,7 +203,7 @@
         </tbody>
     </table>
     <p class="centered">Thanks for your purchase!
-        <br>simco.com.bd</p>
+        <br>DreamZon</p>
     <p class="centered">{{$date}}</p>
     <p class="bottom_space">&nbsp;</p>
 </div>

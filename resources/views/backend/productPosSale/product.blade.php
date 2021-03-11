@@ -4,7 +4,7 @@
 
             <div class="modal-body">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span> </button>
-                <div class="table-responsive">
+                <div class="table-responsive"  id="show_products">
                     <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>

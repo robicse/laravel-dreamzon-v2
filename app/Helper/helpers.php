@@ -189,6 +189,30 @@
             $sum_amount += $transaction->amount;
         }
 
+        $fromStockTransferDetails = DB::table('stock_transfer_details')
+            ->join('stock_transfers','stock_transfers.id','=','stock_transfer_details.stock_transfer_id')
+            ->select(DB::raw('SUM(stock_transfer_details.sub_total) as from_stock_transfer_sum_sub_total'))
+            ->where('stock_transfers.from_store_id',$store_id)
+            ->first();
+
+        if($fromStockTransferDetails){
+            $from_stock_transfer_sum_sub_total = $fromStockTransferDetails->from_stock_transfer_sum_sub_total;
+            $sum_amount -= $from_stock_transfer_sum_sub_total;
+        }
+
+
+
+        $toStockTransferDetails = DB::table('stock_transfer_details')
+            ->join('stock_transfers','stock_transfers.id','=','stock_transfer_details.stock_transfer_id')
+            ->select(DB::raw('SUM(stock_transfer_details.sub_total) as to_stock_transfer_sum_sub_total'))
+            ->where('stock_transfers.to_store_id',$store_id)
+            ->first();
+
+        if($toStockTransferDetails){
+            $to_stock_transfer_sum_sub_total = $toStockTransferDetails->to_stock_transfer_sum_sub_total;
+            $sum_amount += $to_stock_transfer_sum_sub_total;
+        }
+
         $sum_stock_purchase_price = $sum_amount;
 
         $productPurchasesSummations = DB::table('product_purchase_details')
@@ -276,6 +300,231 @@ function to_stock_transfer_sum_sub_total($store_id){
     }
 
     return $to_stock_transfer_sum_sub_total;
+}
+
+function sum_today_sale_return_price($store_id){
+    // sale return today
+
+    $sum_today_sale_return_price = 0;
+    $productTodaySaleReturnDetails = DB::table('product_sale_return_details')
+        ->leftJoin('product_sale_returns','product_sale_return_details.product_sale_return_id','=','product_sale_returns.id')
+        ->select(
+            'product_sale_return_details.product_id',
+            DB::raw('SUM(product_sale_return_details.qty) as qty'),
+            DB::raw('SUM(product_sale_return_details.price) as price')
+        )
+        ->where('product_sale_returns.store_id',$store_id)
+        ->where('product_sale_return_details.created_at','>=',date('Y-m-d').' 00:00:00')
+        ->where('product_sale_return_details.created_at','<=',date('Y-m-d').' 23:59:59')
+        ->groupBy('product_sale_return_details.product_id')
+        ->get();
+
+    if(!empty($productTodaySaleReturnDetails)) {
+        foreach ($productTodaySaleReturnDetails as $productTodaySaleReturnDetail){
+            //$product_id = $productTodaySaleReturnDetail->product_id;
+            $sale_return_total_qty = $productTodaySaleReturnDetail->qty;
+            $sale_return_total_price = $productTodaySaleReturnDetail->price;
+            $sum_today_sale_return_price += $sale_return_total_qty*$sale_return_total_price;
+        }
+
+    }
+
+    return $sum_today_sale_return_price;
+}
+
+function sum_last_thirty_day_sale_return_price($store_id){
+    // sale return last 30 day
+
+    $sum_last_thirty_day_sale_return_price = 0;
+    $productTodaySaleReturnDetails = DB::table('product_sale_return_details')
+        ->leftJoin('product_sale_returns','product_sale_return_details.product_sale_return_id','=','product_sale_returns.id')
+        ->select(
+            'product_sale_return_details.product_id',
+            DB::raw('SUM(product_sale_return_details.qty) as qty'),
+            DB::raw('SUM(product_sale_return_details.price) as price')
+        )
+        ->where('product_sale_returns.store_id',$store_id)
+        ->where('product_sale_return_details.created_at','>=',date('Y-m-d',strtotime('-30 days')).' 00:00:00')
+        ->where('product_sale_return_details.created_at','<=',date('Y-m-d').' 23:59:59')
+        ->groupBy('product_sale_return_details.product_id')
+        ->get();
+
+    if(!empty($productTodaySaleReturnDetails)) {
+        foreach ($productTodaySaleReturnDetails as $productTodaySaleReturnDetail){
+            //$product_id = $productTodaySaleReturnDetail->product_id;
+            $sale_return_total_qty = $productTodaySaleReturnDetail->qty;
+            $sale_return_total_price = $productTodaySaleReturnDetail->price;
+            $sum_last_thirty_day_sale_return_price += $sale_return_total_qty*$sale_return_total_price;
+        }
+
+    }
+
+    return $sum_last_thirty_day_sale_return_price;
+}
+
+function sum_sale_return_price($store_id){
+    // sale return
+
+    $sum_sale_return_price = 0;
+    $productTodaySaleReturnDetails = DB::table('product_sale_return_details')
+        ->leftJoin('product_sale_returns','product_sale_return_details.product_sale_return_id','=','product_sale_returns.id')
+        ->select(
+            'product_sale_return_details.product_id',
+            DB::raw('SUM(product_sale_return_details.qty) as qty'),
+            DB::raw('SUM(product_sale_return_details.price) as price')
+        )
+        ->where('product_sale_returns.store_id',$store_id)
+        ->groupBy('product_sale_return_details.product_id')
+        ->get();
+
+    if(!empty($productTodaySaleReturnDetails)) {
+        foreach ($productTodaySaleReturnDetails as $productTodaySaleReturnDetail){
+            //$product_id = $productTodaySaleReturnDetail->product_id;
+            $sale_return_total_qty = $productTodaySaleReturnDetail->qty;
+            $sale_return_total_price = $productTodaySaleReturnDetail->price;
+            $sum_sale_return_price += $sale_return_total_qty*$sale_return_total_price;
+        }
+
+    }
+
+    return $sum_sale_return_price;
+}
+
+function sum_last_thirty_day_sale_price($store_id){
+
+    $sum_last_thirty_day_sale_price = 0;
+    // sale last 30 day
+    $productLastThirtyDaySaleDetail = DB::table('product_sale_details')
+        ->join('product_sales','product_sale_details.product_sale_id','=','product_sales.id')
+        ->select(
+            DB::raw('SUM(product_sales.total_amount) as total_amount')
+        )
+        ->where('product_sales.store_id',$store_id)
+        ->where('product_sale_details.created_at','>=',date('Y-m-d',strtotime('-30 days')).' 00:00:00')
+        ->where('product_sale_details.created_at','<=',date('Y-m-d').' 23:59:59')
+        ->first();
+
+    if(!empty($productLastThirtyDaySaleDetail)){
+        $sum_last_thirty_day_sale_price = $productLastThirtyDaySaleDetail->total_amount;
+    }
+
+
+    return $sum_last_thirty_day_sale_price;
+}
+
+function sum_today_sale_price($store_id){
+
+    $sum_today_sale_price = 0;
+    // sale last 30 day
+    $productTodaySaleDetail = DB::table('product_sale_details')
+        ->join('product_sales','product_sale_details.product_sale_id','=','product_sales.id')
+        ->select(
+            DB::raw('SUM(product_sales.total_amount) as total_amount')
+        )
+        ->where('product_sales.store_id',$store_id)
+        ->where('product_sale_details.created_at','>=',date('Y-m-d').' 00:00:00')
+        ->where('product_sale_details.created_at','<=',date('Y-m-d').' 23:59:59')
+        ->first();
+
+    if(!empty($productTodaySaleDetail)){
+        $sum_today_sale_price = $productTodaySaleDetail->total_amount;
+    }
+
+
+    return $sum_today_sale_price;
+}
+
+function sum_sale_price($store_id){
+
+    $sum_sale_price = 0;
+
+    $productTodaySaleDetail = DB::table('product_sale_details')
+        ->join('product_sales','product_sale_details.product_sale_id','=','product_sales.id')
+        ->select(
+            DB::raw('SUM(product_sales.total_amount) as total_amount')
+        )
+        ->where('product_sales.store_id',$store_id)
+        ->first();
+
+    if(!empty($productTodaySaleDetail)){
+        $sum_sale_price = $productTodaySaleDetail->total_amount;
+    }
+
+    return $sum_sale_price;
+}
+
+function sum_today_purchase_amount($store_id){
+
+    $sum_today_purchase_amount = 0;
+
+    $transaction_todays = \App\Transaction::where('store_id',$store_id)
+        ->where('created_at','>=',date('Y-m-d').' 00:00:00')
+        ->where('created_at','<=',date('Y-m-d').' 23:59:59')
+        ->where('transaction_type','purchase')
+        ->get();
+
+    foreach($transaction_todays as $key => $transaction_today){
+        $sum_today_purchase_amount += $transaction_today->amount;
+    }
+
+    return $sum_today_purchase_amount;
+}
+
+function sum_last_thirty_day_purchase_amount($store_id){
+
+    $sum_last_thirty_day_purchase_amount = 0;
+
+    $transaction_todays = \App\Transaction::where('store_id',$store_id)
+        ->where('created_at','>=',date('Y-m-d',strtotime('-30 days')).' 00:00:00')
+        ->where('created_at','<=',date('Y-m-d').' 23:59:59')
+        ->where('transaction_type','purchase')
+        ->get();
+
+    foreach($transaction_todays as $key => $transaction_today){
+        $sum_last_thirty_day_purchase_amount += $transaction_today->amount;
+    }
+
+    return $sum_last_thirty_day_purchase_amount;
+}
+
+function sum_total_purchase_amount($store_id){
+
+    $sum_total_purchase_amount = 0;
+
+    $transaction_todays = \App\Transaction::where('store_id',$store_id)
+        ->where('transaction_type','purchase')
+        ->get();
+
+    foreach($transaction_todays as $key => $transaction_today){
+        $sum_total_purchase_amount += $transaction_today->amount;
+    }
+
+
+    $fromStockTransferDetails = DB::table('stock_transfer_details')
+        ->join('stock_transfers','stock_transfers.id','=','stock_transfer_details.stock_transfer_id')
+        ->select(DB::raw('SUM(stock_transfer_details.sub_total) as from_stock_transfer_sum_sub_total'))
+        ->where('stock_transfers.from_store_id',$store_id)
+        ->first();
+
+    if($fromStockTransferDetails){
+        $from_stock_transfer_sum_sub_total = $fromStockTransferDetails->from_stock_transfer_sum_sub_total;
+        $sum_total_purchase_amount -= $from_stock_transfer_sum_sub_total;
+    }
+
+
+
+    $toStockTransferDetails = DB::table('stock_transfer_details')
+        ->join('stock_transfers','stock_transfers.id','=','stock_transfer_details.stock_transfer_id')
+        ->select(DB::raw('SUM(stock_transfer_details.sub_total) as to_stock_transfer_sum_sub_total'))
+        ->where('stock_transfers.to_store_id',$store_id)
+        ->first();
+
+    if($toStockTransferDetails){
+        $to_stock_transfer_sum_sub_total = $toStockTransferDetails->to_stock_transfer_sum_sub_total;
+        $sum_total_purchase_amount += $to_stock_transfer_sum_sub_total;
+    }
+
+    return $sum_total_purchase_amount;
 }
 
 ?>

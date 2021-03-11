@@ -38,17 +38,87 @@ class ProductPosSaleController extends Controller
         return view('backend.productPosSale.index',compact('productPosSales'));
     }
 
+    public function showProductByStore(Request $request){
+        $store_id = $request->store_id;
+        $products = DB::table('product_purchase_details')
+            ->select('product_purchase_details.product_id','product_purchase_details.barcode')
+            ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+            ->leftJoin('products','products.id','=','product_purchase_details.product_id')
+            ->where('product_purchases.store_id',$store_id)
+            ->groupBy('product_purchase_details.product_id')
+            ->groupBy('product_purchase_details.barcode')
+            ->get();
+        if(count($products) > 0){
+
+//            $options = '';
+//            foreach($products as $data){
+//                $product_name = \App\Product::where('id',$data->product_id)->pluck('name')->first();
+//                $product_price = \App\ProductPurchaseDetail::where('product_id',$data->product_id)->latest()->pluck('mrp_price')->first();
+//                $product_current_stock = \App\Stock::where('product_id',$data->product_id)->latest()->pluck('current_stock')->first();
+//                $options .= "<tr>";
+//                $options .= "<th>".$data->barcode."</th>";
+//                $options .= "<th>".$product_name."</th>";
+//                $options .= "<th>".$product_price."</th>";
+//                $options .= "<th>".$product_current_stock."</th>";
+//                $options .= '<th><a onclick="selectItem('.$data->barcode.')" class="btn btn-primary"><i class="fa fa-check-circle"></i> Select</a></th>';
+//                $options .= "</tr>";
+//            }
+
+
+                $options = '<table id="example1" class="table table-bordered table-striped">';
+                $options .= "<thead>";
+                $options .= "<tr>";
+                $options .= "<th>Barcode</th>";
+                $options .= "<th>Product Name</th>";
+                $options .= "<th>Purchase Price</th>";
+                $options .= "<th>Stock Qty</th>";
+                $options .= "<th>Action</th>";
+                $options .= "</tr>";
+                $options .= "</thead>";
+                $options .= "</tbody>";
+            foreach($products as $data){
+                $product_name = \App\Product::where('id',$data->product_id)->pluck('name')->first();
+                $product_price = \App\ProductPurchaseDetail::where('product_id',$data->product_id)->latest()->pluck('mrp_price')->first();
+                $product_current_stock = \App\Stock::where('product_id',$data->product_id)->latest()->pluck('current_stock')->first();
+                $options .= "<tr>";
+                $options .= "<th>".$data->barcode."</th>";
+                $options .= "<th>".$product_name."</th>";
+                $options .= "<th>".$product_price."</th>";
+                $options .= "<th>".$product_current_stock."</th>";
+                $options .= '<th><a onclick="selectItem('.$data->barcode.')" class="btn btn-primary"><i class="fa fa-check-circle"></i> Select</a></th>';
+                $options .= "</tr>";
+            }
+                $options .= "</tbody>";
+                $options .= "</table>";
+
+
+        }else{
+            $options = "No Data Found!";
+        }
+
+        return response()->json(['success'=>true,'data'=>$options]);
+    }
+
     public function create()
     {
         $auth = Auth::user();
         $auth_user = Auth::user()->roles[0]->name;
         $parties = Party::where('type','customer')->get() ;
-        $store_id = 2;
+        $store_id = 1;
         if($auth_user == "Admin"){
             $stores = Store::all();
+//            $products = DB::table('product_purchase_details')
+//                ->select('product_purchase_details.product_id','product_purchase_details.barcode')
+//                ->leftJoin('products','products.id','=','product_purchase_details.product_id')
+//                ->groupBy('product_purchase_details.product_id')
+//                ->groupBy('product_purchase_details.barcode')
+//                ->get();
+
             $products = DB::table('product_purchase_details')
                 ->select('product_purchase_details.product_id','product_purchase_details.barcode')
+                ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
                 ->leftJoin('products','products.id','=','product_purchase_details.product_id')
+                ->where('product_purchases.store_id',$store_id)
                 ->groupBy('product_purchase_details.product_id')
                 ->groupBy('product_purchase_details.barcode')
                 ->get();

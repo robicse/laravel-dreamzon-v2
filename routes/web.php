@@ -100,6 +100,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('productPosSales/list','ProductPosSaleController@index')->name('productPosSales.index');
     Route::get('productPosSales','ProductPosSaleController@create')->name('productPosSales.create');
+    Route::get('get-product-by-store','ProductPosSaleController@showProductByStore');
     Route::get('sale/{id}/data', 'ProductPosSaleController@listData')->name('sale.data');
     Route::get('sale/loadform/{discount}/{total}/{paid}', 'ProductPosSaleController@loadForm');
     Route::get('pos/print/{id}/{status}', 'PointOfSaleController@print')->name('pointOfSale.print');

@@ -345,5 +345,23 @@
             $('#diterima').val(0).focus().select();
         }
 
+        $('#store_id').change(function(){
+            var store_id = $(this).val();
+            //alert(product_category_id);
+            $.ajax({
+                url : "{{URL('get-product-by-store')}}",
+                method : "get",
+                data : {
+                    store_id : store_id
+                },
+                success : function (res){
+                    console.log(res)
+                    $('#show_products').html(res.data)
+                },
+                error : function (err){
+                    console.log(err)
+                }
+            })
+        })
     </script>
 @endpush()
