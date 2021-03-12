@@ -16,158 +16,453 @@
 
 
 function sum_loss_or_profit($store_id){
-    $sum_loss_or_profit = 0;
-    $productSaleDetails = DB::table('product_sale_details')
-        ->join('product_sales', 'product_sale_details.product_sale_id', '=', 'product_sales.id')
-        ->select(
-            'product_sale_details.product_id',
-            DB::raw('SUM(qty) as qty'),
-            DB::raw('SUM(price) as price'),
-            DB::raw('SUM(sub_total) as sub_total')
-        )
-        ->where('product_sales.store_id', $store_id)
-        ->groupBy('product_sale_details.product_id')
+//    $sum_loss_or_profit = 0;
+//    $productSaleDetails = DB::table('product_sale_details')
+//        ->join('product_sales', 'product_sale_details.product_sale_id', '=', 'product_sales.id')
+//        ->select(
+//            'product_sale_details.product_id',
+//            DB::raw('SUM(qty) as qty'),
+//            DB::raw('SUM(price) as price'),
+//            DB::raw('SUM(sub_total) as sub_total')
+//        )
+//        ->where('product_sales.store_id', $store_id)
+//        ->groupBy('product_sale_details.product_id')
+//        ->get();
+//
+//    if(!empty($productSaleDetails)) {
+//        foreach ($productSaleDetails as $productSaleDetail){
+//            $product_id = $productSaleDetail->product_id;
+//            $sale_total_qty = $productSaleDetail->qty;
+//            $sale_sub_total = $productSaleDetail->sub_total;
+//
+//            $productPurchasesSummation = DB::table('product_purchase_details')
+//                ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+//                ->select(
+//                    'product_purchase_details.product_id',
+//                    DB::raw('SUM(product_purchase_details.qty) as qty'),
+//                    DB::raw('SUM(product_purchase_details.price) as price'),
+//                    DB::raw('SUM(product_purchase_details.sub_total) as sub_total')
+//                )
+//                ->where('product_purchases.store_id',$store_id)
+//                ->where('product_purchase_details.product_id',$product_id)
+//                ->groupBy('product_purchase_details.product_id')
+//                ->first();
+//
+//            if(!empty($productPurchasesSummation)){
+//
+//                $purchase_total_qty = $productPurchasesSummation->qty;
+//                $purchase_sub_total = $productPurchasesSummation->sub_total;
+//                $purchase_average_price = $purchase_sub_total/$purchase_total_qty;
+//
+//                $loss_or_profit = $sale_sub_total - ($purchase_average_price*$sale_total_qty);
+//                $sum_loss_or_profit += $loss_or_profit;
+//
+//            }
+//        }
+//
+//    }
+//
+//    return $sum_loss_or_profit;
+
+    $productPurchaseDetails = DB::table('product_purchase_details')
+        ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+        ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
+        ->where('product_purchases.store_id',$store_id)
+        ->groupBy('product_id')
+        ->groupBy('product_category_id')
+        ->groupBy('product_sub_category_id')
+        ->groupBy('product_brand_id')
         ->get();
 
-    if(!empty($productSaleDetails)) {
-        foreach ($productSaleDetails as $productSaleDetail){
-            $product_id = $productSaleDetail->product_id;
-            $sale_total_qty = $productSaleDetail->qty;
-            $sale_sub_total = $productSaleDetail->sub_total;
+    $sum_loss_or_profit = 0;
 
-            $productPurchasesSummation = DB::table('product_purchase_details')
-                ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
-                ->select(
-                    'product_purchase_details.product_id',
-                    DB::raw('SUM(product_purchase_details.qty) as qty'),
-                    DB::raw('SUM(product_purchase_details.price) as price'),
-                    DB::raw('SUM(product_purchase_details.sub_total) as sub_total')
-                )
-                ->where('product_purchases.store_id',$store_id)
-                ->where('product_purchase_details.product_id',$product_id)
-                ->groupBy('product_purchase_details.product_id')
-                ->first();
+    foreach($productPurchaseDetails as $key => $productPurchaseDetail){
 
-            if(!empty($productPurchasesSummation)){
 
-                $purchase_total_qty = $productPurchasesSummation->qty;
-                $purchase_sub_total = $productPurchasesSummation->sub_total;
-                $purchase_average_price = $purchase_sub_total/$purchase_total_qty;
+        $productPurchaseDetail->qty;
+        $productPurchaseDetail->sub_total;
+        $purchase_average_price = $productPurchaseDetail->sub_total/$productPurchaseDetail->qty;
 
-                $loss_or_profit = $sale_sub_total - ($purchase_average_price*$sale_total_qty);
+        $productSaleDetails = DB::table('product_sale_details')
+            ->join('product_sales','product_sale_details.product_sale_id','=','product_sales.id')
+            ->select('product_sale_details.product_id','product_sale_details.product_category_id','product_sale_details.product_sub_category_id','product_sale_details.product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
+            ->where('product_sale_details.product_id',$productPurchaseDetail->product_id)
+            ->where('product_sale_details.product_category_id',$productPurchaseDetail->product_category_id)
+            ->where('product_sale_details.product_sub_category_id',$productPurchaseDetail->product_sub_category_id)
+            ->where('product_sale_details.product_brand_id',$productPurchaseDetail->product_brand_id)
+            ->where('product_sales.store_id',$store_id)
+            ->groupBy('product_sale_details.product_id')
+            ->groupBy('product_sale_details.product_category_id')
+            ->groupBy('product_sale_details.product_sub_category_id')
+            ->groupBy('product_sale_details.product_brand_id')
+            ->first();
+
+        if(!empty($productSaleDetails))
+        {
+            $sale_total_qty = $productSaleDetails->qty;
+            $sale_total_sub_total = $productSaleDetails->sub_total;
+            $sale_average_price = $productSaleDetails->sub_total/$productSaleDetails->qty;
+
+            if($sale_total_qty > 0){
+                //$loss_or_profit = ($sale_average_price*$sale_total_qty) - ($purchase_average_price*$sale_total_qty);
+                $loss_or_profit = $sale_total_sub_total - ($purchase_average_price*$sale_total_qty);
                 $sum_loss_or_profit += $loss_or_profit;
+            }
+        }
 
+
+        $productSaleReturnDetails = DB::table('product_sale_return_details')
+            ->select('product_id',
+                'product_category_id',
+                'product_sub_category_id',
+                'product_brand_id',
+                DB::raw('SUM(qty) as qty'),
+                DB::raw('SUM(price) as price'))
+            ->where('product_id',$productPurchaseDetail->product_id)
+            ->where('product_category_id',$productPurchaseDetail->product_category_id)
+            ->where('product_sub_category_id',$productPurchaseDetail->product_sub_category_id)
+            ->where('product_brand_id',$productPurchaseDetail->product_brand_id)
+            ->groupBy('product_id')
+            ->groupBy('product_category_id')
+            ->groupBy('product_sub_category_id')
+            ->groupBy('product_brand_id')
+            ->first();
+
+
+        if(!empty($productSaleReturnDetails))
+        {
+            $sale_return_total_qty = $productSaleReturnDetails->qty;
+            $sale_return_total_amount = $productSaleReturnDetails->price;
+            $sale_return_average_price = $sale_return_total_amount/$productSaleReturnDetails->qty;
+
+            if($sale_return_total_qty > 0){
+                //$loss_or_profit = $sale_return_average_price - ($purchase_average_price*$sale_return_total_qty);
+                $loss_or_profit = ($sale_return_total_qty*$sale_return_total_amount) - ($purchase_average_price*$sale_return_total_qty);
+                $sum_loss_or_profit -= $loss_or_profit;
             }
         }
 
     }
 
-    return $sum_loss_or_profit;
+
+    $productSaleDiscount = DB::table('product_sales')
+        ->select( DB::raw('SUM(discount_amount) as total_discount'))
+        ->where('store_id',$store_id)
+        ->first();
+
+    $sum_total_discount = 0;
+
+    if($productSaleDiscount){
+        $sum_total_discount = $productSaleDiscount->total_discount;
+    }
+
+
+    return $sum_loss_or_profit - $sum_total_discount;
+
 }
 
     function sum_last_thirty_day_loss_or_profit($store_id){
-        $sum_loss_or_profit = 0;
-        $productSaleDetails = DB::table('product_sale_details')
-            ->join('product_sales', 'product_sale_details.product_sale_id', '=', 'product_sales.id')
-            ->select(
-                'product_sale_details.product_id',
-                DB::raw('SUM(qty) as qty'),
-                DB::raw('SUM(price) as price'),
-                DB::raw('SUM(sub_total) as sub_total')
-            )
-            ->where('product_sales.store_id', $store_id)
-            ->where('product_sale_details.created_at','>=',date('Y-m-d',strtotime('-30 days')).' 00:00:00')
-            ->where('product_sale_details.created_at','<=',date('Y-m-d').' 23:59:59')
-            ->groupBy('product_sale_details.product_id')
+//        $sum_loss_or_profit = 0;
+//        $productSaleDetails = DB::table('product_sale_details')
+//            ->join('product_sales', 'product_sale_details.product_sale_id', '=', 'product_sales.id')
+//            ->select(
+//                'product_sale_details.product_id',
+//                DB::raw('SUM(qty) as qty'),
+//                DB::raw('SUM(price) as price'),
+//                DB::raw('SUM(sub_total) as sub_total')
+//            )
+//            ->where('product_sales.store_id', $store_id)
+//            ->where('product_sale_details.created_at','>=',date('Y-m-d',strtotime('-30 days')).' 00:00:00')
+//            ->where('product_sale_details.created_at','<=',date('Y-m-d').' 23:59:59')
+//            ->groupBy('product_sale_details.product_id')
+//            ->get();
+//
+//        if(!empty($productSaleDetails)) {
+//            foreach ($productSaleDetails as $productSaleDetail){
+//                $product_id = $productSaleDetail->product_id;
+//                $sale_total_qty = $productSaleDetail->qty;
+//                $sale_sub_total = $productSaleDetail->sub_total;
+//
+//                $productPurchasesSummation = DB::table('product_purchase_details')
+//                    ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+//                    ->select(
+//                        'product_purchase_details.product_id',
+//                        DB::raw('SUM(product_purchase_details.qty) as qty'),
+//                        DB::raw('SUM(product_purchase_details.price) as price'),
+//                        DB::raw('SUM(product_purchase_details.sub_total) as sub_total')
+//                    )
+//                    ->where('product_purchases.store_id',$store_id)
+//                    ->where('product_purchase_details.product_id',$product_id)
+//                    ->groupBy('product_purchase_details.product_id')
+//                    ->first();
+//
+//                if(!empty($productPurchasesSummation)){
+//
+//                    $purchase_total_qty = $productPurchasesSummation->qty;
+//                    $purchase_sub_total = $productPurchasesSummation->sub_total;
+//                    $purchase_average_price = $purchase_sub_total/$purchase_total_qty;
+//
+//                    //$loss_or_profit = ($sale_average_price*$sale_total_qty) - ($purchase_average_price*$sale_total_qty);
+//                    $loss_or_profit = $sale_sub_total - ($purchase_average_price*$sale_total_qty);
+//                    $sum_loss_or_profit += $loss_or_profit;
+//
+//                }
+//            }
+//
+//        }
+//
+//        return $sum_loss_or_profit;
+
+        $productPurchaseDetails = DB::table('product_purchase_details')
+            ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+            ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
+            ->where('product_purchases.store_id',$store_id)
+            //->where('product_purchase_details.created_at','>=',date('Y-m-d',strtotime('-30 days')).' 00:00:00')
+            //->where('product_purchase_details.created_at','<=',date('Y-m-d').' 23:59:59')
+            ->groupBy('product_id')
+            ->groupBy('product_category_id')
+            ->groupBy('product_sub_category_id')
+            ->groupBy('product_brand_id')
             ->get();
 
-        if(!empty($productSaleDetails)) {
-            foreach ($productSaleDetails as $productSaleDetail){
-                $product_id = $productSaleDetail->product_id;
-                $sale_total_qty = $productSaleDetail->qty;
-                $sale_sub_total = $productSaleDetail->sub_total;
+        $sum_loss_or_profit = 0;
 
-                $productPurchasesSummation = DB::table('product_purchase_details')
-                    ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
-                    ->select(
-                        'product_purchase_details.product_id',
-                        DB::raw('SUM(product_purchase_details.qty) as qty'),
-                        DB::raw('SUM(product_purchase_details.price) as price'),
-                        DB::raw('SUM(product_purchase_details.sub_total) as sub_total')
-                    )
-                    ->where('product_purchases.store_id',$store_id)
-                    ->where('product_purchase_details.product_id',$product_id)
-                    ->groupBy('product_purchase_details.product_id')
-                    ->first();
+        foreach($productPurchaseDetails as $key => $productPurchaseDetail){
 
-                if(!empty($productPurchasesSummation)){
 
-                    $purchase_total_qty = $productPurchasesSummation->qty;
-                    $purchase_sub_total = $productPurchasesSummation->sub_total;
-                    $purchase_average_price = $purchase_sub_total/$purchase_total_qty;
+            $productPurchaseDetail->qty;
+            $productPurchaseDetail->sub_total;
+            $purchase_average_price = $productPurchaseDetail->sub_total/$productPurchaseDetail->qty;
 
+            $productSaleDetails = DB::table('product_sale_details')
+                ->join('product_sales','product_sale_details.product_sale_id','=','product_sales.id')
+                ->select('product_sale_details.product_id','product_sale_details.product_category_id','product_sale_details.product_sub_category_id','product_sale_details.product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
+                ->where('product_sale_details.product_id',$productPurchaseDetail->product_id)
+                ->where('product_sale_details.product_category_id',$productPurchaseDetail->product_category_id)
+                ->where('product_sale_details.product_sub_category_id',$productPurchaseDetail->product_sub_category_id)
+                ->where('product_sale_details.product_brand_id',$productPurchaseDetail->product_brand_id)
+                ->where('product_sales.store_id',$store_id)
+                ->where('product_sale_details.created_at','>=',date('Y-m-d',strtotime('-30 days')).' 00:00:00')
+                ->where('product_sale_details.created_at','<=',date('Y-m-d').' 23:59:59')
+                ->groupBy('product_sale_details.product_id')
+                ->groupBy('product_sale_details.product_category_id')
+                ->groupBy('product_sale_details.product_sub_category_id')
+                ->groupBy('product_sale_details.product_brand_id')
+                ->first();
+
+            if(!empty($productSaleDetails))
+            {
+                $sale_total_qty = $productSaleDetails->qty;
+                $sale_total_sub_total = $productSaleDetails->sub_total;
+                $sale_average_price = $productSaleDetails->sub_total/$productSaleDetails->qty;
+
+                if($sale_total_qty > 0){
                     //$loss_or_profit = ($sale_average_price*$sale_total_qty) - ($purchase_average_price*$sale_total_qty);
-                    $loss_or_profit = $sale_sub_total - ($purchase_average_price*$sale_total_qty);
+                    $loss_or_profit = $sale_total_sub_total - ($purchase_average_price*$sale_total_qty);
                     $sum_loss_or_profit += $loss_or_profit;
+                }
+            }
 
+
+            $productSaleReturnDetails = DB::table('product_sale_return_details')
+                ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'))
+                ->where('product_id',$productPurchaseDetail->product_id)
+                ->where('product_category_id',$productPurchaseDetail->product_category_id)
+                ->where('product_sub_category_id',$productPurchaseDetail->product_sub_category_id)
+                ->where('product_brand_id',$productPurchaseDetail->product_brand_id)
+                //->where('product_sale_return_details.created_at','>=',date('Y-m-d',strtotime('-30 days')).' 00:00:00')
+                //->where('product_sale_return_details.created_at','<=',date('Y-m-d').' 23:59:59')
+                ->groupBy('product_id')
+                ->groupBy('product_category_id')
+                ->groupBy('product_sub_category_id')
+                ->groupBy('product_brand_id')
+                ->first();
+
+
+            if(!empty($productSaleReturnDetails))
+            {
+                $sale_return_total_qty = $productSaleReturnDetails->qty;
+                $sale_return_total_amount = $productSaleReturnDetails->price;
+                $sale_return_average_price = $sale_return_total_amount/$productSaleReturnDetails->qty;
+
+                if($sale_return_total_qty > 0){
+                    //$loss_or_profit = $sale_return_average_price - ($purchase_average_price*$sale_return_total_qty);
+                    $loss_or_profit = ($sale_return_total_qty*$sale_return_total_amount) - ($purchase_average_price*$sale_return_total_qty);
+                    $sum_loss_or_profit -= $loss_or_profit;
                 }
             }
 
         }
 
-        return $sum_loss_or_profit;
+        $productSaleDiscount = DB::table('product_sales')
+            ->select( DB::raw('SUM(discount_amount) as total_discount'))
+            ->where('store_id',$store_id)
+            ->where('created_at','>=',date('Y-m-d',strtotime('-30 days')).' 00:00:00')
+            ->where('created_at','<=',date('Y-m-d').' 23:59:59')
+            ->first();
+
+        $sum_total_discount = 0;
+        if($productSaleDiscount){
+            $sum_total_discount = $productSaleDiscount->total_discount;
+        }
+
+        return $sum_loss_or_profit - $sum_total_discount;
     }
 
     function sum_today_loss_or_profit($store_id){
-        $sum_loss_or_profit = 0;
-        $productSaleDetails = DB::table('product_sale_details')
-            ->join('product_sales', 'product_sale_details.product_sale_id', '=', 'product_sales.id')
-            ->select(
-                'product_sale_details.product_id',
-                DB::raw('SUM(qty) as qty'),
-                DB::raw('SUM(price) as price'),
-                DB::raw('SUM(sub_total) as sub_total')
-            )
-            ->where('product_sales.store_id', $store_id)
-            ->where('product_sale_details.created_at','>=',date('Y-m-d').' 00:00:00')
-            ->where('product_sale_details.created_at','<=',date('Y-m-d').' 23:59:59')
-            ->groupBy('product_sale_details.product_id')
+//        $sum_loss_or_profit = 0;
+//        $productSaleDetails = DB::table('product_sale_details')
+//            ->join('product_sales', 'product_sale_details.product_sale_id', '=', 'product_sales.id')
+//            ->select(
+//                'product_sale_details.product_id',
+//                DB::raw('SUM(qty) as qty'),
+//                DB::raw('SUM(price) as price'),
+//                DB::raw('SUM(sub_total) as sub_total')
+//            )
+//            ->where('product_sales.store_id', $store_id)
+//            ->where('product_sale_details.created_at','>=',date('Y-m-d').' 00:00:00')
+//            ->where('product_sale_details.created_at','<=',date('Y-m-d').' 23:59:59')
+//            ->groupBy('product_sale_details.product_id')
+//            ->get();
+//
+//        if(!empty($productSaleDetails)) {
+//            foreach ($productSaleDetails as $productSaleDetail){
+//                $product_id = $productSaleDetail->product_id;
+//                $sale_total_qty = $productSaleDetail->qty;
+//                $sale_sub_total = $productSaleDetail->sub_total;
+//
+//                $productPurchasesSummation = DB::table('product_purchase_details')
+//                    ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+//                    ->select(
+//                        'product_purchase_details.product_id',
+//                        DB::raw('SUM(product_purchase_details.qty) as qty'),
+//                        DB::raw('SUM(product_purchase_details.price) as price'),
+//                        DB::raw('SUM(product_purchase_details.sub_total) as sub_total')
+//                    )
+//                    ->where('product_purchases.store_id',$store_id)
+//                    ->where('product_purchase_details.product_id',$product_id)
+//                    ->groupBy('product_purchase_details.product_id')
+//                    ->first();
+//
+//                if(!empty($productPurchasesSummation)){
+//
+//                    $purchase_total_qty = $productPurchasesSummation->qty;
+//                    $purchase_sub_total = $productPurchasesSummation->sub_total;
+//                    $purchase_average_price = $purchase_sub_total/$purchase_total_qty;
+//
+//                    //$loss_or_profit = ($sale_average_price*$sale_total_qty) - ($purchase_average_price*$sale_total_qty);
+//                    $loss_or_profit = $sale_sub_total - ($purchase_average_price*$sale_total_qty);
+//                    $sum_loss_or_profit += $loss_or_profit;
+//                }
+//            }
+//
+//        }
+//
+//        return $sum_loss_or_profit;
+
+        $productPurchaseDetails = DB::table('product_purchase_details')
+            ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+            ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
+            ->where('product_purchases.store_id',$store_id)
+            //->where('product_purchase_details.created_at','>=',date('Y-m-d').' 00:00:00')
+            //->where('product_purchase_details.created_at','<=',date('Y-m-d').' 23:59:59')
+            ->groupBy('product_id')
+            ->groupBy('product_category_id')
+            ->groupBy('product_sub_category_id')
+            ->groupBy('product_brand_id')
             ->get();
 
-        if(!empty($productSaleDetails)) {
-            foreach ($productSaleDetails as $productSaleDetail){
-                $product_id = $productSaleDetail->product_id;
-                $sale_total_qty = $productSaleDetail->qty;
-                $sale_sub_total = $productSaleDetail->sub_total;
+        $sum_loss_or_profit = 0;
 
-                $productPurchasesSummation = DB::table('product_purchase_details')
-                    ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
-                    ->select(
-                        'product_purchase_details.product_id',
-                        DB::raw('SUM(product_purchase_details.qty) as qty'),
-                        DB::raw('SUM(product_purchase_details.price) as price'),
-                        DB::raw('SUM(product_purchase_details.sub_total) as sub_total')
-                    )
-                    ->where('product_purchases.store_id',$store_id)
-                    ->where('product_purchase_details.product_id',$product_id)
-                    ->groupBy('product_purchase_details.product_id')
-                    ->first();
+        foreach($productPurchaseDetails as $key => $productPurchaseDetail){
 
-                if(!empty($productPurchasesSummation)){
 
-                    $purchase_total_qty = $productPurchasesSummation->qty;
-                    $purchase_sub_total = $productPurchasesSummation->sub_total;
-                    $purchase_average_price = $purchase_sub_total/$purchase_total_qty;
+            $productPurchaseDetail->qty;
+            $productPurchaseDetail->sub_total;
+            $purchase_average_price = $productPurchaseDetail->sub_total/$productPurchaseDetail->qty;
 
+            $productSaleDetails = DB::table('product_sale_details')
+                ->join('product_sales','product_sale_details.product_sale_id','=','product_sales.id')
+                ->select(
+                    'product_sale_details.product_id',
+                    'product_sale_details.product_category_id',
+                    'product_sale_details.product_sub_category_id',
+                    'product_sale_details.product_brand_id',
+                    DB::raw('SUM(qty) as qty'),
+                    DB::raw('SUM(price) as price'),
+                    DB::raw('SUM(sub_total) as sub_total')
+                )
+                ->where('product_sale_details.product_id',$productPurchaseDetail->product_id)
+                ->where('product_sale_details.product_category_id',$productPurchaseDetail->product_category_id)
+                ->where('product_sale_details.product_sub_category_id',$productPurchaseDetail->product_sub_category_id)
+                ->where('product_sale_details.product_brand_id',$productPurchaseDetail->product_brand_id)
+                ->where('product_sales.store_id',$store_id)
+                ->where('product_sale_details.created_at','>=',date('Y-m-d').' 00:00:00')
+                ->where('product_sale_details.created_at','<=',date('Y-m-d').' 23:59:59')
+                ->groupBy('product_sale_details.product_id')
+                ->groupBy('product_sale_details.product_category_id')
+                ->groupBy('product_sale_details.product_sub_category_id')
+                ->groupBy('product_sale_details.product_brand_id')
+                ->first();
+
+            if(!empty($productSaleDetails))
+            {
+                $sale_total_qty = $productSaleDetails->qty;
+                $sale_total_sub_total = $productSaleDetails->sub_total;
+                $sale_average_price = $productSaleDetails->sub_total/$productSaleDetails->qty;
+
+                if($sale_total_qty > 0){
                     //$loss_or_profit = ($sale_average_price*$sale_total_qty) - ($purchase_average_price*$sale_total_qty);
-                    $loss_or_profit = $sale_sub_total - ($purchase_average_price*$sale_total_qty);
+                    $loss_or_profit = $sale_total_sub_total - ($purchase_average_price*$sale_total_qty);
                     $sum_loss_or_profit += $loss_or_profit;
+                }
+            }
+
+
+            $productSaleReturnDetails = DB::table('product_sale_return_details')
+                ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'))
+                ->where('product_id',$productPurchaseDetail->product_id)
+                ->where('product_category_id',$productPurchaseDetail->product_category_id)
+                ->where('product_sub_category_id',$productPurchaseDetail->product_sub_category_id)
+                ->where('product_brand_id',$productPurchaseDetail->product_brand_id)
+                ->where('product_sale_return_details.created_at','>=',date('Y-m-d').' 00:00:00')
+                ->where('product_sale_return_details.created_at','<=',date('Y-m-d').' 23:59:59')
+                ->groupBy('product_id')
+                ->groupBy('product_category_id')
+                ->groupBy('product_sub_category_id')
+                ->groupBy('product_brand_id')
+                ->first();
+
+
+            if(!empty($productSaleReturnDetails))
+            {
+                $sale_return_total_qty = $productSaleReturnDetails->qty;
+                $sale_return_total_amount = $productSaleReturnDetails->price;
+                $sale_return_average_price = $sale_return_total_amount/$productSaleReturnDetails->qty;
+
+                if($sale_return_total_qty > 0){
+                    //$loss_or_profit = $sale_return_average_price - ($purchase_average_price*$sale_return_total_qty);
+                    $loss_or_profit = ($sale_return_total_qty*$sale_return_total_amount) - ($purchase_average_price*$sale_return_total_qty);
+                    $sum_loss_or_profit -= $loss_or_profit;
                 }
             }
 
         }
 
-        return $sum_loss_or_profit;
+        $productSaleDiscount = DB::table('product_sales')
+            ->select( DB::raw('SUM(discount_amount) as total_discount'))
+            ->where('store_id',$store_id)
+            ->where('created_at','>=',date('Y-m-d').' 00:00:00')
+            ->where('created_at','<=',date('Y-m-d').' 23:59:59')
+            ->first();
+
+        $sum_total_discount = 0;
+
+        if($productSaleDiscount){
+            $sum_total_discount = $productSaleDiscount->total_discount;
+        }
+
+        return $sum_loss_or_profit - $sum_total_discount;
     }
 
     function sum_stock_purchase_price($store_id){

@@ -123,10 +123,12 @@
                                         {
                                             $sale_total_qty = $productSaleDetails->qty;
                                             $sale_total_amount = $productSaleDetails->sub_total;
+                                            $sale_total_sub_total = $productSaleDetails->sub_total;
                                             $sale_average_price = $productSaleDetails->sub_total/$productSaleDetails->qty;
 
                                             if($sale_total_qty > 0){
-                                                $loss_or_profit = ($sale_average_price*$sale_total_qty) - ($purchase_average_price*$sale_total_qty);
+                                                //$loss_or_profit = ($sale_average_price*$sale_total_qty) - ($purchase_average_price*$sale_total_qty);
+                                                $loss_or_profit = $sale_total_sub_total - ($purchase_average_price*$sale_total_qty);
                                                 $current_loss_or_profit += $loss_or_profit;
                                                 $sum_loss_or_profit += $loss_or_profit;
                                             }
@@ -172,11 +174,27 @@
                                             $sale_return_average_price = $sale_return_total_amount/$productSaleReturnDetails->qty;
 
                                             if($sale_return_total_qty > 0){
-                                                $loss_or_profit = $sale_return_average_price - ($purchase_average_price*$sale_return_total_qty);
+                                                //$loss_or_profit = $sale_return_average_price - ($purchase_average_price*$sale_return_total_qty);
+                                                $loss_or_profit = ($sale_return_total_qty*$sale_return_total_amount) - ($purchase_average_price*$sale_return_total_qty);
                                                 $current_loss_or_profit -= $loss_or_profit;
                                                 $sum_loss_or_profit -= $loss_or_profit;
                                             }
                                         }
+                                    @endphp
+
+                                    @php
+
+                                        $productSaleDiscount = DB::table('product_sales')
+                                            ->select( DB::raw('SUM(discount_amount) as total_discount'))
+                                            ->where('store_id',$store->id)
+                                            ->first();
+
+                                        $sum_total_discount = 0;
+
+                                        if(!empty($productSaleDiscount)){
+                                            $sum_total_discount = $productSaleDiscount->total_discount;
+                                        }
+
                                     @endphp
                                     <td>
                                         {{$sale_total_qty}}
@@ -200,9 +218,9 @@
                             <th colspan="10">Sum Loss/Profit: </th>
                             <th>
                                 @if($sum_loss_or_profit > 0)
-                                    Profit: {{number_format($sum_loss_or_profit, 2, '.', '')}}
+                                    Profit: {{number_format($sum_loss_or_profit - $sum_total_discount, 2, '.', '')}}
                                 @else
-                                    Loss: {{number_format($sum_loss_or_profit, 2, '.', '')}}
+                                    Loss: {{number_format($sum_loss_or_profit - $sum_total_discount, 2, '.', '')}}
                                 @endif
                             </th>
                         </tr>

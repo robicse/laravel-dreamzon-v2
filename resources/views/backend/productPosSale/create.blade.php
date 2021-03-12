@@ -235,6 +235,18 @@
             console.log('okk');
             var grand_total = $('#grand_total').val();
             var paid_amount = $('#paid_amount').val();
+
+            if(grand_total && paid_amount ){
+                var final_paid_amount = parseInt(paid_amount);
+                var final_grand_total = parseInt(grand_total);
+                if(final_grand_total < final_paid_amount){
+                    console.log(grand_total)
+                    alert('You Are Not Paid More than Grand Total!');
+                    $('#paid_amount').val(0);
+                    return false;
+                }
+
+            }
             var due_amount = grand_total - paid_amount;
             var due_amount = due_amount;
             $('#paid_amount').val(paid_amount);
