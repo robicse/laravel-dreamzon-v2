@@ -33,6 +33,7 @@
                         <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Old Password') }} <span style="color: red">*</span></label>
 
                         <div class="col-md-6">
+                            <input id="user_id" type="hidden" class="form-control" name="user_id" value="{{$user_id}}"  required>
                             <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="old_password"  required>
 
                             @if ($errors->has('password'))

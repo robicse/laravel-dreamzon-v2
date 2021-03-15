@@ -41,12 +41,12 @@ class ProductPosSaleController extends Controller
     public function showProductByStore(Request $request){
         $store_id = $request->store_id;
         $products = DB::table('product_purchase_details')
-            ->select('product_purchase_details.product_id','product_purchase_details.barcode')
+            ->select('product_purchase_details.product_id','products.barcode')
             ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
             ->leftJoin('products','products.id','=','product_purchase_details.product_id')
             ->where('product_purchases.store_id',$store_id)
             ->groupBy('product_purchase_details.product_id')
-            ->groupBy('product_purchase_details.barcode')
+            ->groupBy('products.barcode')
             ->get();
         if(count($products) > 0){
 

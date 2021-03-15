@@ -170,7 +170,7 @@ class UserController extends Controller
         $hashedPassword = User::where('id',$request->user_id)->pluck('password')->first();
 
         if (\Illuminate\Support\Facades\Hash::check($request->old_password, $hashedPassword)) {
-            if (!Hash::check($request->password, $hashedPassword)) {
+            if (!\Illuminate\Support\Facades\Hash::check($request->password, $hashedPassword)) {
                 //$user = \App\User::find(Auth::id());
                 $user = User::find($request->user_id);
                 $user->password = Hash::make($request->password);
