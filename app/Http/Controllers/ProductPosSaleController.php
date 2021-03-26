@@ -40,14 +40,23 @@ class ProductPosSaleController extends Controller
 
     public function showProductByStore(Request $request){
         $store_id = $request->store_id;
-        $products = DB::table('product_purchase_details')
-            ->select('product_purchase_details.product_id','products.barcode')
-            ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
-            ->leftJoin('products','products.id','=','product_purchase_details.product_id')
-            ->where('product_purchases.store_id',$store_id)
-            ->groupBy('product_purchase_details.product_id')
+//        $products = DB::table('product_purchase_details')
+//            ->select('product_purchase_details.product_id','products.barcode')
+//            ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+//            ->leftJoin('products','products.id','=','product_purchase_details.product_id')
+//            ->where('product_purchases.store_id',$store_id)
+//            ->groupBy('product_purchase_details.product_id')
+//            ->groupBy('products.barcode')
+//            ->get();
+        $products = DB::table('stocks')
+            ->select('stocks.product_id','products.barcode')
+            //->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+            ->join('products','products.id','=','stocks.product_id')
+            ->where('stocks.store_id',$store_id)
+            ->groupBy('stocks.product_id')
             ->groupBy('products.barcode')
             ->get();
+
         if(count($products) > 0){
 
 //            $options = '';
@@ -79,7 +88,7 @@ class ProductPosSaleController extends Controller
             foreach($products as $data){
                 $product_name = \App\Product::where('id',$data->product_id)->pluck('name')->first();
                 $product_price = \App\ProductPurchaseDetail::where('product_id',$data->product_id)->latest()->pluck('mrp_price')->first();
-                $product_current_stock = \App\Stock::where('product_id',$data->product_id)->latest()->pluck('current_stock')->first();
+                $product_current_stock = \App\Stock::where('product_id',$data->product_id)->where('store_id',$store_id)->latest()->pluck('current_stock')->first();
                 $options .= "<tr>";
                 $options .= "<th>".$data->barcode."</th>";
                 $options .= "<th>".$product_name."</th>";
@@ -271,14 +280,22 @@ class ProductPosSaleController extends Controller
                                 <input type=\"text\" class=\"form-control\" id=\"sub_total\" value=\"".Cart::subtotal()."\" readonly>
                             </div>
                         </div>
-                        <div class=\"form-group row\" style=\"display: none\">
+                        <!--<div class=\"form-group row\">
                             <label for=\"member\" class=\"col-md-4 control-label\">Customer</label>
                             <div class=\"col-md-8\">
                                 <div class=\"input-group\">
-                                    <input id=\"member\" type=\"text\" class=\"form-control\" name=\"customer\" value=\"Mr.\">
+                                    <input id=\"member\" type=\"text\" class=\"form-control\" name=\"customer\" value=\"\">
                                     <span class=\"input-group-btn\">
                                       <button onclick=\"showMember()\" type=\"button\" class=\"btn btn-info\">select</button>
                                     </span>
+                                </div>
+                            </div>
+                        </div>-->
+                        <div class=\"form-group row\">
+                            <label for=\"member\" class=\"col-md-4 control-label\">Customer Phone</label>
+                            <div class=\"col-md-8\">
+                                <div class=\"input-group\">
+                                    <input id=\"member\" type=\"text\" class=\"form-control\" name=\"customer\" value=\"\" placeholder=\"01700000000\">
                                 </div>
                             </div>
                         </div>
@@ -337,7 +354,7 @@ class ProductPosSaleController extends Controller
 
     public function postInsert(Request $request){
         //dd($request->all());
-        $customer = $request->customer;
+        $customer = isset($request->customer) ? $request->customer : 'Mr.';
         if(is_numeric($customer) && strlen($customer) > 9){
             $customer_check_exits = Party::where('phone',$customer)->pluck('id')->first();
             if($customer_check_exits){
@@ -345,9 +362,9 @@ class ProductPosSaleController extends Controller
             }else{
                 $parties = new Party();
                 $parties->type = 'customer';
-                $parties->name = '';
+                $parties->name = 'Mr.';
                 $parties->phone = $customer;
-                $parties->slug = Str::slug($customer);
+                $parties->slug = 'Mr.'.Str::slug($customer);
                 $parties->email = '';
                 $parties->address = '';
                 $parties->status = 1;
@@ -365,7 +382,7 @@ class ProductPosSaleController extends Controller
                     $parties->name = $customer;
                     $parties->slug = Str::slug($customer);
                     $parties->phone = '01700000000';
-                    $parties->email = 'mr@gamil.com';
+                    $parties->email = '';
                     $parties->address = '';
                     $parties->status = 1;
                     $parties->save();
@@ -380,7 +397,7 @@ class ProductPosSaleController extends Controller
                     $parties->type = 'customer';
                     $parties->name = $customer;
                     $parties->slug = Str::slug($customer);
-                    $parties->phone = '';
+                    $parties->phone = '01700000000';
                     $parties->email = '';
                     $parties->address = '';
                     $parties->status = 1;

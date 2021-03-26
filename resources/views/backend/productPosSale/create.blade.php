@@ -179,6 +179,7 @@
         // }
         //
 
+
         // onkeyup
         function vatAmount(){
             var sub_total = $('#sub_total').val();
@@ -359,7 +360,8 @@
 
         $('#store_id').change(function(){
             var store_id = $(this).val();
-            //alert(product_category_id);
+            //alert(store_id);
+            console.log(store_id)
             $.ajax({
                 url : "{{URL('get-product-by-store')}}",
                 method : "get",

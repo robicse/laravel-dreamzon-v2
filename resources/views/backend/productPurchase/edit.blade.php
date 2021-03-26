@@ -83,8 +83,8 @@
                                     @php
                                         $current_row = $key+1;
                                     @endphp
-                                    <td>
-                                        <select class="form-control product_id select2" name="product_id[]" onchange="getval({{$current_row}},this);" required>
+                                    <td width="15%">
+                                        <select class="form-control product_id select2" name="product_id[]" onchange="getval({{$current_row}},this);" required style="width: 100%">
                                             <option value="">Select  Product</option>
                                             @foreach($products as $product)
                                                 <option value="{{$product->id}}" {{$product->id == $productPurchaseDetail->product_id ? 'selected' : ''}}>{{$product->name}}</option>
@@ -122,19 +122,19 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td width="15%">
                                         <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="{{$productPurchaseDetail->qty}}" required >
                                     </td>
-                                    <td>
+                                    <td width="15%">
                                         <input type="number" min="1" max="" class="price form-control" name="price[]" value="{{$productPurchaseDetail->price}}" required >
                                     </td>
-                                    <td>
+                                    <td width="15%">
                                         <input type="number" min="1" max="" class="form-control" name="mrp_price[]" value="{{$productPurchaseDetail->mrp_price}}" required >
                                     </td>
-                                    <td>
+                                    <td width="15%">
                                         <input type="text" class="amount form-control" name="sub_total[]" value="{{$productPurchaseDetail->sub_total}}">
                                     </td>
-                                    <td>
+                                    <td width="25%">
                                         <input type="text" class="datepicker form-control" name="expired_date[]" value="{{$productPurchaseDetail->expired_date}}">
                                     </td>
                                 </tr>
@@ -150,7 +150,7 @@
                             <div class="form-group row">
                             <label class="control-label col-md-3"></label>
                             <div class="col-md-8">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update Product Purchases</button>
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>1Update Product Purchases</button>
                             </div>
                         </div>
                         </div>
