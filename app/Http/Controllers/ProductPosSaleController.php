@@ -25,6 +25,51 @@ class ProductPosSaleController extends Controller
 {
     public function index()
     {
+        // manually product sale discount add
+//        $productPosSales = ProductSale::where('sale_type','pos')->get();
+//        if(count($productPosSales)){
+//            foreach ($productPosSales as $productPosSale){
+//                //echo $productPosSale->id.'<br/>';
+//                if($productPosSale->discount_amount > 0){
+//                    //echo $productPosSale->id.'<br/>';
+//                    $discount_amount = $productPosSale->discount_amount.'<br/>';
+//                    $total_amount = $productPosSale->total_amount.'<br/>';
+//                    //echo '<br/>';
+//
+//                    $productSaleDetails = ProductSaleDetail::where('product_sale_id',$productPosSale->id)->get();
+//                    foreach ($productSaleDetails as $productSaleDetail){
+//
+//                        //echo $discount_amount;
+//                        //echo $total_amount;
+//                        $price = $productSaleDetail->price;
+//                        $final_discount_amount = (float)$discount_amount * (float)$price;
+//                        $final_total_amount = (float)$discount_amount + (float)$total_amount;
+//                        //echo '<br/>';
+//                        //echo '<br/>';
+//
+//
+//
+//                        $discount = (float)$final_discount_amount/(float)$final_total_amount;
+//                        $discount = round($discount);
+//
+//                        $updateProductSaleDetailDiscount = ProductSaleDetail::find($productSaleDetail->id);
+//                        $updateProductSaleDetailDiscount->discount=$discount;
+//                        $affectedRow = $updateProductSaleDetailDiscount->update();
+//                        if($affectedRow){
+//                            echo 'updated id = '.$productSaleDetail->id;
+//                            echo 'updated discount = '.$discount;
+//                            echo '<br/>';
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        dd('ops');
+
+
+
+
+
         //Session::put('product_sale_id',14);
         Session::forget('product_sale_id');
 
@@ -465,6 +510,9 @@ class ProductPosSaleController extends Controller
             foreach (Cart::content() as $content) {
                 $product = Product::where('id',$content->id)->first();
 
+                $discount = ($discount_amount*$content->price)/($discount_amount+$total_amount);
+                $discount = round($discount);
+
                 // product purchase detail
                 $purchase_sale_detail = new ProductSaleDetail();
                 $purchase_sale_detail->product_sale_id = $insert_id;
@@ -475,6 +523,7 @@ class ProductPosSaleController extends Controller
                 $purchase_sale_detail->product_id = $content->id;
                 $purchase_sale_detail->qty = $content->qty;
                 $purchase_sale_detail->price = $content->price;
+                $purchase_sale_detail->discount = $discount;
                 $purchase_sale_detail->sub_total = $content->qty*$content->price;
                 $purchase_sale_detail->save();
 

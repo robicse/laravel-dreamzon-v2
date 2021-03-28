@@ -22,6 +22,7 @@ class CreateProductSaleDetailsTable extends Migration
             $table->integer('product_brand_id');
             $table->bigInteger('product_id')->unsigned();
             $table->integer('qty');
+            $table->float('discount',8,2)->nullable();
             $table->float('price',8,2);
             $table->timestamps();
             $table->foreign('product_sale_id')->references('id')->on('product_sales')->onDelete('cascade');
