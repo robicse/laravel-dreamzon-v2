@@ -8,6 +8,7 @@ use App\Stock;
 use App\Store;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class StockController extends Controller
@@ -173,10 +174,17 @@ class StockController extends Controller
     }
 
     public function stockSummary($store_id){
-        $stocks = Stock::where('store_id',$store_id)
-            ->whereIn('id', function($query) {
-                $query->from('stocks')->groupBy('product_id')->selectRaw('MAX(id)');
-            })->latest('id')->get();
+//        $stocks = Stock::where('store_id',$store_id)
+//            ->whereIn('id', function($query) {
+//                $query->from('stocks')->groupBy('product_id')->selectRaw('MAX(id)');
+//            })->latest('id')->get();
+
+        $stock_id = DB::table('stocks')->where('store_id',$store_id)->groupBy('product_id')->selectRaw('MAX(id)');
+        $stock_qyery = Stock::where('store_id',$store_id);
+        $stock_qyery->whereIn('id',$stock_id);
+        $stock_qyery->latest('id');
+        $stocks = $stock_qyery->get();
+        //dd($stocks);
 
         return view('backend.stock.details', compact('stocks'));
     }
